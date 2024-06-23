@@ -19,11 +19,6 @@
         "style",
         "test"
       ]
-    ],
-    "subject-case": [
-      0,
-      "always",
-      []
     ]
   }
 }

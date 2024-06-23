@@ -1,1 +1,17 @@
-npx --no -- commitlint --edit $1
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+COMMIT_MESSAGE_FILE=$1
+COMMIT_MESSAGE=$(cat "$COMMIT_MESSAGE_FILE")
+
+echo "❤️‍🩹 Commit Message: $COMMIT_MESSAGE"
+
+npx commitlint --edit $1
+
+if [ $? -eq 0 ]; then
+  echo "🔆 Commit message meets the convention 🔆"
+  exit 0
+else
+  echo "❌ Commit message does not meet the convention ❌"
+  exit 1
+fi
