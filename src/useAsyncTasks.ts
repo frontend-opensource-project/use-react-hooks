@@ -7,17 +7,22 @@ import {
 } from 'async-wave';
 
 type Task<R> = R | ((input: R) => R | Promise<R> | void | Promise<void>);
+
 type HookOptionProps = {
   initialLazyDelay: number;
   successLazyDelay: number;
 };
+
 type HookOptions = {
   options: Partial<HookOptionProps>;
 };
+
 type SyncOnBefore = { onBefore: () => void };
+
 type Options<R> = Partial<
   Omit<AsyncWaveOptions<R>, 'onBefore'> & SyncOnBefore & Partial<HookOptions>
 >;
+
 type StateInfo<R> = {
   isLoading: boolean;
   data: R | undefined;
