@@ -1,5 +1,27 @@
 import { useEffect, useState } from 'react';
 
+/**
+ * 브라우저 창의 너비와 높이를 제공하는 훅
+ * @param {boolean} [isDelay=true] 딜레이 여부 판단. Default=true
+ * @param {number} [delayTime=200] 지연 시간(밀리초). isDelay가 true일 때 사용됨.Default=200
+ * @returns {{ width: number, height: number }} 창의 너비와 높이를 담은 객체
+ *
+ * @example BASIC
+ * 딜레이를 포함하여 사용 (기본적으로 200ms만큼 delay 적용):
+ * const { width, height } = useWindowSize();
+ *
+ * @example WITH_OPTION (사용자 정의 delay)
+ * const { width, height } = useWindowSize(true, 500); // 500ms delay 후 업데이트
+ *
+ * @example WITH_OPTION (delay 없음)
+ * const { width, height } = useWindowSize(false); // delay 없이 즉시 업데이트
+ *
+ * @description
+ * 브라우저 창의 사이즈가 변경될 때마다 해당 창의 너비와 높이를 업데이트합니다.
+ * delay유무와 delayTime을 설정할 수 있습니다.
+ * UI의 세밀한 조작 등 동적인 변화에 유용합니다.
+ */
+
 interface UseWindowSizeParams {
   isDelay?: boolean;
   delayTime?: number;
