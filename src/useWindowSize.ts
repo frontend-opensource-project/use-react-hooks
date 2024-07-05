@@ -1,10 +1,5 @@
 import { useEffect, useState } from 'react';
 
-interface UseWindowSizeParams {
-  isDelay?: boolean;
-  delayTime?: number;
-}
-
 interface WindowSize {
   width: number;
   height: number;
@@ -21,10 +16,10 @@ interface WindowSize {
  * UI의 세밀한 조작 등 동적인 변화에 유용합니다.
  */
 
-const useWindowSize = ({
-  isDelay = true,
-  delayTime = 200,
-}: UseWindowSizeParams): WindowSize => {
+const useWindowSize = (
+  isDelay: boolean = true,
+  delayTime: number = 200
+): WindowSize => {
   const [windowSize, setWindowSize] = useState<WindowSize>({
     width: window.innerWidth,
     height: window.innerHeight,
