@@ -18,7 +18,7 @@
     ]
   },
   "dependencies": {
-    "async-wave": "^1.8.3",
+    "async-wave": "^1.8.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
