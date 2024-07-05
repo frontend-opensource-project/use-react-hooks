@@ -42,28 +42,28 @@ const useWindowSize = ({
   });
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
+    let timeoutId: NodeJS.Timeout | undefined;
     const handleWindowResize = () => {
-      clearTimeout(timeoutId);
-      if (isDelay) {
-        timeoutId = setTimeout(() => {
-          setWindowSize({
-            width: window.innerWidth,
-            height: window.innerHeight,
-          });
-        }, delayTime);
-      } else {
+      if (timeoutId) clearTimeout(timeoutId);
+
+      const updateWindowSize = () => {
         setWindowSize({
           width: window.innerWidth,
           height: window.innerHeight,
         });
+      };
+
+      if (isDelay) {
+        timeoutId = setTimeout(updateWindowSize, delayTime);
+      } else {
+        updateWindowSize();
       }
     };
 
     window.addEventListener('resize', handleWindowResize);
     return () => {
       window.removeEventListener('resize', handleWindowResize);
-      clearTimeout(timeoutId);
+      if (timeoutId) clearTimeout(timeoutId);
     };
   }, [isDelay, delayTime]);
 
