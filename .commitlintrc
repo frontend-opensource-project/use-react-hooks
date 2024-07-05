@@ -2,22 +2,33 @@
   "extends": [
     "@commitlint/config-conventional"
   ],
+  "parserPreset": {
+    "parserOpts": {
+      "headerPattern": "^(?<type>.+):\\s(?<subject>.+)$",
+      "headerCorrespondence": [
+        "type",
+        "subject"
+      ]
+    }
+  },
   "rules": {
     "type-enum": [
       2,
       "always",
       [
-        "build",
-        "chore",
-        "ci",
-        "docs",
-        "feat",
-        "fix",
-        "perf",
-        "refactor",
-        "revert",
-        "style",
-        "test"
+        "✨ feat",
+        "🐛 fix",
+        "📝 docs",
+        "🎨 style",
+        "🔨 refactor",
+        "✅ test",
+        "👷 build",
+        "🚀 deploy",
+        "🩹 chore",
+        "💬 comment",
+        "💄 design",
+        "🚚 rename",
+        "🔥 remove"
       ]
     ]
   }

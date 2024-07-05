@@ -9,7 +9,7 @@ echo "❤️‍🩹 Commit Message: $COMMIT_MESSAGE"
 npx commitlint --edit $1
 
 if [ $? -eq 0 ]; then
-  echo "🔆 Commit message meets the convention 🔆"
+  echo "✅ Commit message meets the convention ✅"
   exit 0
 else
   echo "❌ Commit message does not meet the convention ❌"
