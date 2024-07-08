@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 
-export const useDelayFlag = (flag: boolean, delay: number = 1000): boolean => {
+export const useDelayFlag = (
+  flag: boolean,
+  delayTime: number = 1000
+): boolean => {
   const startTimeRef = useRef(0);
   const [delayFlag, setDelayFlag] = useState(false);
 
@@ -18,7 +21,7 @@ export const useDelayFlag = (flag: boolean, delay: number = 1000): boolean => {
 
     const delayFlag = () => {
       const elapsedTime = Date.now() - startTimeRef.current;
-      const remainingTime = delay - elapsedTime;
+      const remainingTime = delayTime - elapsedTime;
 
       if (remainingTime > 0) {
         timeoutId = setTimeout(resetFlag, remainingTime);
