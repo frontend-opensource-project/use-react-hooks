@@ -4,23 +4,33 @@ export const useDelayFlag = (flag: boolean, delay: number = 1000): boolean => {
   const startTimeRef = useRef(0);
   const [delayFlag, setDelayFlag] = useState(false);
 
+  const initializeFlag = () => {
+    startTimeRef.current = Date.now();
+    setDelayFlag(true);
+  };
+
+  const resetFlag = () => {
+    setDelayFlag(false);
+  };
+
   useEffect(() => {
     let timeoutId: NodeJS.Timeout | null = null;
 
-    if (flag) {
-      startTimeRef.current = Date.now();
-      setDelayFlag(true);
-    } else if (startTimeRef.current) {
+    const delayFlag = () => {
       const elapsedTime = Date.now() - startTimeRef.current;
       const remainingTime = delay - elapsedTime;
 
       if (remainingTime > 0) {
-        timeoutId = setTimeout(() => {
-          setDelayFlag(false);
-        }, remainingTime);
+        timeoutId = setTimeout(resetFlag, remainingTime);
       } else {
-        setDelayFlag(false);
+        resetFlag();
       }
+    };
+
+    if (flag) {
+      initializeFlag();
+    } else if (startTimeRef.current) {
+      delayFlag();
     }
 
     return () => {
