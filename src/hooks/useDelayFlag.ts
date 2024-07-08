@@ -39,6 +39,7 @@ export const useDelayFlag = (
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [flag]);
 
   return delayFlag;
