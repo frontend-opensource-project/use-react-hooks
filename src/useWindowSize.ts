@@ -26,16 +26,17 @@ const useWindowSize = (delayTime: number = 200): WindowSize => {
   useEffect(() => {
     if (!isClient) return;
 
-    let timeoutId: NodeJS.Timeout | undefined;
+    let timeoutId: NodeJS.Timeout | null = null;
+
+    const updateWindowSize = () => {
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
     const handleWindowResize = () => {
       if (timeoutId) clearTimeout(timeoutId);
-
-      const updateWindowSize = () => {
-        setWindowSize({
-          width: window.innerWidth,
-          height: window.innerHeight,
-        });
-      };
 
       if (delayTime > 0) {
         timeoutId = setTimeout(updateWindowSize, delayTime);
