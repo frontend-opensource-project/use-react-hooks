@@ -96,7 +96,7 @@ const generateTaskHandlers = <R>(
       dispatch({ type: ActionType.LOADING });
       options?.initialLazyDelay &&
         (await delayExecution(options.initialLazyDelay));
-      onBefore && onBefore();
+      onBefore?.();
     },
     async onSuccess(payload: R) {
       if (!isMountedRef.current) return;
@@ -104,7 +104,7 @@ const generateTaskHandlers = <R>(
       options?.successLazyDelay &&
         (await delayExecution(options.successLazyDelay));
       dispatch({ type: ActionType.SUCCESS, payload });
-      onSuccess && onSuccess(payload);
+      onSuccess?.(payload);
     },
     onError(error: PromiseCircularityError) {
       if (!isMountedRef.current) return;
@@ -113,12 +113,12 @@ const generateTaskHandlers = <R>(
         type: ActionType.ERROR,
         payload: error,
       });
-      onError && onError(error);
+      onError?.(error);
     },
     onSettled() {
       if (!isMountedRef.current) return;
 
-      onSettled && onSettled();
+      onSettled?.();
     },
   };
 
