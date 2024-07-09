@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { PositiveInteger } from '../types/number';
 
 interface WindowSize {
   width: number | null;
@@ -14,7 +15,9 @@ interface WindowSize {
  * UI의 세밀한 조작 등 동적인 변화에 유용합니다.
  */
 
-const useWindowSize = (delayTime: number = 200): WindowSize => {
+const useWindowSize = <T extends number>(
+  delayTime: PositiveInteger<T> = 200 as PositiveInteger<T>
+): WindowSize => {
   const isClient = typeof window === 'object';
 
   const [windowSize, setWindowSize] = useState<WindowSize>({
