@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
 interface WindowSize {
-  width: number;
-  height: number;
+  width: number | null;
+  height: number | null;
 }
 
 /**
@@ -20,12 +20,16 @@ const useWindowSize = (
   isDelay: boolean = true,
   delayTime: number = 200
 ): WindowSize => {
+  const isClient = typeof window === 'object';
+
   const [windowSize, setWindowSize] = useState<WindowSize>({
-    width: window.innerWidth,
-    height: window.innerHeight,
+    width: isClient ? window.innerWidth : null,
+    height: isClient ? window.innerHeight : null,
   });
 
   useEffect(() => {
+    if (!isClient) return;
+
     let timeoutId: NodeJS.Timeout | undefined;
     const handleWindowResize = () => {
       if (timeoutId) clearTimeout(timeoutId);
