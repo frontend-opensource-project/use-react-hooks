@@ -31,8 +31,6 @@ type StateInfo<R> = {
   reset: () => void;
 };
 
-const [IS_UNMOUNTED, IS_MOUNTED] = [false, true];
-
 /**
  * useAsyncTasks
  * @param {Task<R>[]} tasks - 비동기 작업 리스트
@@ -40,7 +38,7 @@ const [IS_UNMOUNTED, IS_MOUNTED] = [false, true];
  * @returns {StateInfo<R>} 비동기 작업 상태 정보를 반환
  */
 const useAsyncTasks = <R>(tasks: Task<R>[], options: Options<R>) => {
-  const isMountedRef = useRef(IS_UNMOUNTED); // 컴포넌트가 언마운트된 후 비동기 작업이 완료될 때 상태 업데이트를 방지
+  const isMountedRef = useRef(false); // 컴포넌트가 언마운트된 후 비동기 작업이 완료될 때 상태 업데이트를 방지
   const [state, dispatch] = useReducer(reducer<R>, {
     isLoading: false,
     data: null,
@@ -48,7 +46,7 @@ const useAsyncTasks = <R>(tasks: Task<R>[], options: Options<R>) => {
   });
 
   useEffect(() => {
-    isMountedRef.current = IS_MOUNTED;
+    isMountedRef.current = true;
 
     (async () => {
       await asyncWave<R>(
@@ -58,7 +56,7 @@ const useAsyncTasks = <R>(tasks: Task<R>[], options: Options<R>) => {
     })();
 
     return () => {
-      isMountedRef.current = IS_UNMOUNTED;
+      isMountedRef.current = false;
     };
   }, []);
 
