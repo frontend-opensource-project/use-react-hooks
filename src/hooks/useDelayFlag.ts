@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
+import { PositiveInteger } from '../types/number';
 
-export const useDelayFlag = (
+export const useDelayFlag = <T extends number>(
   flag: boolean,
-  delayTime: number = 1000
+  delayTime?: PositiveInteger<T>
 ): boolean => {
   const startTimeRef = useRef(0);
   const [delayFlag, setDelayFlag] = useState(false);
@@ -21,7 +22,7 @@ export const useDelayFlag = (
 
     const delayFlag = () => {
       const elapsedTime = Date.now() - startTimeRef.current;
-      const remainingTime = delayTime - elapsedTime;
+      const remainingTime = (delayTime || 1000) - elapsedTime;
 
       if (remainingTime > 0) {
         timeoutId = setTimeout(resetFlag, remainingTime);
