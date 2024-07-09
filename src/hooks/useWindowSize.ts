@@ -39,7 +39,7 @@ const useWindowSize = (delayTime: number = 200): WindowSize => {
 
       if (delayTime > 0) {
         timeoutId = setTimeout(updateWindowSize, delayTime);
-      } else {
+      } else if (delayTime === 0) {
         updateWindowSize();
       }
     };
