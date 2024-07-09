@@ -62,9 +62,7 @@ const useAsyncTasks = <R>(tasks: Task<R>[], options: Options<R>) => {
 
   const stateInfo: StateInfo<R> = useMemo(
     () => ({
-      isLoading: state.isLoading,
-      data: state.data,
-      error: state.error,
+      ...state,
       isError: Boolean(state.error),
       reset: () => {
         dispatch({
