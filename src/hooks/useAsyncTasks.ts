@@ -50,7 +50,7 @@ const useAsyncTasks = <R>(tasks: Task<R>[], options: Options<R>) => {
 
     (async () => {
       await asyncWave<R>(
-        isMountedRef.current ? [...tasks] : [],
+        [...tasks],
         generateTaskHandlers(dispatch, isMountedRef, { ...options })
       );
     })();
