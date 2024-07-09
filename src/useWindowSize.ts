@@ -7,7 +7,6 @@ interface WindowSize {
 
 /**
  * useWindowSize : 브라우저 창의 너비와 높이를 제공하는 훅
- * @param {boolean} [isDelay=true] 딜레이 여부 판단. Default=true
  * @param {number} [delayTime=200] 지연 시간(밀리초). isDelay가 true일 때 사용됨.Default=200
  * @returns {{ width: number, height: number }} 창의 너비와 높이를 담은 객체
  * @description
@@ -16,10 +15,7 @@ interface WindowSize {
  * UI의 세밀한 조작 등 동적인 변화에 유용합니다.
  */
 
-const useWindowSize = (
-  isDelay: boolean = true,
-  delayTime: number = 200
-): WindowSize => {
+const useWindowSize = (delayTime: number = 200): WindowSize => {
   const isClient = typeof window === 'object';
 
   const [windowSize, setWindowSize] = useState<WindowSize>({
@@ -41,10 +37,10 @@ const useWindowSize = (
         });
       };
 
-      if (isDelay) {
+      if (delayTime > 0) {
         timeoutId = setTimeout(updateWindowSize, delayTime);
       } else {
-        updateWindowSize();
+        updateWindowSize;
       }
     };
 
@@ -53,7 +49,9 @@ const useWindowSize = (
       window.removeEventListener('resize', handleWindowResize);
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [isDelay, delayTime]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return windowSize;
 };
