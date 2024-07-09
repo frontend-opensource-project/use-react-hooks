@@ -65,7 +65,7 @@ const useAsyncTasks = <R>(tasks: Task<R>[], options: Options<R>) => {
     () => ({
       ...state,
       isError: Boolean(state.error),
-      reset: () => {
+      reset() {
         dispatch({
           type: ActionType.RESET,
         });
@@ -90,7 +90,7 @@ const generateTaskHandlers = <R>(
   { onBefore, onError, onSettled, onSuccess, options }: Options<R>
 ): Partial<AsyncWaveOptions<R>> => {
   const handler = {
-    onBefore: async () => {
+    async onBefore() {
       if (!isMountedRef.current) return;
 
       dispatch({ type: ActionType.LOADING });
@@ -98,7 +98,7 @@ const generateTaskHandlers = <R>(
         (await delayExecution(options.initialLazyDelay));
       onBefore && onBefore();
     },
-    onSuccess: async (payload: R) => {
+    async onSuccess(payload: R) {
       if (!isMountedRef.current) return;
 
       options?.successLazyDelay &&
@@ -106,7 +106,7 @@ const generateTaskHandlers = <R>(
       dispatch({ type: ActionType.SUCCESS, payload });
       onSuccess && onSuccess(payload);
     },
-    onError: (error: PromiseCircularityError) => {
+    onError(error: PromiseCircularityError) {
       if (!isMountedRef.current) return;
 
       dispatch({
@@ -115,7 +115,7 @@ const generateTaskHandlers = <R>(
       });
       onError && onError(error);
     },
-    onSettled: () => {
+    onSettled() {
       if (!isMountedRef.current) return;
 
       onSettled && onSettled();
