@@ -25,8 +25,8 @@ type Options<R> = Partial<
 
 type StateInfo<R> = {
   isLoading: boolean;
-  data: R | undefined;
-  error: PromiseCircularityError | undefined;
+  data: R | null;
+  error: PromiseCircularityError | null;
   isError: boolean;
   reset: () => void;
 };
@@ -43,8 +43,8 @@ const useAsyncTasks = <R>(tasks: Task<R>[], options: Options<R>) => {
   const isMountedRef = useRef(IS_UNMOUNTED); // 컴포넌트가 언마운트된 후 비동기 작업이 완료될 때 상태 업데이트를 방지
   const [state, dispatch] = useReducer(reducer<R>, {
     isLoading: false,
-    data: undefined,
-    error: undefined,
+    data: null,
+    error: null,
   });
 
   useEffect(() => {
@@ -137,8 +137,8 @@ enum ActionType {
 
 type TaskState<R> = {
   isLoading: boolean;
-  data: R | undefined;
-  error: PromiseCircularityError | undefined;
+  data: R | null;
+  error: PromiseCircularityError | null;
 };
 
 type TaskAction<R> =
@@ -156,17 +156,17 @@ type TaskAction<R> =
 function reducer<R>(state: TaskState<R>, action: TaskAction<R>): TaskState<R> {
   switch (action.type) {
     case ActionType.LOADING:
-      return { ...state, isLoading: true, error: undefined };
+      return { ...state, isLoading: true, error: null };
     case ActionType.SUCCESS:
       return {
         isLoading: false,
         data: action.payload,
-        error: undefined,
+        error: null,
       };
     case ActionType.ERROR:
       return { ...state, isLoading: false, error: action.payload };
     case ActionType.RESET:
-      return { isLoading: false, data: undefined, error: undefined };
+      return { isLoading: false, data: null, error: null };
     default:
       throw new Error('Unhandled task action type');
   }
