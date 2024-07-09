@@ -58,6 +58,7 @@ const useAsyncTasks = <R>(tasks: Task<R>[], options: Options<R>) => {
     return () => {
       isMountedRef.current = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const stateInfo: StateInfo<R> = useMemo(
