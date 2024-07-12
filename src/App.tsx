@@ -6,17 +6,15 @@ import useIntersectionObserver from './hooks/useIntersectionObserver';
 
 function App() {
   const [count, setCount] = useState(0);
+
   const { setRef, isView, entry } = useIntersectionObserver({
-    // root: document.getElementById('root'),
-    // rootMargin: '20px',
-    // threshold:
+    visibleOnce: true,
   });
-  console.log('ENTRY : ', isView);
-  console.log('ENTRY : ', entry);
+  console.log(isView, entry?.target);
 
   return (
     <>
-      <div>
+      <div ref={setRef}>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>

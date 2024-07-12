@@ -4,6 +4,8 @@ interface IntersectionObserverOptions {
   root?: Element | null;
   rootMargin?: string;
   threshold?: number | number[];
+  visibleOnce?: boolean;
+  initialView?: boolean;
 }
 
 interface IntersectionObserverResult {
@@ -12,27 +14,30 @@ interface IntersectionObserverResult {
   entry?: IntersectionObserverEntry;
 }
 
-function useIntersectionObserver({
+const useIntersectionObserver = ({
   root,
   rootMargin,
   threshold,
-}: IntersectionObserverOptions = {}): IntersectionObserverResult {
+  visibleOnce = false,
+  initialView = false,
+}: IntersectionObserverOptions = {}): IntersectionObserverResult => {
   const [ref, setRef] = useState<Element | null>(null);
   const [entryState, setEntryState] = useState<{
     isView: boolean;
     entry?: IntersectionObserverEntry | null;
-  }>({ isView: false, entry: null });
+  }>({ isView: initialView, entry: null });
 
   useEffect(() => {
     if (!ref) return;
 
     const handleIntersection: IntersectionObserverCallback = (entries) => {
       entries.forEach((entry) => {
-        setEntryState((prev) => ({
-          ...prev,
-          isView: entry.isIntersecting,
-          entry: entry,
-        }));
+        const isIntersecting = entry.isIntersecting;
+        setEntryState({ isView: isIntersecting, entry: entry });
+
+        if (visibleOnce && isIntersecting) {
+          observer.unobserve(ref);
+        }
       });
     };
 
@@ -54,6 +59,6 @@ function useIntersectionObserver({
     isView: entryState.isView,
     entry: entryState.entry,
   } as IntersectionObserverResult;
-}
+};
 
 export default useIntersectionObserver;
