@@ -30,3 +30,4 @@ jobs:
         with:
           assignees: ${{ github.actor }}
           reviewers: ${{ env.SELECTED_REVIEWERS }}
+          github-token: ${{secrets.TEST_TOKEN}}
