@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 
 interface IntersectionObserverOptions {
   root?: Element | null;
@@ -6,13 +6,15 @@ interface IntersectionObserverOptions {
   threshold?: number | number[];
   visibleOnce?: boolean;
   initialView?: boolean;
-  onChange?: (isView: boolean, entry?: IntersectionObserverEntry) => void;
+  onChange?: (isView?: boolean, entry?: IntersectionObserverEntry) => void;
+  onEnter?: () => void;
+  onLeave?: () => void;
 }
 
 interface IntersectionObserverResult {
-  intersectionRef: (node?: Element | null) => void;
+  intersectionRef: Dispatch<SetStateAction<Element | null>>;
   isView: boolean;
-  entry?: IntersectionObserverEntry;
+  entry?: IntersectionObserverEntry | null;
 }
 
 const useIntersectionObserver = ({
@@ -22,6 +24,8 @@ const useIntersectionObserver = ({
   visibleOnce = false,
   initialView = false,
   onChange,
+  onEnter,
+  onLeave,
 }: IntersectionObserverOptions = {}): IntersectionObserverResult => {
   const [ref, setRef] = useState<Element | null>(null);
   const [entryState, setEntryState] = useState<{
@@ -29,8 +33,16 @@ const useIntersectionObserver = ({
     entry?: IntersectionObserverEntry | null;
   }>({ isView: initialView, entry: null });
 
-  const callbackRef = useRef<IntersectionObserverOptions['onChange']>();
-  callbackRef.current = onChange;
+  const onChangeRef = useRef<IntersectionObserverOptions['onChange']>();
+  onChangeRef.current = onChange;
+
+  const onLeaveRef = useRef<IntersectionObserverOptions['onLeave']>();
+  onLeaveRef.current = onLeave;
+
+  const onEnterRef = useRef<IntersectionObserverOptions['onEnter']>();
+  onEnterRef.current = onEnter;
+
+  const currentValue = useRef(false);
 
   useEffect(() => {
     if (!ref) return;
@@ -39,10 +51,27 @@ const useIntersectionObserver = ({
       entries.forEach((entry) => {
         const isIntersecting = entry.isIntersecting;
 
-        setEntryState({ isView: isIntersecting, entry });
+        if (
+          currentValue.current === false &&
+          isIntersecting === true &&
+          onEnterRef.current
+        ) {
+          onEnterRef.current();
+        }
 
-        if (callbackRef.current) {
-          callbackRef.current(isIntersecting, entry);
+        if (
+          currentValue.current === true &&
+          isIntersecting === false &&
+          onLeaveRef.current
+        ) {
+          onLeaveRef.current();
+        }
+
+        setEntryState({ isView: isIntersecting, entry });
+        currentValue.current = isIntersecting;
+
+        if (onChangeRef.current) {
+          onChangeRef.current(isIntersecting, entry);
         }
 
         if (visibleOnce && isIntersecting) {
@@ -56,6 +85,7 @@ const useIntersectionObserver = ({
       rootMargin,
       threshold,
     });
+
     observer.observe(ref);
 
     return () => {
@@ -68,7 +98,7 @@ const useIntersectionObserver = ({
     intersectionRef: setRef,
     isView: entryState.isView,
     entry: entryState.entry,
-  } as IntersectionObserverResult;
+  };
 };
 
 export default useIntersectionObserver;
