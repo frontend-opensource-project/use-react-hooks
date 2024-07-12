@@ -6,12 +6,13 @@ import useIntersectionObserver from './hooks/useIntersectionObserver';
 
 function App() {
   const [count, setCount] = useState(0);
-  const { setRef, entry } = useIntersectionObserver({
+  const { setRef, isView, entry } = useIntersectionObserver({
     // root: document.getElementById('root'),
     // rootMargin: '20px',
-    // threshold: [0.25, 0.5, 0.75],
+    // threshold:
   });
-  // console.log(entry);
+  console.log('ENTRY : ', isView);
+  console.log('ENTRY : ', entry);
 
   return (
     <>
@@ -36,12 +37,10 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
       <div ref={setRef} style={{ height: '300px', border: '1px solid black' }}>
-        <h1
-          style={entry?.isIntersecting ? { backgroundColor: 'lightblue' } : {}}>
+        <h1 style={isView ? { backgroundColor: 'lightblue' } : {}}>
           Intersection State
         </h1>
-        <div>isIntersecting: {entry?.isIntersecting.toString()}</div>
-        <div>intersectionRatio: {entry?.intersectionRatio}</div>
+
         <div style={{ height: '1000px' }}></div>
       </div>
     </>
