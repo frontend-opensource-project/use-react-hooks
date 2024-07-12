@@ -14,7 +14,7 @@ const useLocalStorage = <T>(key: string, initialValue: T) => {
     return item;
   });
 
-  const setPayload = useCallback((value: Payload<T>) => {
+  const setValue = useCallback((value: Payload<T>) => {
     setStoredValue((prevValue) => {
       return storageManager.current.setItem(value, prevValue);
     });
@@ -38,7 +38,7 @@ const useLocalStorage = <T>(key: string, initialValue: T) => {
     };
   }, [handleStorageChange]);
 
-  return [storedValue, setPayload] as const;
+  return [storedValue, setValue] as const;
 };
 
 const createLocalStorageManager = <T>(key: string) => {
