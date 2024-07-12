@@ -22,9 +22,10 @@ jobs:
         run: |
           TEAM_MEMBERS=("foresec" "jeongbaebang" "bicochan" "Choozii")
           TEAM_MEMBERS=("${TEAM_MEMBERS[@]/${{ github.actor }}/}")
+          SELECTED_REVIEWERS=($(shuf -e "${TEAM_MEMBERS[@]}" -n 2))
           SELECTED_REVIEWERS_STR=$(IFS=,; echo "${SELECTED_REVIEWERS[*]}")
           echo "SELECTED_REVIEWERS_STR=$SELECTED_REVIEWERS_STR" >> $GITHUB_ENV
-     
+
       - name: Assign reviewers
         uses: hkusu/review-assign-action@v1
         with:
