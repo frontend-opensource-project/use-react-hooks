@@ -42,7 +42,7 @@ const useIntersectionObserver = ({
   const onEnterRef = useRef<IntersectionObserverOptions['onEnter']>();
   onEnterRef.current = onEnter;
 
-  const currentValue = useRef(false);
+  const previousIsIntersecting = useRef(initialView);
 
   useEffect(() => {
     if (!ref) return;
@@ -52,23 +52,23 @@ const useIntersectionObserver = ({
         const isIntersecting = entry.isIntersecting;
 
         if (
-          currentValue.current === false &&
-          isIntersecting === true &&
+          !previousIsIntersecting.current &&
+          isIntersecting &&
           onEnterRef.current
         ) {
           onEnterRef.current();
         }
 
         if (
-          currentValue.current === true &&
-          isIntersecting === false &&
+          previousIsIntersecting.current &&
+          !isIntersecting &&
           onLeaveRef.current
         ) {
           onLeaveRef.current();
         }
 
         setEntryState({ isView: isIntersecting, entry });
-        currentValue.current = isIntersecting;
+        previousIsIntersecting.current = isIntersecting;
 
         if (onChangeRef.current) {
           onChangeRef.current(isIntersecting, entry);
