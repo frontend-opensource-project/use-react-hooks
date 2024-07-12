@@ -1,0 +1,32 @@
+name: Assign Reviewer
+
+on:
+  pull_request:
+    types: [opened, ready_for_review]
+
+jobs:
+  assign:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Choose random reviewers
+        id: choose-reviewers
+        run: |
+          TEAM_MEMBERS=("foresec" "jeongbaebang" "bicochan" "Choozii")
+          TEAM_MEMBERS=("${TEAM_MEMBERS[@]/${{ github.actor }}/}")
+          SELECTED_REVIEWERS=($(shuf -e "${TEAM_MEMBERS[@]}" -n 2))
+          echo "SELECTED_REVIEWERS=${SELECTED_REVIEWERS[*]}" >> $GITHUB_ENV
+
+      - name: Assign reviewers
+        uses: hkusu/review-assign-action@v1
+        with:
+          assignees: ${{ github.actor }}
+          reviewers: ${{ env.SELECTED_REVIEWERS }}
