@@ -6,7 +6,7 @@ interface IntersectionObserverOptions {
   threshold?: number | number[];
   visibleOnce?: boolean;
   initialView?: boolean;
-  onChange?: (isView?: boolean, entry?: IntersectionObserverEntry) => void;
+  onChange?: (isView: boolean, entry: IntersectionObserverEntry) => void;
   onEnter?: () => void;
   onLeave?: () => void;
 }
