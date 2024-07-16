@@ -6,7 +6,7 @@
     "moduleResolution": "node",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "allowSyntheticDefaultImports": true,
-    "types": ["jest", "node",],
+    "types": ["jest", "node"],
     "jsx": "react-jsx",
 
     /* Linting */
