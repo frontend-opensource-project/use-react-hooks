@@ -1,8 +1,8 @@
 import { useContext } from 'react';
-import { ConfirmContext } from '../context/ConfirmContext';
+import { ConfirmContext as context } from '../context/ConfirmContext';
 
 const useConfirm = () => {
-  const { setMessage, setResolve } = useContext(ConfirmContext);
+  const { setMessage, setResolve } = useContext(context);
 
   const confirm = (message: string) => {
     setMessage(message);
