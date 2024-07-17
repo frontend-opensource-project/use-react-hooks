@@ -23,8 +23,11 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@actions/github": "^6.0.0",
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
+    "@slack/bolt": "^3.19.0",
+    "@types/node": "^20.14.11",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.13.1",
