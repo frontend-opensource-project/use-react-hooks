@@ -21,10 +21,7 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-
-    "outDir": "./lib",
-    "rootDir": "./src"
+    "noFallthroughCasesInSwitch": true
   },
   "include": ["src"]
 }
