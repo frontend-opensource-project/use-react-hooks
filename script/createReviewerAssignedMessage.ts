@@ -1,13 +1,12 @@
-/* eslint-disable no-undef */
-/* eslint-disable @typescript-eslint/no-var-requires */
-const users = require('./constant');
+import users from './constant';
 
-function createReviewSubmittedMessage(event) {
-  const reviewer = event.review.user.login;
-  const reviewerId = users[reviewer];
+function createReviewerAssignedMessage(event) {
   const prOwner = event.pull_request.user.login;
   const prOwnerId = users[prOwner];
-  const reviewUrl = event.review.html_url;
+  const reviewers = event.pull_request.requested_reviewers.map(
+    (reviewer) => users[reviewer.login]
+  );
+  const prUrl = event.pull_request.html_url;
 
   const blocks = [
     {
@@ -18,7 +17,7 @@ function createReviewSubmittedMessage(event) {
           elements: [
             {
               type: 'user',
-              user_id: reviewerId,
+              user_id: reviewers.join(', '),
             },
             {
               type: 'text',
@@ -30,7 +29,7 @@ function createReviewSubmittedMessage(event) {
             },
             {
               type: 'text',
-              text: ' 님의 PR에 ',
+              text: ' 님의 ',
             },
             {
               type: 'emoji',
@@ -39,12 +38,12 @@ function createReviewSubmittedMessage(event) {
             },
             {
               type: 'link',
-              url: reviewUrl,
-              text: '리뷰',
+              url: prUrl,
+              text: 'PR',
             },
             {
               type: 'text',
-              text: '를 등록했어요.',
+              text: '에 리뷰어로 등록됐어요.',
             },
           ],
         },
@@ -55,4 +54,4 @@ function createReviewSubmittedMessage(event) {
   return { blocks };
 }
 
-module.exports = createReviewSubmittedMessage;
+export default createReviewerAssignedMessage;

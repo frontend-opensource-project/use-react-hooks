@@ -1,21 +1,19 @@
-/* eslint-disable no-undef */
-/* eslint-disable @typescript-eslint/no-var-requires */
-const fs = require('fs');
-const axios = require('axios');
-const dotenv = require('dotenv');
-const createReviewerAssignedMessage = require('./createReviewerAssignedMessage');
-const createReviewSubmittedMessage = require('./createReviewSubmittedMessage');
+import fs from 'fs';
+import axios from 'axios';
+import dotenv from 'dotenv';
+import createReviewerAssignedMessage from './createReviewerAssignedMessage';
+import createReviewSubmittedMessage from './createReviewSubmittedMessage';
 
 dotenv.config();
 
-const GITHUB_EVENT_PATH = process.env.GITHUB_EVENT_PATH;
-const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
+const GITHUB_EVENT_PATH = process.env.GITHUB_EVENT_PATH as string;
+const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL as string;
 
-async function sendMessageToSlack() {
+async function sendMessageToSlack(): Promise<void> {
   const event = JSON.parse(fs.readFileSync(GITHUB_EVENT_PATH, 'utf8'));
   const eventName = process.env.GITHUB_EVENT_NAME;
 
-  let message = {};
+  let message: object = {};
 
   switch (eventName) {
     case 'pull_request':
