@@ -8,7 +8,7 @@ import { useEffect, useRef } from 'react';
 
 type Fn = () => void;
 
-const useUnmount = (callback: Fn) => {
+const useUnmountEffect = (callback: Fn) => {
   const callbackRef = useRef<null | Fn>(callback);
 
   useEffect(() => {
@@ -27,4 +27,4 @@ const useUnmount = (callback: Fn) => {
   }, []);
 };
 
-export default useUnmount;
+export default useUnmountEffect;
