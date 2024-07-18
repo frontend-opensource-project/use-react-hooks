@@ -6,8 +6,10 @@ import { useEffect, useRef } from 'react';
  * @param callback 언마운트 시에 호출될 함수
  */
 
-const useUnmount = (callback: () => void) => {
-  const callbackRef = useRef(callback);
+type Fn = () => void;
+
+const useUnmount = (callback: Fn) => {
+  const callbackRef = useRef<null | Fn>(callback);
 
   useEffect(() => {
     // 최신 함수를 callbackRef에 저장
@@ -19,6 +21,8 @@ const useUnmount = (callback: () => void) => {
       if (callbackRef.current) {
         callbackRef.current();
       }
+
+      callbackRef.current = null;
     };
   }, []);
 };
