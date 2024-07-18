@@ -11,36 +11,38 @@ dotenv.config();
 const GITHUB_EVENT_PATH = process.env.GITHUB_EVENT_PATH;
 const SLACK_WEBHOOK_URL = process.env.SLACK_WEBHOOK_URL;
 
-const event = JSON.parse(fs.readFileSync(GITHUB_EVENT_PATH, 'utf8'));
-const eventName = process.env.GITHUB_EVENT_NAME;
+async function sendMessageToSlack() {
+  const event = JSON.parse(fs.readFileSync(GITHUB_EVENT_PATH, 'utf8'));
+  const eventName = process.env.GITHUB_EVENT_NAME;
 
-let message = {};
+  let message = {};
 
-switch (eventName) {
-  case 'pull_request':
-    if (event.action === 'review_requested') {
-      message = createReviewerAssignedMessage(event);
-    }
-    break;
-  case 'pull_request_review':
-    if (event.action === 'submitted') {
-      message = createReviewSubmittedMessage(event);
-    }
-    break;
-  default:
-    console.log('No action needed for this event type.');
-    return;
-}
+  switch (eventName) {
+    case 'pull_request':
+      if (event.action === 'review_requested') {
+        message = createReviewerAssignedMessage(event);
+      }
+      break;
+    case 'pull_request_review':
+      if (event.action === 'submitted') {
+        message = createReviewSubmittedMessage(event);
+      }
+      break;
+    default:
+      console.log('No action needed for this event type.');
+      return; // Now inside a function, this is legal
+  }
 
-if (Object.keys(message).length > 0) {
-  axios
-    .post(SLACK_WEBHOOK_URL, message)
-    .then((response) => {
+  if (Object.keys(message).length > 0) {
+    try {
+      const response = await axios.post(SLACK_WEBHOOK_URL, message);
       console.log('Message sent: ', response.data);
-    })
-    .catch((error) => {
+    } catch (error) {
       console.error('Error sending message: ', error);
-    });
-} else {
-  console.log('No message to send.');
+    }
+  } else {
+    console.log('No message to send.');
+  }
 }
+
+sendMessageToSlack();
