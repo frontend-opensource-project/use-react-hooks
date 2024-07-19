@@ -16,7 +16,7 @@ interface WindowSize {
  */
 
 const useWindowSize = <T extends number>(
-  delayTime: PositiveInteger<T> = 200 as PositiveInteger<T>
+  delayTime: PositiveInteger<T> | 0 = 200 as PositiveInteger<T>
 ): WindowSize => {
   const isClient = typeof window === 'object';
 
