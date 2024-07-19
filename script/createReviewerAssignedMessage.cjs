@@ -5,7 +5,7 @@ const users = require('./constant.cjs');
 function createReviewerAssignedMessage(event) {
   const prOwner = event.pull_request.user.login;
   const prOwnerId = users[prOwner];
-  const reviewer = event.pull_request.requested_reviewer.login;
+  const reviewer = event.requested_reviewer.login;
   const reviewerId = users[reviewer];
   const prUrl = event.pull_request.html_url;
 
