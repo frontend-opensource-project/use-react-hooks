@@ -10,11 +10,16 @@ interface IntersectionObserverOptions {
   onEnter?: () => void;
   onLeave?: () => void;
 }
-interface IntersectionObserverResult {
-  intersectionRef: Dispatch<SetStateAction<Element | null>>;
+
+interface Entry {
   isView: boolean;
   entry?: IntersectionObserverEntry | null;
 }
+
+interface IntersectionObserverResult extends Entry {
+  intersectionRef: Dispatch<SetStateAction<Element | null>>;
+}
+
 /**
  * IntersectionObserver API를 이용하여 요소의 가시성을 감지하는 훅
  * @param {Element | null} root 관찰할 요소들의 root 엘리먼트
@@ -35,11 +40,11 @@ const useIntersectionObserver = ({
   root,
   rootMargin,
   threshold,
-  visibleOnce = false,
-  initialView = false,
   onChange,
   onEnter,
   onLeave,
+  visibleOnce = false,
+  initialView = false,
 }: IntersectionObserverOptions = {}): IntersectionObserverResult => {
   const [ref, setRef] = useState<Element | null>(null);
   const [entryState, setEntryState] = useState<{
@@ -47,37 +52,29 @@ const useIntersectionObserver = ({
     entry?: IntersectionObserverEntry | null;
   }>({ isView: initialView, entry: null });
 
-  const onChangeRef = useRef<IntersectionObserverOptions['onChange']>(onChange);
-  const onLeaveRef = useRef<IntersectionObserverOptions['onLeave']>(onLeave);
-  const onEnterRef = useRef<IntersectionObserverOptions['onEnter']>(onEnter);
+  const onChangeRef = useRef(onChange);
+  const onLeaveRef = useRef(onLeave);
+  const onEnterRef = useRef(onEnter);
 
-  const previousIsIntersecting = useRef(initialView);
+  const wasIntersecting = useRef(initialView);
 
   useEffect(() => {
     if (!ref) return;
 
     const handleIntersection: IntersectionObserverCallback = (entries) => {
       entries.forEach((entry) => {
-        const isIntersecting = entry.isIntersecting;
+        const { isIntersecting } = entry;
 
-        if (
-          !previousIsIntersecting.current &&
-          isIntersecting &&
-          onEnterRef.current
-        ) {
-          onEnterRef.current();
-        }
-
-        if (
-          previousIsIntersecting.current &&
-          !isIntersecting &&
-          onLeaveRef.current
-        ) {
-          onLeaveRef.current();
+        if (wasIntersecting.current !== isIntersecting) {
+          if (isIntersecting && onEnterRef.current) {
+            onEnterRef.current();
+          } else if (!isIntersecting && onLeaveRef.current) {
+            onLeaveRef.current();
+          }
         }
 
         setEntryState({ isView: isIntersecting, entry });
-        previousIsIntersecting.current = isIntersecting;
+        wasIntersecting.current = isIntersecting;
 
         if (onChangeRef.current) {
           onChangeRef.current(isIntersecting, entry);
