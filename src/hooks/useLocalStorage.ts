@@ -125,13 +125,13 @@ const utils = {
   },
   isSameType(value1: unknown, value2: unknown): boolean {
     const typeChecks = [
-      [utils.isString],
-      [utils.isNumber],
-      [utils.isArray],
-      [utils.isObject],
+      utils.isString,
+      utils.isNumber,
+      utils.isArray,
+      utils.isObject,
     ];
 
-    return typeChecks.some(([checkFn]) => checkFn(value1) && checkFn(value2));
+    return typeChecks.some((checkFn) => checkFn(value1) && checkFn(value2));
   },
   getType(value: unknown): string {
     if (utils.isArray(value)) {
