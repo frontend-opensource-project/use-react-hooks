@@ -43,10 +43,11 @@ const useLocalStorage = <T>(key: string, initialValue: T) => {
 
 const createLocalStorageManager = <T>(key: string) => {
   const storage = new LocalStorage();
-  const ERROR_MESSAGE = 'Failed to set item in localStorage';
 
   const manager = {
     setItem(currentValue: Payload<T>, prevValue: T): T {
+      const ERROR_SET_MESSAGE = 'Failed to set item in localStorage';
+
       try {
         const newValue = utils.resolveValue(currentValue, prevValue);
 
@@ -55,18 +56,20 @@ const createLocalStorageManager = <T>(key: string) => {
 
         return newValue;
       } catch (error) {
-        console.warn(ERROR_MESSAGE, error);
+        console.warn(ERROR_SET_MESSAGE, error);
 
         return prevValue;
       }
     },
     getItem(fallback: T): T {
+      const ERROR_GET_MESSAGE = 'Failed to get item in localStorage';
+
       try {
         const item = storage.getItem(key);
 
         return item ? JSON.parse(item) : fallback;
       } catch (error) {
-        console.warn(ERROR_MESSAGE, error);
+        console.warn(ERROR_GET_MESSAGE, error);
 
         return fallback;
       }
