@@ -5,6 +5,7 @@ const useLocalStorage = <T>(key: string, initialValue: T) => {
   const [storedValue, setStoredValue] = useState<T>(() => {
     const item = storageManager.current.getItem(initialValue);
 
+    // 초기값 타입이 다른 경우, 전달된 초기값을 저장하고 반환합니다.
     if (!utils.isSameType(item, initialValue)) {
       storageManager.current.setItem(initialValue, initialValue);
 
