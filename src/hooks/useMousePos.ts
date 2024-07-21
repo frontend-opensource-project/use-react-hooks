@@ -7,6 +7,10 @@ import {
   useState,
 } from 'react';
 
+interface MousePosOptions {
+  delayTime?: number;
+}
+
 interface CursorState {
   viewX: number | null;
   viewY: number | null;
@@ -38,7 +42,11 @@ const initialCursorState: CursorState = {
   elementY: null,
 };
 
-const useMousePos = (): MouseResult => {
+const DEFAULT_DELAY_TIME = 1000 / 60;
+
+const useMousePos = ({
+  delayTime = DEFAULT_DELAY_TIME,
+}: MousePosOptions = {}): MouseResult => {
   const [cursorState, setCursorState] =
     useState<CursorState>(initialCursorState);
   const [ref, setRef] = useState<Element | null>(null);
@@ -50,7 +58,6 @@ const useMousePos = (): MouseResult => {
       const elementX = clientX - left;
       const elementY = clientY - top;
       refScale.current = { refW: width, refH: height };
-
       return { elementX, elementY };
     },
     []
@@ -82,12 +89,18 @@ const useMousePos = (): MouseResult => {
     [ref]
   );
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const throttledHandleMouseMove = useCallback(
+    throttle((event: MouseEvent) => handleMouseMove(event), delayTime),
+    [handleMouseMove]
+  );
+
   useEffect(() => {
-    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mousemove', throttledHandleMouseMove);
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mousemove', throttledHandleMouseMove);
     };
-  }, [handleMouseMove]);
+  }, [throttledHandleMouseMove]);
 
   return {
     ...cursorState,
@@ -97,3 +110,18 @@ const useMousePos = (): MouseResult => {
 };
 
 export default useMousePos;
+
+const throttle = <T extends Event>(
+  callbackFn: (event: T) => void,
+  delayTime: number
+) => {
+  let lastTime = 0;
+
+  return (event: T) => {
+    const now = Date.now();
+    if (now - lastTime >= delayTime) {
+      lastTime = now;
+      callbackFn(event);
+    }
+  };
+};
