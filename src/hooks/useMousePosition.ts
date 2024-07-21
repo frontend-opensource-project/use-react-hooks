@@ -45,7 +45,7 @@ const initialCursorState: CursorState = {
 
 const DEFAULT_DELAY_TIME = 1000 / 60;
 
-const useMousePos = ({
+const useMousePosition = ({
   delayTime = DEFAULT_DELAY_TIME,
   animationMode = false,
 }: MousePosOptions = {}): MouseResult => {
@@ -135,7 +135,7 @@ const useMousePos = ({
   };
 };
 
-export default useMousePos;
+export default useMousePosition;
 
 const throttle = <T extends Event>(
   callbackFn: (event: T) => void,
