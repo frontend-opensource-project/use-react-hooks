@@ -1,5 +1,16 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 
+/**
+ * 로컬 스토리지와 동기화된 상태를 관리하는 훅
+ * @param key - 로컬 스토리지 키
+ * @param initialValue - 초기 값
+ *
+ * @returns [storedValue, setValue] - 저장된 값과 설정 함수
+ *
+ * @description
+ * 브라우저의 로컬 스토리지 API를 간편하게 사용합니다.
+ * 다른 타입의 값 저장 시 에러를 발생시켜 안전하게 차단합니다.
+ */
 const useLocalStorage = <T>(key: string, initialValue: T) => {
   const storageManager = useRef(createLocalStorageManager<T>(key));
   const [storedValue, setStoredValue] = useState<T>(() => {
