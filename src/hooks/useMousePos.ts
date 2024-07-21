@@ -9,6 +9,7 @@ import {
 
 interface MousePosOptions {
   delayTime?: number;
+  animationMode?: boolean;
 }
 
 interface CursorState {
@@ -46,10 +47,12 @@ const DEFAULT_DELAY_TIME = 1000 / 60;
 
 const useMousePos = ({
   delayTime = DEFAULT_DELAY_TIME,
+  animationMode = false,
 }: MousePosOptions = {}): MouseResult => {
   const [cursorState, setCursorState] =
     useState<CursorState>(initialCursorState);
   const [ref, setRef] = useState<Element | null>(null);
+
   const refScale = useRef<RefScale>({ refW: null, refH: null });
 
   const calculateRefState = useCallback(
@@ -58,6 +61,7 @@ const useMousePos = ({
       const elementX = clientX - left;
       const elementY = clientY - top;
       refScale.current = { refW: width, refH: height };
+
       return { elementX, elementY };
     },
     []
@@ -89,18 +93,40 @@ const useMousePos = ({
     [ref]
   );
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const throttledHandleMouseMove = useCallback(
-    throttle((event: MouseEvent) => handleMouseMove(event), delayTime),
-    [handleMouseMove]
-  );
-
+  // Throttle
   useEffect(() => {
-    document.addEventListener('mousemove', throttledHandleMouseMove);
-    return () => {
-      document.removeEventListener('mousemove', throttledHandleMouseMove);
-    };
-  }, [throttledHandleMouseMove]);
+    if (!animationMode) {
+      const throttledHandleMouseMove = throttle(
+        (event: MouseEvent) => handleMouseMove(event),
+        delayTime
+      );
+      document.addEventListener('mousemove', throttledHandleMouseMove);
+      return () => {
+        document.removeEventListener('mousemove', throttledHandleMouseMove);
+      };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [handleMouseMove]);
+
+  // Animation
+  useEffect(() => {
+    if (animationMode) {
+      if (delayTime !== DEFAULT_DELAY_TIME) {
+        console.warn(
+          "The 'delayTime' option is ignored when 'animationMode' is enabled."
+        );
+      }
+      const { handler: animatedHandleMouseMove, cancelAnimation } =
+        animationFrameHandler(handleMouseMove);
+
+      document.addEventListener('mousemove', animatedHandleMouseMove);
+      return () => {
+        document.removeEventListener('mousemove', animatedHandleMouseMove);
+        cancelAnimation();
+      };
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [handleMouseMove]);
 
   return {
     ...cursorState,
@@ -124,4 +150,26 @@ const throttle = <T extends Event>(
       callbackFn(event);
     }
   };
+};
+
+const animationFrameHandler = <T extends Event>(
+  callbackFn: (event: T) => void
+) => {
+  let frameId: number | null = null;
+
+  const handler = (event: T) => {
+    if (frameId !== null) {
+      cancelAnimationFrame(frameId);
+    }
+    frameId = requestAnimationFrame(() => callbackFn(event));
+  };
+
+  const cancelAnimation = () => {
+    if (frameId !== null) {
+      cancelAnimationFrame(frameId);
+      frameId = null;
+    }
+  };
+
+  return { handler, cancelAnimation };
 };
