@@ -1,4 +1,11 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
 interface CursorState {
   viewX: number | null;
@@ -11,9 +18,13 @@ interface CursorState {
   elementY: number | null;
 }
 
-interface MouseResult extends CursorState {
+interface RefScale {
+  refW: number | null;
+  refH: number | null;
+}
+
+interface MouseResult extends CursorState, RefScale {
   targetRef: Dispatch<SetStateAction<Element | null>>;
-  isInside: boolean;
 }
 
 const initialCursorState: CursorState = {
@@ -31,10 +42,22 @@ const useMousePos = (): MouseResult => {
   const [cursorState, setCursorState] =
     useState<CursorState>(initialCursorState);
   const [ref, setRef] = useState<Element | null>(null);
-  const [isInside, setIsInside] = useState(false);
+  const refScale = useRef<RefScale>({ refW: null, refH: null });
 
-  useEffect(() => {
-    const handleMouseMove = (event: MouseEvent) => {
+  const calculateRefState = useCallback(
+    (element: Element, clientX: number, clientY: number) => {
+      const { left, top, width, height } = element.getBoundingClientRect();
+      const elementX = clientX - left;
+      const elementY = clientY - top;
+      refScale.current = { refW: width, refH: height };
+
+      return { elementX, elementY };
+    },
+    []
+  );
+
+  const handleMouseMove = useCallback(
+    (event: MouseEvent) => {
       const { clientX, clientY, pageX, pageY, screenX, screenY } = event;
 
       const newCursorState: CursorState = {
@@ -49,32 +72,27 @@ const useMousePos = (): MouseResult => {
       };
 
       if (ref) {
-        const { left, top, right, bottom } = ref.getBoundingClientRect();
-        newCursorState.elementX = clientX - left;
-        newCursorState.elementY = clientY - top;
-
-        const isCursorInside =
-          clientX >= left &&
-          clientX <= right &&
-          clientY >= top &&
-          clientY <= bottom;
-        setIsInside(isCursorInside);
+        const { elementX, elementY } = calculateRefState(ref, clientX, clientY);
+        newCursorState.elementX = elementX;
+        newCursorState.elementY = elementY;
       }
-
       setCursorState(newCursorState);
-    };
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [ref]
+  );
 
+  useEffect(() => {
     document.addEventListener('mousemove', handleMouseMove);
-
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
     };
-  }, [ref]);
+  }, [handleMouseMove]);
 
   return {
     ...cursorState,
+    ...refScale.current,
     targetRef: setRef,
-    isInside,
   };
 };
 
