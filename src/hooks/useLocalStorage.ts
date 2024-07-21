@@ -50,7 +50,7 @@ const createLocalStorageManager = <T>(key: string) => {
       try {
         const newValue = utils.resolveValue(currentValue, prevValue);
 
-        utils.checkTypeMatch(newValue, prevValue);
+        utils.validateTypeConsistency(newValue, prevValue);
         storage.setItem(key, JSON.stringify(newValue));
 
         return newValue;
@@ -137,7 +137,7 @@ const utils = {
 
     return typeof value;
   },
-  checkTypeMatch(value1: unknown, value2: unknown) {
+  validateTypeConsistency(value1: unknown, value2: unknown) {
     if (!utils.isSameType(value1, value2)) {
       throw new MatchError(
         `New value type does not match stored value type\n current:${value1}->${utils.getType(value1)}, prev:${value2}->${utils.getType(value2)}`
