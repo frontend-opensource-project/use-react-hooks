@@ -28,7 +28,7 @@ export const delayExecution = (ms: number) => {
           }
         }, ms);
       } catch (error) {
-        reject(new Error('Failed to set a timeout'));
+        reject(error);
       }
     });
   };
