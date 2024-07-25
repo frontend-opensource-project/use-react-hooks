@@ -20,7 +20,7 @@ jobs:
       - name: Choose random reviewers
         id: choose-reviewers
         run: |
-          TEAM_MEMBERS=("foresec" "jeongbaebang" "bicochan" "Choozii")
+          TEAM_MEMBERS=(${{ vars.TEAM_MEMBERS//, / }})
           TEAM_MEMBERS=("${TEAM_MEMBERS[@]/${{ github.actor }}/}")
           SELECTED_REVIEWERS=($(shuf -e "${TEAM_MEMBERS[@]}" -n 2))
           SELECTED_REVIEWERS_STR=$(IFS=,; echo "${SELECTED_REVIEWERS[*]}")
