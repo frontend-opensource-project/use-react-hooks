@@ -20,7 +20,7 @@ jobs:
       - name: Choose random reviewers
         id: choose-reviewers
         run: |
-          TEAM_MEMBERS="${{ env.TEAM_MEMBERS }}"
+          TEAM_MEMBERS="${{ vars.TEAM_MEMBERS }}"
           echo "TEAM_MEMBERS=$TEAM_MEMBERS"
           TEAM_MEMBERS_ARRAY=(${TEAM_MEMBERS//, / })
           TEAM_MEMBERS_ARRAY=("${TEAM_MEMBERS_ARRAY[@]/${{ github.actor }}/}")
