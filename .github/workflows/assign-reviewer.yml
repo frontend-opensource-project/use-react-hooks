@@ -21,6 +21,7 @@ jobs:
         id: choose-reviewers
         run: |
           TEAM_MEMBERS="${{ env.TEAM_MEMBERS }}"
+          echo "TEAM_MEMBERS=$TEAM_MEMBERS" >> $GITHUB_ENV # team member
           TEAM_MEMBERS_ARRAY=(${TEAM_MEMBERS//, / })
           TEAM_MEMBERS_ARRAY=("${TEAM_MEMBERS_ARRAY[@]/${{ github.actor }}/}")
           SELECTED_REVIEWERS=($(shuf -e "${TEAM_MEMBERS_ARRAY[@]}" -n 2))
