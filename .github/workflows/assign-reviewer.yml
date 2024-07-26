@@ -21,13 +21,16 @@ jobs:
         id: choose-reviewers
         run: |
           TEAM_MEMBERS="${{ env.TEAM_MEMBERS }}"
-          echo "TEAM_MEMBERS=$TEAM_MEMBERS" >> $GITHUB_ENV # team member
+          echo "TEAM_MEMBERS=$TEAM_MEMBERS"
           TEAM_MEMBERS_ARRAY=(${TEAM_MEMBERS//, / })
           TEAM_MEMBERS_ARRAY=("${TEAM_MEMBERS_ARRAY[@]/${{ github.actor }}/}")
           SELECTED_REVIEWERS=($(shuf -e "${TEAM_MEMBERS_ARRAY[@]}" -n 2))
           SELECTED_REVIEWERS_STR=$(IFS=,; echo "${SELECTED_REVIEWERS[*]}")
           echo "SELECTED_REVIEWERS_STR=$SELECTED_REVIEWERS_STR" >> $GITHUB_ENV
           echo "Selected reviewers: $SELECTED_REVIEWERS_STR" # 지정된 리뷰어 로그
+
+      - name: Print environment variable
+        run: echo "TEAM_MEMBERS=$TEAM_MEMBERS"
 
       - name: Assign reviewers
         uses: hkusu/review-assign-action@v1
