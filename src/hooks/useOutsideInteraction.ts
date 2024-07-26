@@ -1,4 +1,4 @@
-import { useCallback, MutableRefObject, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, RefObject } from 'react';
 
 type EventType =
   | 'mousedown'
@@ -22,14 +22,14 @@ const defaultEvents: EventType[] = ['mousedown', 'touchstart', 'keydown'];
  * @param {() => void} props.handleOutsideInteraction - 외부 interaction 발생 시 실행될 콜백 함수
  * @param {EventType[]} [props.events] - 감지할 이벤트 (default :['mousedown', 'touchstart', 'keydown'])
  *
- * @returns {React.MutableRefObject<HTMLElement | null>} element에 연결할 ref 객체
+ * @returns {React.RefObject<HTMLElement>} element에 연결할 ref 객체
  */
 
 const useOutsideInteraction = ({
   handleOutsideInteraction,
   events = defaultEvents,
-}: UseOutsideInteractionProps): MutableRefObject<HTMLElement | null> => {
-  const ref = useRef<HTMLElement | null>(null);
+}: UseOutsideInteractionProps): RefObject<HTMLElement> => {
+  const ref = useRef<HTMLElement>(null);
 
   const handleEvent = useCallback(
     (event: Event) => {
