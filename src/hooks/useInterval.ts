@@ -16,8 +16,8 @@ type Fn = () => void;
  * 반환된 `clear` 함수를 호출하여 수동으로 타이머를 중지할 수도 있습니다.
  */
 const useInterval = (callback: Fn, ms: number) => {
-  const savedCallback = useRef<Fn>(() => {});
-  const intervalRef = useRef<number>();
+  const savedCallback = useRef<Fn>(callback);
+  const intervalRef = useRef<number | null>(null);
   const [intervalCleared, setIntervalCleared] = useState(false);
 
   useEffect(() => {
@@ -30,12 +30,18 @@ const useInterval = (callback: Fn, ms: number) => {
 
     intervalRef.current = window.setInterval(() => savedCallback.current(), ms);
 
-    return () => clearInterval(intervalRef.current);
+    return () => {
+      if (intervalRef.current === null) return;
+
+      clearInterval(intervalRef.current);
+    };
   }, [ms, intervalCleared]);
 
   const clear = () => {
+    if (intervalRef.current === null) return;
+
     clearInterval(intervalRef.current);
-    intervalRef.current = 0;
+    intervalRef.current = null;
     setIntervalCleared(true);
   };
 
