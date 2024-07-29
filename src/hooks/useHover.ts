@@ -1,7 +1,7 @@
 import { RefObject, useEffect, useRef, useState } from 'react';
 
-const useHover = (): [RefObject<HTMLDivElement>, boolean] => {
-  const targetRef = useRef<HTMLDivElement>(null);
+const useHover = <T extends HTMLElement>(): [RefObject<T>, boolean] => {
+  const targetRef = useRef<T>(null);
   const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseEnter = () => setIsHovered(true);
