@@ -4,7 +4,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import useHover from './useHover';
 
 const TestComponent = () => {
-  const [ref, hovered] = useHover<HTMLDivElement>();
+  const [hovered, ref] = useHover<HTMLDivElement>();
 
   return (
     <div data-testid="test-component" ref={ref}>

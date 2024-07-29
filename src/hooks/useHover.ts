@@ -1,28 +1,30 @@
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
-const useHover = <T extends HTMLElement>(): [RefObject<T>, boolean] => {
-  const targetRef = useRef<T>(null);
+const useHover = <T extends HTMLElement>(): [boolean, (node: T) => void] => {
+  const ref = useRef<T | null>(null);
   const [isHovered, setIsHovered] = useState(false);
 
-  const handleMouseEnter = () => setIsHovered(true);
+  const handleMouseEnter = useCallback(() => setIsHovered(true), []);
+  const handleMouseLeave = useCallback(() => setIsHovered(false), []);
 
-  const handleMouseLeave = () => setIsHovered(false);
+  const callbackRef = useCallback(
+    (node: T) => {
+      if (ref.current) {
+        ref.current.removeEventListener('mouseenter', handleMouseEnter);
+        ref.current.removeEventListener('mouseleave', handleMouseLeave);
+      }
 
-  useEffect(() => {
-    const node = targetRef.current;
+      ref.current = node;
 
-    if (node) {
-      node.addEventListener('mouseenter', handleMouseEnter);
-      node.addEventListener('mouseleave', handleMouseLeave);
+      if (ref.current) {
+        ref.current.addEventListener('mouseenter', handleMouseEnter);
+        ref.current.addEventListener('mouseleave', handleMouseLeave);
+      }
+    },
+    [handleMouseEnter, handleMouseLeave]
+  );
 
-      return () => {
-        node.removeEventListener('mouseenter', handleMouseEnter);
-        node.removeEventListener('mouseleave', handleMouseLeave);
-      };
-    }
-  }, [targetRef]);
-
-  return [targetRef, isHovered];
+  return [isHovered, callbackRef];
 };
 
 export default useHover;
