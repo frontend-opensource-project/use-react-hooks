@@ -48,13 +48,9 @@ export const delayExecution = (ms: number) => {
         return resolve('cancelled'); // Promise를 resolve하여, 대기 상태에서 벗어나게 처리
       }
 
-      try {
-        timeoutId = setTimeout(() => {
-          return resolve('completed');
-        }, ms);
-      } catch (error) {
-        return reject(error);
-      }
+      timeoutId = setTimeout(() => {
+        return resolve('completed');
+      }, ms);
     });
   };
 
