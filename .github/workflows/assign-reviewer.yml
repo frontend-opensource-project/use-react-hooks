@@ -5,7 +5,7 @@ on:
     types: [opened, ready_for_review]
 
 jobs:
-  assign:
+  assign_reviewer:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,14 +20,17 @@ jobs:
       - name: Choose random reviewers
         id: choose-reviewers
         run: |
-          TEAM_MEMBERS=("foresec" "jeongbaebang" "bicochan" "Choozii")
-          TEAM_MEMBERS=("${TEAM_MEMBERS[@]/${{ github.actor }}/}")
-          SELECTED_REVIEWERS=($(shuf -e "${TEAM_MEMBERS[@]}" -n 2))
-          echo "SELECTED_REVIEWERS=${SELECTED_REVIEWERS[*]}" >> $GITHUB_ENV
+          TEAM_MEMBERS="${{ vars.TEAM_MEMBERS }}"
+          TEAM_MEMBERS_ARRAY=(${TEAM_MEMBERS//, / })
+          TEAM_MEMBERS_ARRAY=("${TEAM_MEMBERS_ARRAY[@]/${{ github.actor }}/}")
+          SELECTED_REVIEWERS=($(shuf -e "${TEAM_MEMBERS_ARRAY[@]}" -n 2))
+          SELECTED_REVIEWERS_STR=$(IFS=,; echo "${SELECTED_REVIEWERS[*]}")
+          echo "SELECTED_REVIEWERS_STR=$SELECTED_REVIEWERS_STR" >> $GITHUB_ENV
+          echo "Selected reviewers: $SELECTED_REVIEWERS_STR" # 지정된 리뷰어 로그
 
       - name: Assign reviewers
         uses: hkusu/review-assign-action@v1
         with:
           assignees: ${{ github.actor }}
-          reviewers: ${{ env.SELECTED_REVIEWERS }}
-          github-token: ${{ secrets.TEST_TOKEN }}
+          reviewers: ${{ env.SELECTED_REVIEWERS_STR }}
+          github-token: ${{ secrets.GH_TOKEN }}
