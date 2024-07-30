@@ -3,7 +3,7 @@ import useIntersectionObserver from './useIntersectionObserver';
 import {
   MockIntersectionObserver,
   mockIntersectionObserver,
-} from './mockIntersectionObserver';
+} from '../mocks/mockIntersectionObserver';
 
 describe('useIntersectionObserver', () => {
   let rootElement: Element;
@@ -22,8 +22,8 @@ describe('useIntersectionObserver', () => {
   });
 
   afterEach(() => {
-    window.IntersectionObserver = IntersectionObserver;
     jest.clearAllMocks();
+    window.IntersectionObserver = IntersectionObserver;
     document.body.innerHTML = '';
   });
 
