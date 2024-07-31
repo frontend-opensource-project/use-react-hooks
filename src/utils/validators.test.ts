@@ -33,6 +33,15 @@ describe('validators', () => {
     expect(validators.isObject(null)).toBe(false);
   });
 
+  test('isFunction', () => {
+    expect(validators.isFunction(() => {})).toBe(true);
+    expect(validators.isFunction(function () {})).toBe(true);
+    expect(validators.isFunction([])).toBe(false);
+    expect(validators.isFunction({})).toBe(false);
+    expect(validators.isFunction('hello')).toBe(false);
+    expect(validators.isFunction(null)).toBe(false);
+  });
+
   test('isSameType', () => {
     expect(validators.isSameType('hello', 'world')).toBe(true);
     expect(validators.isSameType(123, 456)).toBe(true);
