@@ -13,6 +13,9 @@ const validators = {
   isArray(value: unknown): value is Array<unknown> {
     return Array.isArray(value);
   },
+  isFunction(value: unknown) {
+    return typeof value === 'function';
+  },
   isObject(value: unknown): value is Record<string, unknown> {
     return value !== null && typeof value === 'object' && !Array.isArray(value);
   },
