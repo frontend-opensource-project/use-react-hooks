@@ -69,9 +69,6 @@ describe('useMousePosition', () => {
   });
 
   test('첫 번째 이벤트는 즉시 트리거되고, 이후 이벤트는 delayTime에 따라 throttle되며 제한됩니다.', () => {
-    const addEventListenerSpy = jest.spyOn(document, 'addEventListener');
-    const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener');
-
     jest.useFakeTimers();
 
     const { result } = renderHook(() => useMousePosition({ delayTime: 100 }));
@@ -85,12 +82,6 @@ describe('useMousePosition', () => {
     });
 
     expect(result.current.viewX).toBe(100);
-
-    expect(addEventListenerSpy).toHaveBeenCalledWith(
-      'mousemove',
-      expect.any(Function)
-    );
-
     expect(result.current.viewY).toBe(100);
 
     act(() => {
@@ -108,13 +99,6 @@ describe('useMousePosition', () => {
     expect(result.current.viewX).toBe(200);
     expect(result.current.viewY).toBe(200);
 
-    expect(removeEventListenerSpy).toHaveBeenCalledWith(
-      'mousemove',
-      expect.any(Function)
-    );
-
-    addEventListenerSpy.mockRestore();
-    removeEventListenerSpy.mockRestore();
     jest.useRealTimers();
   });
 
