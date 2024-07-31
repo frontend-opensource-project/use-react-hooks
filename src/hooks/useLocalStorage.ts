@@ -1,4 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { validators } from '../utils';
+import { ValueResolver } from '../types';
 
 /**
  * 로컬 스토리지와 동기화된 상태를 관리하는 훅
@@ -17,7 +19,7 @@ const useLocalStorage = <T>(key: string, initialValue: T) => {
     const item = storageManager.current.getItem(initialValue);
 
     // 초기값 타입이 다른 경우, 전달된 초기값을 저장하고 반환합니다.
-    if (!utils.isSameType(item, initialValue)) {
+    if (!validators.isSameType(item, initialValue)) {
       storageManager.current.setItem(initialValue, initialValue);
 
       return initialValue;
@@ -26,7 +28,7 @@ const useLocalStorage = <T>(key: string, initialValue: T) => {
     return item;
   });
 
-  const setValue = useCallback((value: Payload<T>) => {
+  const setValue = useCallback((value: ValueResolver<T>) => {
     setStoredValue((prevValue) => {
       return storageManager.current.setItem(value, prevValue);
     });
@@ -42,7 +44,7 @@ const useLocalStorage = <T>(key: string, initialValue: T) => {
   );
 
   useEffect(() => {
-    if (!utils.isClient()) return;
+    if (!validators.isClient()) return;
 
     window.addEventListener('storage', handleStorageChange);
     return () => {
@@ -57,13 +59,13 @@ const createLocalStorageManager = <T>(key: string) => {
   const storage = new LocalStorage();
 
   const manager = {
-    setItem(currentValue: Payload<T>, prevValue: T): T {
+    setItem(currentValue: ValueResolver<T>, prevValue: T): T {
       const ERROR_SET_MESSAGE = 'Failed to set item in localStorage';
 
       try {
-        const newValue = utils.resolveValue(currentValue, prevValue);
+        const newValue = validators.resolveValue(currentValue, prevValue);
 
-        utils.validateTypeConsistency(newValue, prevValue);
+        validators.validateTypeConsistency(newValue, prevValue);
         storage.setItem(key, JSON.stringify(newValue));
 
         return newValue;
@@ -95,7 +97,7 @@ class LocalStorage {
   private storage: Storage;
 
   constructor() {
-    if (!utils.isClient()) {
+    if (!validators.isClient()) {
       throw new Error(
         'localStorage is not available in this environment. Please ensure you are running this code in a browser.'
       );
@@ -114,63 +116,6 @@ class LocalStorage {
 
   removeItem(key: string): void {
     this.storage.removeItem(key);
-  }
-}
-
-type Payload<T> = T | ((prevPayload: T) => T);
-
-const utils = {
-  isClient(): boolean {
-    return typeof window === 'object';
-  },
-  isString(value: unknown): value is string {
-    return typeof value === 'string';
-  },
-  isNumber(value: unknown): value is number {
-    return typeof value === 'number';
-  },
-  isArray(value: unknown): value is Array<unknown> {
-    return Array.isArray(value);
-  },
-  isObject(value: unknown): value is Record<string, unknown> {
-    return value !== null && typeof value === 'object' && !Array.isArray(value);
-  },
-  isSameType(value1: unknown, value2: unknown): boolean {
-    const typeChecks = [
-      utils.isString,
-      utils.isNumber,
-      utils.isArray,
-      utils.isObject,
-    ];
-
-    return typeChecks.some((checkFn) => checkFn(value1) && checkFn(value2));
-  },
-  getType(value: unknown): string {
-    if (utils.isArray(value)) {
-      return 'array';
-    }
-
-    return typeof value;
-  },
-  validateTypeConsistency(value1: unknown, value2: unknown) {
-    if (!utils.isSameType(value1, value2)) {
-      throw new MatchError(
-        `New value type does not match stored value type\n current:${value1}->${utils.getType(value1)}, prev:${value2}->${utils.getType(value2)}`
-      );
-    }
-  },
-  resolveValue<T>(newPayload: Payload<T>, prevPayload: T): T {
-    return newPayload instanceof Function
-      ? newPayload(prevPayload)
-      : newPayload;
-  },
-};
-
-class MatchError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.message = message;
-    this.name = 'MatchError';
   }
 }
 
