@@ -1,11 +1,15 @@
 import { useCallback, useEffect, useState } from 'react';
 import useTimer from './useTimer';
 
+// 시간 바꾸고
+
 const useDetectInactivity = (time = 10000, onInactivity = () => {}) => {
   const [isInactive, setIsInactive] = useState(false);
   const { start } = useTimer(() => setIsInactive(true), time);
 
-  const clientEvent = ['mousemove', 'keydown', 'click', 'dblclick', 'scroll'];
+  const clientEvents = isTouchDevice()
+    ? ['touchstart']
+    : ['mousemove', 'keydown', 'click', 'dblclick', 'scroll'];
 
   const resetTimer = useCallback(() => {
     setIsInactive(false);
@@ -16,14 +20,16 @@ const useDetectInactivity = (time = 10000, onInactivity = () => {}) => {
   useEffect(() => {
     start();
 
-    clientEvent.forEach((event) => window.addEventListener(event, resetTimer));
+    clientEvents.forEach((event) => {
+      window.addEventListener(event, resetTimer);
+    });
 
     if (isInactive) {
       onInactivity();
     }
 
     return () => {
-      clientEvent.forEach((event) =>
+      clientEvents.forEach((event) =>
         window.removeEventListener(event, resetTimer)
       );
     };
@@ -41,3 +47,10 @@ const useDetectInactivity = (time = 10000, onInactivity = () => {}) => {
 };
 
 export default useDetectInactivity;
+
+const isTouchDevice = () => {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+  return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+};
