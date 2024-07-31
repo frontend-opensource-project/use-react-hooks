@@ -1,9 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import useTimer from './useTimer';
+import { Fn } from '../types';
 
-// 시간 바꾸고
-
-const useDetectInactivity = (time = 10000, onInactivity = () => {}) => {
+const useDetectInactivity = (time: number, onInactivity: Fn) => {
   const [isInactive, setIsInactive] = useState(false);
   const { start } = useTimer(() => setIsInactive(true), time);
 
@@ -24,10 +23,6 @@ const useDetectInactivity = (time = 10000, onInactivity = () => {}) => {
       window.addEventListener(event, resetTimer);
     });
 
-    if (isInactive) {
-      onInactivity();
-    }
-
     return () => {
       clientEvents.forEach((event) =>
         window.removeEventListener(event, resetTimer)
@@ -40,8 +35,7 @@ const useDetectInactivity = (time = 10000, onInactivity = () => {}) => {
     if (isInactive) {
       onInactivity();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isInactive]);
+  }, [isInactive, onInactivity]);
 
   return isInactive;
 };
