@@ -6,6 +6,8 @@ import {
   PromiseCircularityError,
 } from 'async-wave';
 
+import { delayExecution } from '../utils';
+
 type Task<R> = R | ((input: R) => R | Promise<R> | void | Promise<void>);
 
 type HookOptionProps = {
@@ -95,14 +97,14 @@ const generateTaskHandlers = <R>(
 
       dispatch({ type: ActionType.LOADING });
       options?.initialLazyDelay &&
-        (await delayExecution(options.initialLazyDelay));
+        (await delayExecution(options.initialLazyDelay).start());
       onBefore?.();
     },
     async onSuccess(payload: R) {
       if (!isMountedRef.current) return;
 
       options?.successLazyDelay &&
-        (await delayExecution(options.successLazyDelay));
+        (await delayExecution(options.successLazyDelay).start());
       dispatch({ type: ActionType.SUCCESS, payload });
       onSuccess?.(payload);
     },
@@ -168,14 +170,5 @@ function reducer<R>(state: TaskState<R>, action: TaskAction<R>): TaskState<R> {
       throw new Error('Unhandled task action type');
   }
 }
-
-/**
- * delayExecution 함수
- * @param {number} ms - 지연 시간 (밀리초)
- * @returns {Promise<void>} 주어진 시간만큼 지연된 후 resolve되는 프로미스
- */
-const delayExecution = (ms: number) => {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-};
 
 export default useAsyncTasks;
