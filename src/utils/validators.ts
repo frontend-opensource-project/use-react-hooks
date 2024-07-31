@@ -55,4 +55,4 @@ class MatchError extends Error {
   }
 }
 
-export { validators };
+export { validators, MatchError };
