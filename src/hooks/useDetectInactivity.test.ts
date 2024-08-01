@@ -15,7 +15,6 @@ describe('useDetectInactivity', () => {
     (useTimer as jest.Mock).mockImplementation((callback, time) => ({
       start: () => {
         startMock();
-        // 타이머 만료 후 콜백 호출
         setTimeout(() => {
           callback();
         }, time);
@@ -115,7 +114,7 @@ describe('useDetectInactivity', () => {
     const removedEvents = removeEventListenerSpy.mock.calls.map(
       ([event, callback]) => ({ event, callback })
     );
-    // 제거된 이벤트 리스트가 올바른지 확인
+
     expectedClientEvents.forEach((event) => {
       expect(removedEvents.some((e) => e.event === event)).toBe(true);
     });
