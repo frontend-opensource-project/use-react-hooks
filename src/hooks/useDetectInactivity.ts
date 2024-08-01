@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import useTimer from './useTimer';
 import { Fn } from '../types';
+import { throttle } from './useMousePosition';
 
 /**
  * 일정 시간(ms) 동안 활동이 없을 때 지정된 콜백 함수를 실행하는 훅.
@@ -23,13 +24,21 @@ const useDetectInactivity = (time: number, onInactivity: Fn) => {
     ? ['touchstart']
     : ['mousemove', 'keydown', 'click', 'dblclick', 'scroll'];
 
-  const resetTimer = useCallback(() => {
-    if (isInactive) {
-      setIsInactive(false);
-    }
+  const handleChange = useCallback(() => {
+    setIsInactive(false);
     start();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const throttledHandleChange = throttle(handleChange, 1000);
+
+  const resetTimer = useCallback(
+    (event: Event) => {
+      throttledHandleChange(event);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   useEffect(() => {
     start();

@@ -160,7 +160,7 @@ const useMousePosition = ({
 
 export default useMousePosition;
 
-const throttle = <T extends Event>(
+export const throttle = <T extends Event>(
   callbackFn: (event: T) => void,
   delayTime: number
 ) => {
