@@ -20,6 +20,15 @@ const useDetectInactivity = (time: number, onInactivity: Fn) => {
   const [isInactive, setIsInactive] = useState(false);
   const { start } = useTimer(() => setIsInactive(true), time);
 
+  // 이벤트 리스너는 5초마다 감지
+  const MIN_THROTTLE_TIME = 5000;
+
+  if (time < MIN_THROTTLE_TIME) {
+    throw new Error(
+      `The 'time' parameter must be at least ${MIN_THROTTLE_TIME}ms. The provided value was too short and has been adjusted.`
+    );
+  }
+
   const clientEvents = isTouchDevice()
     ? ['touchstart']
     : ['mousemove', 'keydown', 'click', 'dblclick', 'scroll'];
@@ -33,8 +42,7 @@ const useDetectInactivity = (time: number, onInactivity: Fn) => {
   useEffect(() => {
     start();
 
-    // 이벤트 리스너는 5초마다 감지
-    const throttledResetTimer = throttle(resetTimer, 5000);
+    const throttledResetTimer = throttle(resetTimer, MIN_THROTTLE_TIME);
 
     clientEvents.forEach((event) => {
       window.addEventListener(event, throttledResetTimer);
