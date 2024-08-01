@@ -55,7 +55,7 @@ const useDetectInactivity = (time: number, onInactivity: Fn) => {
 
 export default useDetectInactivity;
 
-const isTouchDevice = () => {
+export const isTouchDevice = () => {
   if (typeof window === 'undefined') {
     return false;
   }
