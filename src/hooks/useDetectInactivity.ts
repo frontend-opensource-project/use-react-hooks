@@ -24,32 +24,24 @@ const useDetectInactivity = (time: number, onInactivity: Fn) => {
     ? ['touchstart']
     : ['mousemove', 'keydown', 'click', 'dblclick', 'scroll'];
 
-  const handleChange = useCallback(() => {
+  const resetTimer = useCallback(() => {
     setIsInactive(false);
     start();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const throttledHandleChange = throttle(handleChange, 1000);
-
-  const resetTimer = useCallback(
-    (event: Event) => {
-      throttledHandleChange(event);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
-
   useEffect(() => {
     start();
 
+    const throttledResetTimer = throttle(resetTimer, 5000);
+
     clientEvents.forEach((event) => {
-      window.addEventListener(event, resetTimer);
+      window.addEventListener(event, throttledResetTimer);
     });
 
     return () => {
       clientEvents.forEach((event) =>
-        window.removeEventListener(event, resetTimer)
+        window.removeEventListener(event, throttledResetTimer)
       );
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
