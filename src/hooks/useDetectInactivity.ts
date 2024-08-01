@@ -24,7 +24,9 @@ const useDetectInactivity = (time: number, onInactivity: Fn) => {
     : ['mousemove', 'keydown', 'click', 'dblclick', 'scroll'];
 
   const resetTimer = useCallback(() => {
-    setIsInactive(false);
+    if (isInactive) {
+      setIsInactive(false);
+    }
     start();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
