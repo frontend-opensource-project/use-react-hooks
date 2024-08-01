@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import useTimer from './useTimer';
 import { Fn } from '../types';
-import { throttle } from './useMousePosition';
+import { throttle } from '../utils';
 
 /**
  * 일정 시간(ms) 동안 활동이 없을 때 지정된 콜백 함수를 실행하는 훅.
@@ -33,6 +33,7 @@ const useDetectInactivity = (time: number, onInactivity: Fn) => {
   useEffect(() => {
     start();
 
+    // 이벤트 리스너는 5초마다 감지
     const throttledResetTimer = throttle(resetTimer, 5000);
 
     clientEvents.forEach((event) => {
