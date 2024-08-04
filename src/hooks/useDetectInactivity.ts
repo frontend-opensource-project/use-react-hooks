@@ -25,7 +25,7 @@ const useDetectInactivity = (time: number, onInactivity: Fn) => {
 
   if (time < MIN_THROTTLE_TIME) {
     throw new Error(
-      `The 'time' parameter must be at least ${MIN_THROTTLE_TIME}ms. The provided value was too short and has been adjusted.`
+      `'time'은 최소 ${MIN_THROTTLE_TIME}ms 이상으로 설정되어야 합니다.`
     );
   }
 
