@@ -37,7 +37,7 @@ const useDetectInactivity = (time: number, onInactivity: Fn) => {
     setIsInactive(false);
     start();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [start]);
 
   useEffect(() => {
     start();
@@ -54,7 +54,7 @@ const useDetectInactivity = (time: number, onInactivity: Fn) => {
       );
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [resetTimer]);
 
   useEffect(() => {
     if (isInactive) {
