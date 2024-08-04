@@ -7,7 +7,7 @@ const useScrollY = (): { moveTrigger: Fn } => {
   const isClient = typeof window !== 'undefined';
 
   const [savedScrollY, setSavedScrollY] = useLocalStorage(
-    encodeURIComponent(window.location.pathname),
+    encodeURIComponent(window?.location?.pathname),
     0
   );
 
