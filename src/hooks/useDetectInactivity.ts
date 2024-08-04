@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import useTimer from './useTimer';
 import { Fn } from '../types';
-import { isClient, throttle } from '../utils';
+import { isTouchDevice, throttle } from '../utils';
 
 /**
  * 일정 시간(ms) 동안 활동이 없을 때 지정된 콜백 함수를 실행하는 훅.
@@ -65,10 +65,3 @@ const useDetectInactivity = (time: number, onInactivity: Fn) => {
 };
 
 export default useDetectInactivity;
-
-const isTouchDevice = () => {
-  if (!isClient) {
-    return false;
-  }
-  return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-};
