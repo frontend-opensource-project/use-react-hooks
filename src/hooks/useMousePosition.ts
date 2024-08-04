@@ -6,6 +6,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { throttle } from '../utils';
 
 interface MousePosOptions {
   delayTime?: number;
@@ -159,21 +160,6 @@ const useMousePosition = ({
 };
 
 export default useMousePosition;
-
-const throttle = <T extends Event>(
-  callbackFn: (event: T) => void,
-  delayTime: number
-) => {
-  let lastTime = 0;
-
-  return (event: T) => {
-    const now = Date.now();
-    if (now - lastTime >= delayTime) {
-      lastTime = now;
-      callbackFn(event);
-    }
-  };
-};
 
 const animationFrameHandler = <T extends Event>(
   callbackFn: (event: T) => void
