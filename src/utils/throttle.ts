@@ -1,7 +1,7 @@
-type GenericCallback<T extends unknown[]> = (...args: T) => void;
+import { GenericFn } from '../types';
 
 export const throttle = <T extends unknown[]>(
-  callbackFn: GenericCallback<T>,
+  callbackFn: GenericFn<T>,
   delayTime: number
 ) => {
   let lastTime = 0;
