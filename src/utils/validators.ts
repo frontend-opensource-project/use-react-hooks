@@ -2,7 +2,7 @@ import { ValueResolver } from '../types';
 
 const validators = {
   isClient(): boolean {
-    return typeof window === 'object';
+    return typeof window !== 'undefined';
   },
   isString(value: unknown): value is string {
     return typeof value === 'string';
