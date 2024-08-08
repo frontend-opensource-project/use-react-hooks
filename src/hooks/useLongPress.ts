@@ -18,11 +18,14 @@ const useLongPress = (callback: Fn, delay = 500) => {
 
   useEffect(() => {
     if (isPress) {
-      timeoutRef.current = setTimeout(() => callback(), delay);
+      timeoutRef.current = setTimeout(callback, delay);
     }
 
     return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
     };
   }, [isPress, callback, delay]);
 
