@@ -5,6 +5,27 @@ import useUnmountEffect from './useUnmountEffect';
 
 type WorkerScript<A, R, C> = (arg: A, accessClosure?: C) => R;
 
+/**
+ * 웹 워커를 사용하여 비동기 작업을 처리하는 훅.
+ *
+ * @template Arg - 작업에 필요한 인수 타입.
+ * @template Return - 작업 결과의 반환 타입.
+ * @template Closure - 클로저(closure)로 전달될 타입 (선택 사항).
+ *
+ * @param {WorkerScript<Arg, Return, Closure>} script - 웹 워커에서 실행할 함수.
+ *
+ * @returns {object}
+ *  - `result`: 작업의 결과를 저장하는 상태 값.
+ *  - `start`: 작업을 시작하는 함수.
+ *  - `cancel`: 현재 진행 중인 작업을 취소하는 함수.
+ *
+ * @description
+ * - 이 훅은 웹 워커를 활용하여 비동기 작업을 수행하고, 그 결과를 React 상태로 관리합니다.
+ * - `start` 함수를 호출하면 웹 워커가 생성되고, 작업이 시작됩니다. 작업이 완료되면 결과가 `result` 상태로 업데이트됩니다.
+ * - `cancel` 함수를 호출하면 현재 활성화된 웹 워커가 종료되고, 작업이 취소됩니다.
+ * - 컴포넌트가 언마운트될 때, 사용 중이던 웹 워커를 자동으로 정리합니다.
+ * - 웹 워커는 특정 작업을 백그라운드에서 비동기로 처리하고자 할 때 유용합니다.
+ */
 const useWorker = <Arg, Return, Closure = never>(
   script: WorkerScript<Arg, Return, Closure>
 ) => {
