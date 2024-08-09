@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { imgToBlob } from '../utils';
 
 const useClipboard = () => {
   const [copied, setCopied] = useState(false);
@@ -17,7 +18,28 @@ const useClipboard = () => {
     }
   };
 
-  return { copied, copyText };
+  const copyImg = (path: string) => {
+    imgToBlob(path, async (imgBlob) => {
+      if (!imgBlob) return;
+      try {
+        await navigator.clipboard.write([
+          new ClipboardItem({ 'image/png': imgBlob }),
+        ]);
+        setCopied(true);
+      } catch (error) {
+        console.error(error);
+        throw new Error(`Failed to save image to clipboard.`);
+      }
+    });
+  };
+
+  useEffect(() => {
+    return () => {
+      setCopied(false);
+    };
+  }, []);
+
+  return { copied, copyText, copyImg };
 };
 
 export default useClipboard;
