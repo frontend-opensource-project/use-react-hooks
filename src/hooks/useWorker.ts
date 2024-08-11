@@ -29,7 +29,7 @@ type WorkerScript<A, R, C> = (arg: A, accessClosure?: C) => R;
 const useWorker = <Arg, Return, Closure = never>(
   script: WorkerScript<Arg, Return, Closure>
 ) => {
-  const [result, setResult] = useState<Arg>();
+  const [result, setResult] = useState<Return>();
   const workerRef = useRef<FunctionWorker<Arg, Return, Closure> | null>(null);
   const safeWorkerHelper = validateRef(workerRef);
 
@@ -52,7 +52,7 @@ const useWorker = <Arg, Return, Closure = never>(
 
     // 작업이 완료된 스레드로부터 이벤트 수신 #1
     safeWorkerHelper((worker) => {
-      worker.current.onmessage = (e: MessageEvent<Arg>) => {
+      worker.current.onmessage = (e: MessageEvent<Return>) => {
         setResult(e.data);
         clearWorker();
       };
