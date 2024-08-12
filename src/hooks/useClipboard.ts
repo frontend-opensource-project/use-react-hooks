@@ -44,10 +44,13 @@ const useClipboard = () => {
   };
 
   useEffect(() => {
-    return () => {
-      setCopied(false);
-    };
-  }, []);
+    if (copied) {
+      const timer = setTimeout(() => {
+        setCopied(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [copied]);
 
   return { copied, copyText, copyImg };
 };
