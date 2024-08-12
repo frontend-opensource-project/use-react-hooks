@@ -10,6 +10,7 @@ const config: JestConfigWithTsJest = {
     '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
   },
   setupFilesAfterEnv: ['./jest.setup.ts'],
+  setupFiles: ['./src/mocks/mockWorker.ts'],
 };
 
 export default config;
