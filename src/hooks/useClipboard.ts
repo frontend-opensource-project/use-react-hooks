@@ -37,7 +37,6 @@ const useClipboard = ({ resetTime = 5000 }: Props): Returns => {
       await copy();
       setCopied(true);
     } catch (error) {
-      setCopied(false);
       console.error(error);
       throw new Error(`Failed to save to clipboard.`);
     }
