@@ -34,13 +34,11 @@ const useClipboard = () => {
     handleCopy(() => navigator.clipboard.writeText(text));
   };
 
-  const copyImg = (path: string) => {
-    imgToBlob(path, async (imgBlob) => {
-      if (!imgBlob) return;
-      handleCopy(() =>
-        navigator.clipboard.write([new ClipboardItem({ 'image/png': imgBlob })])
-      );
-    });
+  const copyImg = async (path: string) => {
+    const imgBlob = await imgToBlob(path);
+    handleCopy(() =>
+      navigator.clipboard.write([new ClipboardItem({ 'image/png': imgBlob })])
+    );
   };
 
   useEffect(() => {
