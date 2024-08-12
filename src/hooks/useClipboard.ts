@@ -1,17 +1,30 @@
 import { useState, useEffect } from 'react';
 import { imgToBlob } from '../utils';
 
+interface Props {
+  resetTime?: number;
+}
+
+interface Returns {
+  copied: boolean;
+  copyText: (text: string) => void;
+  copyImg: (path: string) => void;
+}
+
 /**
  * 클립보드에 텍스트나 이미지를 복사하는 커스텀 훅
  *
- * @returns {boolean} `copied`: 복사 작업의 성공 여부를 나타내는 플래그
- * @returns {(string) => Promise<void>} `copyText`: 텍스트를 클립보드에 복사하는 비동기 함수
- * @returns {(string) => void} `copyImg`: 주어진 경로의 이미지를 클립보드에 복사하는 함수
+ * @param {number} [resetTime=5000] - 복사 작업이 완료된 후 플래그를 리셋할 시간(ms)
+ *
+ * @returns
+ * - `copied`: 복사 작업의 성공 여부를 나타내는 플래그
+ * - `copyText`: 텍스트를 클립보드에 복사하는 비동기 함수
+ * - `copyImg`: 주어진 경로의 이미지를 클립보드에 복사하는 함수
  *
  * @description
  * 클립보드 API가 지원되지 않는 경우 에러를 발생시킵니다.
  */
-const useClipboard = () => {
+const useClipboard = ({ resetTime = 5000 }: Props): Returns => {
   const [copied, setCopied] = useState(false);
 
   if (!navigator.clipboard) {
@@ -45,9 +58,10 @@ const useClipboard = () => {
     if (copied) {
       const timer = setTimeout(() => {
         setCopied(false);
-      }, 5000);
+      }, resetTime);
       return () => clearTimeout(timer);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [copied]);
 
   return { copied, copyText, copyImg };
