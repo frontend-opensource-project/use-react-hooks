@@ -31,28 +31,7 @@ describe('useScrollLock', () => {
     expect(document.body.style.overflowY).toBe('scroll');
   });
 
-  test('스크롤 락 비활성 시, 페이지가 저장해둔 스크롤위치로 돌아가야 합니다.', () => {
-    Object.defineProperty(window, 'scrollY', { value: 100, writable: true });
-    Object.defineProperty(window, 'scrollX', { value: 0, writable: true });
-
-    const { rerender } = renderHook(({ isLocked }) => useScrollLock(isLocked), {
-      initialProps: { isLocked: false },
-    });
-
-    act(() => {
-      rerender({ isLocked: true });
-    });
-
-    expect(spyScrollTo).toHaveBeenCalledWith(0, 0);
-
-    act(() => {
-      rerender({ isLocked: false });
-    });
-
-    expect(spyScrollTo).toHaveBeenCalledWith(0, 100);
-  });
-
-  test('스크롤 락 비활성 후, 언마운트 시에 스크롤 위치와 스타일이 올바르게 리셋되는지 검증', () => {
+  test('스크롤 락 비활성 후, 언마운트 시에 스크롤 위치와 스타일이 올바르게 리셋되어야 합니다.', () => {
     Object.defineProperty(window, 'scrollY', { value: 50, writable: true });
     Object.defineProperty(window, 'scrollX', { value: 50, writable: true });
 

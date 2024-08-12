@@ -16,20 +16,16 @@ const useScrollLock = (isLocked: boolean) => {
     if (!isClient) return;
 
     const isScrollX = document.documentElement.scrollWidth > window.innerWidth;
-    const resetBodyStyles = () => {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.left = '';
-      document.body.style.width = '';
-      document.body.style.overflowY = '';
-      document.body.style.overflowX = '';
-    };
 
-    if (isLocked) {
+    const storeScrollPosition = () => {
       scrollRef.current = {
         x: window.scrollX,
         y: window.scrollY,
       };
+    };
+
+    const applyScrollLock = () => {
+      storeScrollPosition();
 
       document.body.style.position = 'fixed';
       document.body.style.top = `-${scrollRef.current.y}px`;
@@ -40,18 +36,37 @@ const useScrollLock = (isLocked: boolean) => {
         document.body.style.left = `-${scrollRef.current.x}px`;
         document.body.style.overflowX = 'scroll';
       }
-    } else {
-      resetBodyStyles();
+    };
+
+    const removeScrollLock = () => {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.width = '';
+      document.body.style.overflowY = '';
+      document.body.style.overflowX = '';
+    };
+
+    const restoreScrollPosition = () => {
       window.scrollTo(scrollRef.current.x, scrollRef.current.y);
+    };
+
+    if (isLocked) {
+      applyScrollLock();
+    } else {
+      removeScrollLock();
+      restoreScrollPosition();
     }
 
     return () => {
-      resetBodyStyles();
+      removeScrollLock();
       if (isLocked) {
-        window.scrollTo(scrollRef.current.x, scrollRef.current.y);
+        restoreScrollPosition();
       }
     };
   }, [isLocked]);
+
+  return null;
 };
 
 export default useScrollLock;
