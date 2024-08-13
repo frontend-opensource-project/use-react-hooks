@@ -1,6 +1,18 @@
 import { useCallback, useRef, useState } from 'react';
 
-const useHover = <T extends HTMLElement>(): [boolean, (node: T) => void] => {
+interface UseHoverReturns<T> {
+  isHovered: boolean;
+  callbackRef: (node: T) => void;
+}
+
+/**
+ * ref(callbackRef) 요소에 마우스가 올려져있는지 감지하는 훅
+ *
+ * @returns
+ * - `isHovered`: 마우스가 올려져있는지 여부
+ * - `callbackRef`: ref 요소에 마우스 이벤트 리스너를 추가하는 함수
+ */
+const useHover = <T extends HTMLElement>(): UseHoverReturns<T> => {
   const ref = useRef<T | null>(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -24,7 +36,7 @@ const useHover = <T extends HTMLElement>(): [boolean, (node: T) => void] => {
     [handleMouseEnter, handleMouseLeave]
   );
 
-  return [isHovered, callbackRef];
+  return { isHovered, callbackRef };
 };
 
 export default useHover;
