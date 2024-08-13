@@ -9,6 +9,7 @@ const config: JestConfigWithTsJest = {
   moduleNameMapper: {
     '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
   },
+  setupFiles: ['jest-canvas-mock'],
   setupFilesAfterEnv: ['./jest.setup.ts'],
 };
 

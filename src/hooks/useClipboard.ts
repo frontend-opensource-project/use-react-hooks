@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { imgToBlob } from '../utils';
 
-interface Props {
+interface UseClipboardProps {
   resetTime?: number;
 }
 
-interface Returns {
+interface UseClipboardReturns {
   copied: boolean;
   copyText: (text: string) => void;
   copyImg: (path: string) => void;
@@ -24,7 +24,9 @@ interface Returns {
  * @description
  * 클립보드 API가 지원되지 않는 경우 에러를 발생시킵니다.
  */
-const useClipboard = ({ resetTime = 5000 }: Props = {}): Returns => {
+const useClipboard = ({
+  resetTime = 5000,
+}: UseClipboardProps = {}): UseClipboardReturns => {
   const [copied, setCopied] = useState(false);
 
   if (!navigator.clipboard) {
@@ -42,13 +44,13 @@ const useClipboard = ({ resetTime = 5000 }: Props = {}): Returns => {
     }
   };
 
-  const copyText = (text: string) => {
-    handleCopy(() => navigator.clipboard.writeText(text));
+  const copyText = async (text: string) => {
+    await handleCopy(() => navigator.clipboard.writeText(text));
   };
 
   const copyImg = async (path: string) => {
     const imgBlob = await imgToBlob(path);
-    handleCopy(() =>
+    await handleCopy(() =>
       navigator.clipboard.write([new ClipboardItem({ 'image/png': imgBlob })])
     );
   };
