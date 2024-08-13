@@ -24,7 +24,7 @@ interface Returns {
  * @description
  * 클립보드 API가 지원되지 않는 경우 에러를 발생시킵니다.
  */
-const useClipboard = ({ resetTime = 5000 }: Props): Returns => {
+const useClipboard = ({ resetTime = 5000 }: Props = {}): Returns => {
   const [copied, setCopied] = useState(false);
 
   if (!navigator.clipboard) {
