@@ -12,43 +12,43 @@ import { isClient } from '../utils';
 const useScrollLock = (isLocked: boolean) => {
   const scrollRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
-  useEffect(() => {
-    if (!isClient) return;
+  const storeScrollPosition = () => {
+    scrollRef.current = {
+      x: window.scrollX,
+      y: window.scrollY,
+    };
+  };
+
+  const applyScrollLock = () => {
+    storeScrollPosition();
+
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollRef.current.y}px`;
+    document.body.style.width = '100%';
+    document.body.style.overflowY = 'scroll';
 
     const isScrollX = document.documentElement.scrollWidth > window.innerWidth;
 
-    const storeScrollPosition = () => {
-      scrollRef.current = {
-        x: window.scrollX,
-        y: window.scrollY,
-      };
-    };
+    if (isScrollX) {
+      document.body.style.left = `-${scrollRef.current.x}px`;
+      document.body.style.overflowX = 'scroll';
+    }
+  };
 
-    const applyScrollLock = () => {
-      storeScrollPosition();
-
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollRef.current.y}px`;
-      document.body.style.width = '100%';
-      document.body.style.overflowY = 'scroll';
-
-      if (isScrollX) {
-        document.body.style.left = `-${scrollRef.current.x}px`;
-        document.body.style.overflowX = 'scroll';
+  const removeScrollLock = () => {
+    ['position', 'top', 'left', 'width', 'overflowY', 'overflowX'].forEach(
+      (property) => {
+        document.body.style.removeProperty(property);
       }
-    };
+    );
+  };
 
-    const removeScrollLock = () => {
-      ['position', 'top', 'left', 'width', 'overflowY', 'overflowX'].forEach(
-        (property) => {
-          document.body.style.removeProperty(property);
-        }
-      );
-    };
+  const restoreScrollPosition = () => {
+    window.scrollTo(scrollRef.current.x, scrollRef.current.y);
+  };
 
-    const restoreScrollPosition = () => {
-      window.scrollTo(scrollRef.current.x, scrollRef.current.y);
-    };
+  useEffect(() => {
+    if (!isClient) return;
 
     if (isLocked) {
       applyScrollLock();
@@ -62,6 +62,7 @@ const useScrollLock = (isLocked: boolean) => {
         restoreScrollPosition();
       }
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLocked]);
 
   return null;
