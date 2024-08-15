@@ -57,7 +57,7 @@ describe('useScrollLock', () => {
     expect(document.body.style.top).toBe('');
     expect(document.body.style.width).toBe('');
     expect(document.body.style.left).toBe('');
-    expect(document.body.style.overflowY).toBe('');
+    expect(document.body.style.overflowY).toBe('scroll');
     expect(document.body.style.overflowX).toBe('');
   });
 
@@ -95,7 +95,7 @@ describe('useScrollLock', () => {
     expect(document.body.style.position).toBe('');
     expect(document.body.style.left).toBe('');
     expect(document.body.style.width).toBe('');
-    expect(document.body.style.overflowX).toBe('');
+    expect(document.body.style.overflowX).toBe('scroll');
 
     Object.defineProperty(document.documentElement, 'scrollWidth', {
       value: 0,

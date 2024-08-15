@@ -39,12 +39,11 @@ const useScrollLock = (isLocked: boolean) => {
     };
 
     const removeScrollLock = () => {
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.left = '';
-      document.body.style.width = '';
-      document.body.style.overflowY = '';
-      document.body.style.overflowX = '';
+      ['position', 'top', 'left', 'width', 'overflowY', 'overflowX'].forEach(
+        (property) => {
+          document.body.style.removeProperty(property);
+        }
+      );
     };
 
     const restoreScrollPosition = () => {
@@ -55,7 +54,6 @@ const useScrollLock = (isLocked: boolean) => {
       applyScrollLock();
     } else {
       removeScrollLock();
-      restoreScrollPosition();
     }
 
     return () => {
