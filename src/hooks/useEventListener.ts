@@ -1,28 +1,11 @@
-import { useEffect, useRef } from 'react';
+import { RefObject, useEffect, useRef } from 'react';
 import { isClient } from '../utils';
-
-// isClient해줘야하나?
 
 type EventMap =
   | WindowEventMap
   | DocumentEventMap
   | HTMLElementEventMap
-  | SVGElementEventMap
-  | ElementEventMap;
-
-interface useEventListenerProps<K extends keyof EventMap> {
-  eventName: K;
-  handler: (event: EventMap[K]) => void;
-  element?:
-    | Window
-    | Document
-    | HTMLElement
-    | SVGElement
-    | Element
-    | MediaQueryList
-    | null;
-  options: AddEventListenerOptions;
-}
+  | SVGElementEventMap;
 
 function useEventListener<K extends keyof WindowEventMap>(
   eventName: K,
@@ -41,30 +24,27 @@ function useEventListener<K extends keyof DocumentEventMap>(
 function useEventListener<K extends keyof HTMLElementEventMap>(
   eventName: K,
   handler: (event: HTMLElementEventMap[K]) => void,
-  element?: HTMLElement,
+  element?: RefObject<HTMLElement>,
   options?: AddEventListenerOptions
 ): void;
 
 function useEventListener<K extends keyof SVGElementEventMap>(
   eventName: K,
   handler: (event: SVGElementEventMap[K]) => void,
-  element?: SVGElement,
+  element?: RefObject<SVGElement>,
   options?: AddEventListenerOptions
 ): void;
 
-function useEventListener<K extends keyof ElementEventMap>(
+function useEventListener<K extends keyof EventMap>(
   eventName: K,
-  handler: (event: ElementEventMap[K]) => void,
-  element?: Element,
+  handler: (event: EventMap[K]) => void,
+  element:
+    | Window
+    | Document
+    | RefObject<HTMLElement | SVGElement>
+    | null = window,
   options?: AddEventListenerOptions
-): void;
-
-function useEventListener<K extends keyof EventMap>({
-  eventName,
-  handler,
-  element = window,
-  options,
-}: useEventListenerProps<K>) {
+): void {
   const savedHandler = useRef(handler);
 
   useEffect(() => {
@@ -74,14 +54,17 @@ function useEventListener<K extends keyof EventMap>({
   useEffect(() => {
     if (!element || !isClient) return;
 
+    const targetElement = 'current' in element ? element.current : element;
+    if (!targetElement) return;
+
     const eventListener = (event: Event) => {
-      handler(event as EventMap[K]);
+      savedHandler.current(event as EventMap[K]);
     };
 
-    element.addEventListener(eventName, eventListener, options);
+    targetElement.addEventListener(eventName, eventListener, options);
 
     return () => {
-      element.removeEventListener(eventName, eventListener, options);
+      targetElement.removeEventListener(eventName, eventListener, options);
     };
   }, [eventName, element, handler, options]);
 }
