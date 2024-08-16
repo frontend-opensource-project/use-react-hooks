@@ -11,8 +11,8 @@ type EventMap = {
 type EventElement = {
   window: Window;
   document: Document;
-  htmlElement: RefObject<HTMLElement>;
-  svgElement: RefObject<SVGElement>;
+  htmlElement: RefObject<HTMLElement> | HTMLElement;
+  svgElement: RefObject<SVGElement> | SVGElement;
 };
 
 function useEventListener<
