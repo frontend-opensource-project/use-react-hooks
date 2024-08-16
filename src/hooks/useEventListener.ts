@@ -1,17 +1,14 @@
 import { useEffect, useRef } from 'react';
-
-// document
-// mediaqueries
-// with ref
+import { isClient } from '../utils';
 
 // isClient해줘야하나?
 
 type EventMap =
   | WindowEventMap
   | DocumentEventMap
-  | ElementEventMap
+  | HTMLElementEventMap
   | SVGElementEventMap
-  | MediaQueryListEventMap;
+  | ElementEventMap;
 
 interface useEventListenerProps<K extends keyof EventMap> {
   eventName: K;
@@ -20,16 +17,53 @@ interface useEventListenerProps<K extends keyof EventMap> {
     | Window
     | Document
     | HTMLElement
-    | HTMLElement
     | SVGElement
+    | Element
     | MediaQueryList
     | null;
+  options: AddEventListenerOptions;
 }
+
+function useEventListener<K extends keyof WindowEventMap>(
+  eventName: K,
+  handler: (event: WindowEventMap[K]) => void,
+  element?: Window | null,
+  options?: AddEventListenerOptions
+): void;
+
+function useEventListener<K extends keyof DocumentEventMap>(
+  eventName: K,
+  handler: (event: DocumentEventMap[K]) => void,
+  element?: Document,
+  options?: AddEventListenerOptions
+): void;
+
+function useEventListener<K extends keyof HTMLElementEventMap>(
+  eventName: K,
+  handler: (event: HTMLElementEventMap[K]) => void,
+  element?: HTMLElement,
+  options?: AddEventListenerOptions
+): void;
+
+function useEventListener<K extends keyof SVGElementEventMap>(
+  eventName: K,
+  handler: (event: SVGElementEventMap[K]) => void,
+  element?: SVGElement,
+  options?: AddEventListenerOptions
+): void;
+
+function useEventListener<K extends keyof ElementEventMap>(
+  eventName: K,
+  handler: (event: ElementEventMap[K]) => void,
+  element?: Element,
+  options?: AddEventListenerOptions
+): void;
 
 function useEventListener<K extends keyof EventMap>({
   eventName,
   handler,
   element = window,
+  options,
 }: useEventListenerProps<K>) {
   const savedHandler = useRef(handler);
 
@@ -38,18 +72,18 @@ function useEventListener<K extends keyof EventMap>({
   }, [handler]);
 
   useEffect(() => {
-    if (!element) return;
+    if (!element || !isClient) return;
 
     const eventListener = (event: Event) => {
       handler(event as EventMap[K]);
     };
 
-    element.addEventListener(eventName, eventListener);
+    element.addEventListener(eventName, eventListener, options);
 
     return () => {
-      element.removeEventListener(eventName, eventListener);
+      element.removeEventListener(eventName, eventListener, options);
     };
-  }, [eventName, element, handler]);
+  }, [eventName, element, handler, options]);
 }
 
 export default useEventListener;
