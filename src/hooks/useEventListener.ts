@@ -1,48 +1,27 @@
 import { RefObject, useEffect, useRef } from 'react';
 import { isClient } from '../utils';
 
-type EventMap =
-  | WindowEventMap
-  | DocumentEventMap
-  | HTMLElementEventMap
-  | SVGElementEventMap;
+type EventMap = {
+  window: WindowEventMap;
+  document: DocumentEventMap;
+  htmlElement: HTMLElementEventMap;
+  svgElement: SVGElementEventMap;
+};
 
-function useEventListener<K extends keyof WindowEventMap>(
-  eventName: K,
-  handler: (event: WindowEventMap[K]) => void,
-  element?: Window | null,
-  options?: AddEventListenerOptions
-): void;
+type EventElement = {
+  window: Window;
+  document: Document;
+  htmlElement: RefObject<HTMLElement>;
+  svgElement: RefObject<SVGElement>;
+};
 
-function useEventListener<K extends keyof DocumentEventMap>(
-  eventName: K,
-  handler: (event: DocumentEventMap[K]) => void,
-  element?: Document,
-  options?: AddEventListenerOptions
-): void;
-
-function useEventListener<K extends keyof HTMLElementEventMap>(
-  eventName: K,
-  handler: (event: HTMLElementEventMap[K]) => void,
-  element?: RefObject<HTMLElement>,
-  options?: AddEventListenerOptions
-): void;
-
-function useEventListener<K extends keyof SVGElementEventMap>(
-  eventName: K,
-  handler: (event: SVGElementEventMap[K]) => void,
-  element?: RefObject<SVGElement>,
-  options?: AddEventListenerOptions
-): void;
-
-function useEventListener<K extends keyof EventMap>(
-  eventName: K,
-  handler: (event: EventMap[K]) => void,
-  element:
-    | Window
-    | Document
-    | RefObject<HTMLElement | SVGElement>
-    | null = window,
+function useEventListener<
+  K extends keyof EventMap,
+  E extends keyof EventMap[K] & string,
+>(
+  eventName: E,
+  handler: (event: EventMap[K][E]) => void,
+  element?: EventElement[K] | null,
   options?: AddEventListenerOptions
 ): void {
   const savedHandler = useRef(handler);
@@ -52,13 +31,23 @@ function useEventListener<K extends keyof EventMap>(
   }, [handler]);
 
   useEffect(() => {
-    if (!element || !isClient) return;
+    if (!isClient) return;
 
-    const targetElement = 'current' in element ? element.current : element;
+    let targetElement: HTMLElement | SVGElement | Window | Document | null =
+      null;
+
+    if (element && 'current' in element) {
+      targetElement = (element as RefObject<HTMLElement | SVGElement>).current;
+    } else {
+      targetElement = element || window;
+    }
+
     if (!targetElement) return;
 
     const eventListener = (event: Event) => {
-      savedHandler.current(event as EventMap[K]);
+      if (savedHandler.current) {
+        savedHandler.current(event as EventMap[K][E]);
+      }
     };
 
     targetElement.addEventListener(eventName, eventListener, options);
@@ -66,7 +55,7 @@ function useEventListener<K extends keyof EventMap>(
     return () => {
       targetElement.removeEventListener(eventName, eventListener, options);
     };
-  }, [eventName, element, handler, options]);
+  }, [eventName, element, options]);
 }
 
 export default useEventListener;
