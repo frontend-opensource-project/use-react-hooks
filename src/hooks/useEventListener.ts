@@ -2,22 +2,26 @@ import { useEffect } from 'react';
 
 // window event
 // dom elements
+// document
 // mediaqueries
 // with ref
 
-interface useEventListenerProps {
-  eventName: string;
-  handler: (e: Event) => void;
-  element?: Element | Window | null;
+interface useEventListenerProps<K extends keyof WindowEventMap> {
+  eventName: K;
+  handler: (event: WindowEventMap[K]) => void;
+  element?: Window | Document | Element | null;
 }
 
-function useEventListener(options: useEventListenerProps) {
-  const { eventName, handler, element = window } = options;
+function useEventListener<K extends keyof WindowEventMap>({
+  eventName,
+  handler,
+  element = window,
+}: useEventListenerProps<K>) {
   useEffect(() => {
     if (!element) return;
 
-    const eventListener = (e: Event) => {
-      handler(e);
+    const eventListener = (event: Event) => {
+      handler(event as WindowEventMap[K]);
     };
 
     element.addEventListener(eventName, eventListener);
