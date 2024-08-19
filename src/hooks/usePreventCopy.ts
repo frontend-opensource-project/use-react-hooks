@@ -16,8 +16,10 @@ const usePreventCopy = (callback?: () => void) => {
   useEffect(() => {
     // TODO: useEventListener 적용하기
     window.addEventListener('copy', preventCopy);
+    window.addEventListener('cut', preventCopy);
     return () => {
       window.removeEventListener('copy', preventCopy);
+      window.removeEventListener('cut', preventCopy);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
