@@ -25,3 +25,6 @@ dist-ssr
 
 # ESLINT
 .eslintcache
+
+# Jest Coverage Reports
+coverage/

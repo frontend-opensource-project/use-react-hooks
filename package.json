@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "prepare": "husky",
     "lint-staged": "lint-staged",
-    "test": "jest"
+    "test": "jest",
+		"coverage":"jest --coverage"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
