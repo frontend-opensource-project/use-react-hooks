@@ -11,6 +11,15 @@ const config: JestConfigWithTsJest = {
   },
   setupFiles: ['jest-canvas-mock', './src/mocks/mockWorker.ts'],
   setupFilesAfterEnv: ['./jest.setup.ts'],
+  coveragePathIgnorePatterns: ['./src/mocks/'],
+  coverageThreshold: {
+    global: {
+      statements: 70,
+      branches: 70,
+      functions: 70,
+      lines: 70,
+    },
+  },
 };
 
 export default config;
