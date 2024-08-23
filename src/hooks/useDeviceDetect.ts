@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react';
 import { isClient } from '../utils';
 
+interface UseDeviceDetectReturns {
+  isMobile: boolean;
+  isTablet: boolean;
+  isDesktop: boolean;
+  os: string;
+  browser: string;
+}
+
 const DEVICE_PATTERNS = {
   mobile: /Mobi/i,
   tablet: /Tablet|iPad/i,
@@ -22,7 +30,7 @@ const BROWSER_PATTERNS = {
   firefox: /Firefox/i,
 };
 
-const useDeviceDetect = () => {
+const useDeviceDetect = (): UseDeviceDetectReturns => {
   const [deviceInfo, setDeviceInfo] = useState({
     isMobile: false,
     isTablet: false,
@@ -75,9 +83,7 @@ const useDeviceDetect = () => {
     });
   }, []);
 
-  const { isMobile, isTablet, isDesktop, os, browser } = deviceInfo;
-
-  return { isMobile, isTablet, isDesktop, os, browser };
+  return deviceInfo;
 };
 
 export default useDeviceDetect;
