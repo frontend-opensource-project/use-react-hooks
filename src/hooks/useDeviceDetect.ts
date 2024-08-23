@@ -30,6 +30,22 @@ const BROWSER_PATTERNS = {
   firefox: /Firefox/i,
 };
 
+/**
+ * 사용자 디바이스의 유형, os, 브라우저를 감지하는 훅.
+ *
+ * @returns {UseDeviceDetectReturns} - 디바이스 정보 객체(isMobile, isTablet, isDesktop, os, browser)를 반환합니다.
+ *
+ * @property {boolean} isMobile - 사용 중인 디바이스의 Mobile 여부를 나타냅니다.
+ * @property {boolean} isTablet - 사용 중인 디바이스의 Tablet 여부를 나타냅니다.
+ * @property {boolean} isDesktop - 사용 중인 디바이스의 Desktop 여부를 나타냅니다.
+ * @property {string} os - 사용 중인 디바이스의 OS 이름을 나타냅니다.
+ * @property {string} browser - 사용 중인 브라우저의 이름을 나타냅니다.
+ *
+ * @description
+ * 사용자의 userAgent 문자열을 기반으로 디바이스 유형(Mobile, Tablet, Desktop), 운영체제(OS),
+ * 그리고 브라우저 종류를 감지하여 반환합니다.
+ */
+
 const useDeviceDetect = (): UseDeviceDetectReturns => {
   const [deviceInfo, setDeviceInfo] = useState({
     isMobile: false,
@@ -55,7 +71,7 @@ const useDeviceDetect = (): UseDeviceDetectReturns => {
     return '';
   };
 
-  const detectBrowser = (userAgent: string): string => {
+  const detectBrowser = (userAgent: string) => {
     // Order is fixed(due to the structure of the userAgent): Whale -> Edge -> Chrome -> Safari -> Firefox
     if (BROWSER_PATTERNS.whale.test(userAgent)) return 'Whale';
     if (BROWSER_PATTERNS.edge.test(userAgent)) return 'Edge';
