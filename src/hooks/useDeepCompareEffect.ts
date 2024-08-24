@@ -13,11 +13,11 @@ const useDeepCompareEffect = (
 ) => {
   const prevDependencies = useRef(dependencies);
 
-  if (isEqual(dependencies, prevDependencies.current)) return;
+  if (!isEqual(dependencies, prevDependencies.current)) {
+    prevDependencies.current = dependencies;
+  }
 
-  prevDependencies.current = dependencies;
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps, react-hooks/rules-of-hooks
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(callback, prevDependencies.current);
 };
 
