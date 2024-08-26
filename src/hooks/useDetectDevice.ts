@@ -3,7 +3,6 @@ import { isClient } from '../utils';
 
 interface UseDeviceDetectReturns {
   isMobile: boolean;
-  isTablet: boolean;
   isDesktop: boolean;
   os: string;
   browser: string;
@@ -11,7 +10,6 @@ interface UseDeviceDetectReturns {
 
 const DEVICE_PATTERNS = {
   mobile: /Mobi/i,
-  tablet: /iPad|Android(?!.*Mobile)/i,
 };
 
 const OS_PATTERNS = {
@@ -49,7 +47,6 @@ const BROWSER_PATTERNS = {
 const useDetectDevice = (): UseDeviceDetectReturns => {
   const [deviceInfo, setDeviceInfo] = useState({
     isMobile: false,
-    isTablet: false,
     isDesktop: false,
     os: '',
     browser: '',
@@ -57,17 +54,16 @@ const useDetectDevice = (): UseDeviceDetectReturns => {
 
   const detectDeviceType = (userAgent: string) => {
     const isMobile = DEVICE_PATTERNS.mobile.test(userAgent);
-    const isTablet = DEVICE_PATTERNS.tablet.test(userAgent);
-    const isDesktop = !isMobile && !isTablet;
-    return { isMobile, isTablet, isDesktop };
+    const isDesktop = !isMobile;
+    return { isMobile, isDesktop };
   };
 
   const detectOS = (userAgent: string) => {
+    if (OS_PATTERNS.iOS.test(userAgent)) return 'iOS';
+    if (OS_PATTERNS.android.test(userAgent)) return 'Android';
     if (OS_PATTERNS.windows.test(userAgent)) return 'Windows';
     if (OS_PATTERNS.macOS.test(userAgent)) return 'MacOS';
     if (OS_PATTERNS.linux.test(userAgent)) return 'Linux';
-    if (OS_PATTERNS.android.test(userAgent)) return 'Android';
-    if (OS_PATTERNS.iOS.test(userAgent)) return 'iOS';
     return '';
   };
 
@@ -86,13 +82,12 @@ const useDetectDevice = (): UseDeviceDetectReturns => {
 
     const UA = navigator.userAgent;
 
-    const { isMobile, isTablet, isDesktop } = detectDeviceType(UA);
+    const { isMobile, isDesktop } = detectDeviceType(UA);
     const os = detectOS(UA);
     const browser = detectBrowser(UA);
 
     setDeviceInfo({
       isMobile,
-      isTablet,
       isDesktop,
       os,
       browser,
