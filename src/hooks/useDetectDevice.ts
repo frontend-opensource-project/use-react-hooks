@@ -11,7 +11,7 @@ interface UseDeviceDetectReturns {
 
 const DEVICE_PATTERNS = {
   mobile: /Mobi/i,
-  tablet: /Tablet|iPad/i,
+  tablet: /iPad|Android(?!.*Mobile)/i,
 };
 
 const OS_PATTERNS = {
