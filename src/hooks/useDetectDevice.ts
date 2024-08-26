@@ -46,7 +46,7 @@ const BROWSER_PATTERNS = {
  * 그리고 브라우저 종류를 감지하여 반환합니다.
  */
 
-const useDeviceDetect = (): UseDeviceDetectReturns => {
+const useDetectDevice = (): UseDeviceDetectReturns => {
   const [deviceInfo, setDeviceInfo] = useState({
     isMobile: false,
     isTablet: false,
@@ -102,4 +102,4 @@ const useDeviceDetect = (): UseDeviceDetectReturns => {
   return deviceInfo;
 };
 
-export default useDeviceDetect;
+export default useDetectDevice;
