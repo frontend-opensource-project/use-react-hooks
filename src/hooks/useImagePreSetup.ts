@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 
 interface UseImagePreSetupProps {
-  imageFile: File | null;
+  imageFiles: File[] | null;
   convertToWebP?: boolean;
 }
 
 interface UseImagePreSetupReturns {
-  previewUrl: string | null;
+  previewUrls: (string | null)[];
   isLoading: boolean;
-  isError: string | null;
-  webpImage: Blob | null;
-  originalImage: File | null;
+  error: string | null;
+  webpImages: (Blob | null)[];
+  originalImages: File[] | null;
 }
 
 const imageToWebP = async (file: File): Promise<Blob> => {
@@ -18,7 +18,7 @@ const imageToWebP = async (file: File): Promise<Blob> => {
     const img = new Image();
     const url = URL.createObjectURL(file);
 
-    img.onload = function () {
+    img.onload = () => {
       URL.revokeObjectURL(url);
       const canvas = document.createElement('canvas');
       const context = canvas.getContext('2d');
@@ -48,55 +48,78 @@ const imageToWebP = async (file: File): Promise<Blob> => {
 };
 
 const useImagePreSetup = ({
-  imageFile,
+  imageFiles = [],
   convertToWebP = false,
 }: UseImagePreSetupProps): UseImagePreSetupReturns => {
   const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState<string | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [webpImage, setWebpImage] = useState<Blob | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [previewUrls, setPreviewUrls] = useState<(string | null)[]>([]);
+  const [webpImages, setWebpImages] = useState<(Blob | null)[]>([]);
 
   useEffect(() => {
-    if (!imageFile) return;
+    if (!imageFiles || imageFiles.length === 0) return;
 
-    const processeImage = async () => {
+    const processImages = async () => {
       setIsLoading(true);
-      setIsError(null);
+      setError(null);
 
       try {
-        if (convertToWebP) {
-          const webpBlob = await imageToWebP(imageFile);
-          const webpUrl = URL.createObjectURL(webpBlob);
-          setWebpImage(webpBlob);
-          setPreviewUrl(webpUrl);
-        } else {
-          const url = URL.createObjectURL(imageFile);
-          setWebpImage(null);
-          setPreviewUrl(url);
-        }
+        const results = await Promise.allSettled(
+          imageFiles.map(async (file) => {
+            try {
+              if (convertToWebP) {
+                const webpBlob = await imageToWebP(file);
+                const webpUrl = URL.createObjectURL(webpBlob);
+                return { webpBlob, previewUrl: webpUrl };
+              } else {
+                const url = URL.createObjectURL(file);
+                return { webpBlob: null, previewUrl: url };
+              }
+            } catch (error) {
+              return { webpBlob: null, previewUrl: null };
+            }
+          })
+        );
+
+        const previewUrlsArray: (string | null)[] = [];
+        const webpImagesArray: (Blob | null)[] = [];
+
+        results.forEach((result) => {
+          if (result.status === 'fulfilled') {
+            const { webpBlob, previewUrl } = result.value;
+            webpImagesArray.push(webpBlob);
+            previewUrlsArray.push(previewUrl);
+          } else {
+            webpImagesArray.push(null);
+            previewUrlsArray.push(null);
+          }
+        });
+
+        setPreviewUrls(previewUrlsArray);
+        setWebpImages(webpImagesArray);
       } catch (error) {
-        setIsError(error as string);
+        setError('파일 처리 중 오류가 발생했습니다.');
       } finally {
         setIsLoading(false);
       }
     };
 
-    processeImage();
+    processImages();
 
     return () => {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-      }
+      previewUrls.forEach((url) => {
+        if (url) URL.revokeObjectURL(url);
+      });
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [imageFile, convertToWebP]);
+  }, [imageFiles, convertToWebP]);
 
   return {
-    previewUrl,
+    previewUrls,
     isLoading,
-    isError,
-    webpImage,
-    originalImage: imageFile,
+    error,
+    webpImages,
+    originalImages: imageFiles,
   };
 };
 
