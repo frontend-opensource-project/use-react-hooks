@@ -3,17 +3,23 @@ import { useEffect, useState } from 'react';
 interface UseImagePreSetupProps {
   imageFiles: File[] | null;
   convertToWebP?: boolean;
+  webPQuality?: number;
 }
 
 interface UseImagePreSetupReturns {
   previewUrls: (string | null)[];
   isLoading: boolean;
-  error: string | null;
+  isError: boolean;
   webpImages: (Blob | null)[];
   originalImages: File[] | null;
 }
 
-const imageToWebP = async (file: File): Promise<Blob> => {
+interface ProcessedFileResult {
+  webpBlob: Blob | null;
+  previewUrl: string | null;
+}
+
+const imageToWebP = async (file: File, quality: number): Promise<Blob> => {
   return new Promise((resolve, reject) => {
     const img = new Image();
     const url = URL.createObjectURL(file);
@@ -24,35 +30,99 @@ const imageToWebP = async (file: File): Promise<Blob> => {
       const context = canvas.getContext('2d');
 
       if (!context) {
-        reject('Canvas Context가 존재하지 않습니다');
+        reject(new Error('Canvas Context가 존재하지 않습니다'));
         return;
       }
 
       canvas.width = img.width;
       canvas.height = img.height;
       context.drawImage(img, 0, 0);
-      canvas.toBlob((blob) => {
-        blob
-          ? resolve(blob)
-          : reject('이미지를 WebP형태로 변환하는데 실패했습니다.');
-      }, 'image/webp');
+      canvas.toBlob(
+        (blob) => {
+          blob
+            ? resolve(blob)
+            : reject(new Error('이미지를 WebP형태로 변환하는데 실패했습니다.'));
+        },
+        'image/webp',
+        quality
+      );
     };
 
     img.onerror = () => {
       URL.revokeObjectURL(url);
-      reject('이미지를 불러오지 못했습니다.');
+      reject(
+        new Error(
+          '이미지 로드 중 오류가 발생했습니다. 이미지를 불러올 수 없습니다.'
+        )
+      );
     };
 
     img.src = url;
   });
 };
 
+const convertFile = async (
+  file: File,
+  convertToWebP: boolean,
+  quality: number
+): Promise<ProcessedFileResult> => {
+  try {
+    if (convertToWebP) {
+      const webpBlob = await imageToWebP(file, quality);
+      const webpUrl = URL.createObjectURL(webpBlob);
+      return { webpBlob, previewUrl: webpUrl };
+    } else {
+      const url = URL.createObjectURL(file);
+      return { webpBlob: null, previewUrl: url };
+    }
+  } catch (error) {
+    console.error('파일 처리 중 오류 발생:', error);
+    return { webpBlob: null, previewUrl: null };
+  }
+};
+
+const getProcessResults = (
+  results: PromiseSettledResult<ProcessedFileResult>[]
+) => {
+  const previewUrlsList: (string | null)[] = [];
+  const webpImagesList: (Blob | null)[] = [];
+
+  results.forEach((result) => {
+    if (result.status === 'fulfilled') {
+      const { webpBlob, previewUrl } = result.value;
+      webpImagesList.push(webpBlob);
+      previewUrlsList.push(previewUrl);
+    } else {
+      webpImagesList.push(null);
+      previewUrlsList.push(null);
+    }
+  });
+
+  return { previewUrlsList, webpImagesList };
+};
+
+const DEFAULT_WEBP_QUALITY = 0.8;
+
 const useImagePreSetup = ({
   imageFiles = [],
   convertToWebP = false,
+  webPQuality = DEFAULT_WEBP_QUALITY,
 }: UseImagePreSetupProps): UseImagePreSetupReturns => {
+  if (!convertToWebP && webPQuality !== DEFAULT_WEBP_QUALITY) {
+    console.warn(
+      'webPQuality`는 WebP로의 변환 품질을 설정하는 옵션입니다. `convertToWebP`를 true로 설정해야만 `webPQuality`가 적용됩니다.'
+    );
+  }
+
+  if (webPQuality < 0 || webPQuality > 1) {
+    console.warn(
+      `webPQuality 값이 유효 범위(0 ~ 1)를 벗어나 기본값(${DEFAULT_WEBP_QUALITY})이 사용됩니다.`
+    );
+    webPQuality = DEFAULT_WEBP_QUALITY;
+  }
+
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [isError, setIsError] = useState(false);
   const [previewUrls, setPreviewUrls] = useState<(string | null)[]>([]);
   const [webpImages, setWebpImages] = useState<(Blob | null)[]>([]);
 
@@ -61,44 +131,20 @@ const useImagePreSetup = ({
 
     const processImages = async () => {
       setIsLoading(true);
-      setError(null);
+      setIsError(false);
 
       try {
         const results = await Promise.allSettled(
-          imageFiles.map(async (file) => {
-            try {
-              if (convertToWebP) {
-                const webpBlob = await imageToWebP(file);
-                const webpUrl = URL.createObjectURL(webpBlob);
-                return { webpBlob, previewUrl: webpUrl };
-              } else {
-                const url = URL.createObjectURL(file);
-                return { webpBlob: null, previewUrl: url };
-              }
-            } catch (error) {
-              return { webpBlob: null, previewUrl: null };
-            }
-          })
+          imageFiles.map((file) =>
+            convertFile(file, convertToWebP, webPQuality)
+          )
         );
+        const { previewUrlsList, webpImagesList } = getProcessResults(results);
 
-        const previewUrlsArray: (string | null)[] = [];
-        const webpImagesArray: (Blob | null)[] = [];
-
-        results.forEach((result) => {
-          if (result.status === 'fulfilled') {
-            const { webpBlob, previewUrl } = result.value;
-            webpImagesArray.push(webpBlob);
-            previewUrlsArray.push(previewUrl);
-          } else {
-            webpImagesArray.push(null);
-            previewUrlsArray.push(null);
-          }
-        });
-
-        setPreviewUrls(previewUrlsArray);
-        setWebpImages(webpImagesArray);
+        setPreviewUrls(previewUrlsList);
+        setWebpImages(webpImagesList);
       } catch (error) {
-        setError('파일 처리 중 오류가 발생했습니다.');
+        setIsError(true);
       } finally {
         setIsLoading(false);
       }
@@ -117,7 +163,7 @@ const useImagePreSetup = ({
   return {
     previewUrls,
     isLoading,
-    error,
+    isError,
     webpImages,
     originalImages: imageFiles,
   };
