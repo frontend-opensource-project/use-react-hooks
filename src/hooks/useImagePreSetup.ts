@@ -15,12 +15,12 @@ interface UseImagePreSetupReturns {
   originalImages: File[] | null;
 }
 
-interface ProcessedFileResult {
+export interface ProcessedFileResult {
   webpBlob: Blob | null;
   previewUrl: string | null;
 }
 
-const convertFile = async (
+export const convertFile = async (
   file: File,
   convertHandler: (file: File) => Promise<ProcessedFileResult>,
   idx: number
@@ -32,22 +32,40 @@ const convertFile = async (
     return { webpBlob: null, previewUrl: null };
   }
 };
-const DEFAULT_WEBP_QUALITY = 0.8;
+
+export const urlFromFileHandler = async (
+  file: File
+): Promise<ProcessedFileResult> => {
+  const url = URL.createObjectURL(file);
+  return { webpBlob: null, previewUrl: url };
+};
+
+export const convertToWebPHandler = async (
+  file: File,
+  quality: number
+): Promise<ProcessedFileResult> => {
+  const webpBlob = await fileImgToWebP(file, quality);
+  const webpUrl = URL.createObjectURL(webpBlob);
+  return { webpBlob, previewUrl: webpUrl };
+};
+
+export const DEFAULT_WEBP_QUALITY = 0.8;
 
 const validateWebPQuality = (convertToWebP: boolean, webPQuality: number) => {
-  if (!convertToWebP && webPQuality !== DEFAULT_WEBP_QUALITY) {
-    console.warn(
-      'webPQuality`는 WebP로의 변환 품질을 설정하는 옵션입니다. `convertToWebP`를 true로 설정해야만 `webPQuality`가 적용됩니다.'
-    );
+  if (!convertToWebP) {
+    if (webPQuality !== DEFAULT_WEBP_QUALITY) {
+      console.warn(
+        'webPQuality`는 WebP로의 변환 품질을 설정하는 옵션입니다. `convertToWebP`를 true로 설정해야만 `webPQuality`가 적용됩니다.'
+      );
+    }
+    return DEFAULT_WEBP_QUALITY;
   }
-
   if (webPQuality < 0 || webPQuality > 1) {
     console.warn(
       `webPQuality 값이 유효 범위(0 ~ 1)를 벗어나 기본값(${DEFAULT_WEBP_QUALITY})이 사용됩니다.`
     );
-    webPQuality = DEFAULT_WEBP_QUALITY;
+    return DEFAULT_WEBP_QUALITY;
   }
-
   return webPQuality;
 };
 
@@ -79,28 +97,13 @@ const useImagePreSetup = ({
   const [previewUrls, setPreviewUrls] = useState<(string | null)[]>([]);
   const [webpImages, setWebpImages] = useState<(Blob | null)[]>([]);
 
-  const convertToWebPHandler = async (
-    file: File
-  ): Promise<ProcessedFileResult> => {
-    const webpBlob = await fileImgToWebP(file, validatedWebPQuality);
-    const webpUrl = URL.createObjectURL(webpBlob);
-    return { webpBlob, previewUrl: webpUrl };
-  };
-
-  const urlFromFileHandler = async (
-    file: File
-  ): Promise<ProcessedFileResult> => {
-    const url = URL.createObjectURL(file);
-    return { webpBlob: null, previewUrl: url };
-  };
-
   const processImages = async (imageFiles: File[]) => {
     setIsLoading(true);
     setIsError(false);
 
     try {
       const convertHandler = convertToWebP
-        ? convertToWebPHandler
+        ? (file: File) => convertToWebPHandler(file, validatedWebPQuality)
         : urlFromFileHandler;
 
       const convertResults = await Promise.all(
