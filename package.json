@@ -1,18 +1,31 @@
 {
-  "name": "use-react-hooks",
-  "private": true,
-  "version": "0.0.0",
+  "name": "@frontend-opensource/use-react-hooks",
+  "private": false,
+  "version": "0.0.1",
   "type": "module",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b --verbose",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "prepare": "husky",
     "lint-staged": "lint-staged",
     "test": "jest",
-		"coverage":"jest --coverage"
+    "coverage": "jest --coverage"
   },
+  "module": "dist/src/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/src/index.js",
+      "require": "./dist/src/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "lint-staged": {
     "*.{ts,tsx}": [
       "eslint --cache --fix",

@@ -10,12 +10,13 @@
 
     /* Bundler mode */
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "noEmit": true,
+    "noEmit": false,
     "jsx": "react-jsx",
+    "outDir": "dist",
+    "declaration": true,
 
     /* Linting */
     "strict": true,
@@ -23,5 +24,13 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"]
+  "include": [
+    "src/index.ts",
+    "src/hooks/**/*",
+    "src/utils/**/*",
+    "src/types/**/*",
+    "src/context/**/*",
+    "src/mocks/**/*"
+  ],
+  "exclude": ["**/*.test.ts", "**/*.test.tsx"]
 }

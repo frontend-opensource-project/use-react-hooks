@@ -13,7 +13,7 @@ import { PositiveInteger } from '../types/number';
  * - 이 훅은 플래그를 특정 시간 동안 유지하고자 할 때 유용합니다.
  * - 데이터 페칭 시, 페칭(또는 로딩) 플래그를 특정 시간 동안 유지하여 로딩 UI의 깜빡임 현상 제거, 중복 호출 방지 등의 용도로 사용할 수 있습니다.
  */
-export const useDelayFlag = <T extends number>(
+const useDelayFlag = <T extends number>(
   flag: boolean,
   delayTime?: PositiveInteger<T>
 ): boolean => {
@@ -57,3 +57,5 @@ export const useDelayFlag = <T extends number>(
 
   return delayFlag;
 };
+
+export default useDelayFlag;
