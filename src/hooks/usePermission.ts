@@ -29,26 +29,34 @@ const usePermission = ({
 }: UsePermissionProps): UsePermissionReturns => {
   const [status, setStatus] = useState<PermissionState>('prompt');
 
-  useEffect(() => {
-    if (!validators.isClient() || !navigator.permissions) {
-      console.warn('The Permissions API is not supported.');
-      return;
-    }
+  const monitorPermissionStatus = async (permission: PermissionName) => {
+    const updateStatusOnPermissionChange = (
+      permissionStatus: PermissionStatus
+    ) => {
+      setStatus(permissionStatus.state);
 
-    navigator.permissions
-      .query({
-        name: permission as PermissionName,
-      })
-      .then((permissionStatus) => {
+      permissionStatus.onchange = () => {
         setStatus(permissionStatus.state);
+      };
+    };
 
-        permissionStatus.onchange = () => {
-          setStatus(permissionStatus.state);
-        };
-      })
-      .catch(() => {
-        setStatus('notSupported');
+    try {
+      if (!validators.isClient() || !navigator.permissions) {
+        throw new PermissionError('The Permissions API is not supported.');
+      }
+
+      const permissionStatus = await navigator.permissions.query({
+        name: permission,
       });
+
+      updateStatusOnPermissionChange(permissionStatus);
+    } catch {
+      setStatus('notSupported');
+    }
+  };
+
+  useEffect(() => {
+    monitorPermissionStatus(permission as PermissionName);
   }, [permission]);
 
   return { status };
@@ -92,5 +100,13 @@ type PredefinedPermissionName =
   | 'system-wake-lock'
   | 'top-level-storage-access'
   | 'window-management';
+
+class PermissionError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.message = message;
+    this.name = 'PermissionError';
+  }
+}
 
 export default usePermission;
