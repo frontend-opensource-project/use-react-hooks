@@ -130,57 +130,34 @@ const useMockData = <S extends Schema>({
    * 순회 도중 객체나 배열을 만나면 재귀함수로 내부 값을 해결한다.
    */
   const generateMockData = (schema: Schema): SchemaToType<Schema> => {
-    return Object.entries(schema).reduce((acc, [key, value]) => {
-      const recurseGenerateArray = (dataArr: DataType[]): unknown[] => {
-        return dataArr.map((type) => {
-          if (validators.isArray(type)) {
-            return recurseGenerateArray(type);
-          }
-
-          if (validators.isObject(type)) {
-            return generateMockData({ [key]: type });
-          }
-
-          return generateValueFromType(type);
-        });
-      };
-
+    const generateDataFromType = (
+      type: DataType
+    ): SchemaToType<Schema>[keyof SchemaToType<Schema>] => {
       /**
        * 요소가 배열인경우
        * 배열 요소는 @type {DataType} 값으로 구성되어 있다.
        */
-      if (validators.isArray(value)) {
-        acc[key] = value.map((type) => {
-          if (validators.isArray(type)) {
-            return recurseGenerateArray(type);
-          }
-
-          if (validators.isObject(type)) {
-            return generateMockData(type);
-          }
-
-          return generateValueFromType(type);
-        }) as DataType;
-
-        return acc;
+      if (validators.isArray(type)) {
+        return (type as DataType[]).map(generateDataFromType);
       }
 
       /**
        * 요소가 객체인경우
        * 객체 요소는 @type {ObjectType} 값으로 구성되어 있다.
        */
-      if (validators.isObject(value)) {
-        acc[key] = generateMockData(value);
-
-        return acc;
+      if (validators.isObject(type)) {
+        return generateMockData(type as ObjectType);
       }
 
       /**
        * 요소가 객체, 배열이 아닌경우
        * @type {PrimitiveType} 값으로 구성되어 있다.
        */
-      acc[key] = generateValueFromType(value) as DataType;
+      return generateValueFromType(type as PrimitiveType);
+    };
 
+    return Object.entries(schema).reduce((acc, [key, value]) => {
+      acc[key] = generateDataFromType(value);
       return acc;
     }, {} as SchemaToType<Schema>);
   };
