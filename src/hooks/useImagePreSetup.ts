@@ -101,13 +101,7 @@ const getProcessResults = (
   return { previewUrlsList, webpImagesList };
 };
 
-const DEFAULT_WEBP_QUALITY = 0.8;
-
-const useImagePreSetup = ({
-  imageFiles = [],
-  convertToWebP = false,
-  webPQuality = DEFAULT_WEBP_QUALITY,
-}: UseImagePreSetupProps): UseImagePreSetupReturns => {
+const validateWebPQuality = (convertToWebP: boolean, webPQuality: number) => {
   if (!convertToWebP && webPQuality !== DEFAULT_WEBP_QUALITY) {
     console.warn(
       'webPQuality`는 WebP로의 변환 품질을 설정하는 옵션입니다. `convertToWebP`를 true로 설정해야만 `webPQuality`가 적용됩니다.'
@@ -120,6 +114,18 @@ const useImagePreSetup = ({
     );
     webPQuality = DEFAULT_WEBP_QUALITY;
   }
+
+  return webPQuality;
+};
+
+const DEFAULT_WEBP_QUALITY = 0.8;
+
+const useImagePreSetup = ({
+  imageFiles = [],
+  convertToWebP = false,
+  webPQuality = DEFAULT_WEBP_QUALITY,
+}: UseImagePreSetupProps): UseImagePreSetupReturns => {
+  webPQuality = validateWebPQuality(convertToWebP, webPQuality);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
