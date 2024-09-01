@@ -32,6 +32,7 @@ const convertFile = async (
     return { webpBlob: null, previewUrl: null };
   }
 };
+const DEFAULT_WEBP_QUALITY = 0.8;
 
 const validateWebPQuality = (convertToWebP: boolean, webPQuality: number) => {
   if (!convertToWebP && webPQuality !== DEFAULT_WEBP_QUALITY) {
@@ -50,8 +51,22 @@ const validateWebPQuality = (convertToWebP: boolean, webPQuality: number) => {
   return webPQuality;
 };
 
-const DEFAULT_WEBP_QUALITY = 0.8;
-
+/**
+ * 이미지 파일을 처리하고 WebP 변환 또는 URL 생성을 수행하는 커스텀 훅.
+ * @param {File[] | null} [props.imageFiles=null] - 처리할 이미지 파일의 배열.
+ * @param {boolean} [props.convertToWebP=false] - WebP 형식으로 변환할지 여부. 기본값=false.
+ * @param {number} [props.webPQuality=0.8] - WebP 변환 품질. 기본값=0.8. 유효 범위는 0에서 1 사이입니다.
+ *
+ * @returns {string[] | null[]} previewUrls - 처리된 이미지의 미리보기 URL 배열. 오류가 발생한 경우 null이 포함될 수 있음.
+ * @returns {boolean} isLoading - 이미지 처리 진행 여부를 나타내는 상태.
+ * @returns {boolean} isError - 이미지 처리 중 오류 발생 여부를 나타내는 상태.
+ * @returns {Blob[] | null[]} webpImages - WebP 형식으로 변환된 이미지 Blob 배열. 변환되지 않았거나 오류가 발생한 경우 null이 포함될 수 있음.
+ * @returns {File[] | null} originalImages - 원본 이미지 파일의 배열.
+ *
+ * @description
+ * 주어진 이미지 파일을 처리하여 미리보기 URL을 생성하거나 WebP 형식으로 변환합니다.
+ * 처리 상태를 나타내는 로딩과 오류 상태를 관리하며, 변환된 WebP 이미지와 원본 이미지 파일을 반환합니다.
+ */
 const useImagePreSetup = ({
   imageFiles = [],
   convertToWebP = false,
@@ -84,12 +99,12 @@ const useImagePreSetup = ({
     setIsError(false);
 
     try {
-      const fileHandler = convertToWebP
+      const convertHandler = convertToWebP
         ? convertToWebPHandler
         : urlFromFileHandler;
 
       const convertResults = await Promise.all(
-        imageFiles.map((file, idx) => convertFile(file, fileHandler, idx))
+        imageFiles.map((file, idx) => convertFile(file, convertHandler, idx))
       );
 
       const previewUrlsList = convertResults.map((result) => result.previewUrl);
