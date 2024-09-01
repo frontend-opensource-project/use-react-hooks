@@ -51,7 +51,10 @@ export const convertToWebPHandler = async (
 
 export const DEFAULT_WEBP_QUALITY = 0.8;
 
-const validateWebPQuality = (convertToWebP: boolean, webPQuality: number) => {
+export const validateWebPQuality = (
+  convertToWebP: boolean,
+  webPQuality: number
+) => {
   if (!convertToWebP) {
     if (webPQuality !== DEFAULT_WEBP_QUALITY) {
       console.warn(
