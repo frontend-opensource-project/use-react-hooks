@@ -1,5 +1,3 @@
-// const useHooks = ({}: UseHooksProps): UseHooksReturns ⇒ {}
-
 import { useEffect, useState } from 'react';
 import { validators } from '../utils';
 
