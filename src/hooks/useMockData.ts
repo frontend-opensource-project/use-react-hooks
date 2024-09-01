@@ -28,7 +28,7 @@ type InferType<T extends DataType> =
   T extends DataType[] ? InferType<T[number]>[] :
   T extends ObjectType ? { [K in keyof T]: InferType<T[K]> } : never;
 
-type SchemaToType<S extends Schema> = {
+export type SchemaToType<S extends Schema> = {
   [K in keyof S]: InferType<S[K]>;
 };
 
@@ -38,7 +38,7 @@ type Range = {
 };
 
 type TypeOptions = {
-  name: Range;
+  string: Range;
   number: Range;
   image: {
     width: Range;
@@ -68,7 +68,7 @@ interface UseMockDataReturns<T> {
 const defaultOptions: Options = {
   count: 1,
   type: {
-    name: {
+    string: {
       min: 3,
       max: 10,
     },
@@ -188,7 +188,7 @@ const useMockData = <S extends Schema>({
   const generateValueFromType = (type: PrimitiveType) => {
     switch (type) {
       case 'string':
-        return dataGenerator.generateRandomName(typeOptions.name);
+        return dataGenerator.generateRandomName(typeOptions.string);
       case 'number':
         return dataGenerator.generateRandomNumberInRange(typeOptions.number);
       case 'boolean':
@@ -219,8 +219,6 @@ const useMockData = <S extends Schema>({
     addItem: addItemHandler,
   };
 };
-
-export default useMockData;
 
 type DateFormat = `${string}-${string}-${string}`;
 
@@ -257,7 +255,7 @@ const dataGenerator = {
     const start = new Date(range.start);
     const end = new Date(range.end);
 
-    if (start >= end) {
+    if (start > end) {
       throw new Error('startDate must be earlier than endDate');
     }
 
@@ -276,7 +274,7 @@ const dataGenerator = {
     });
   },
   generateRandomValueInRange(min: number, max: number) {
-    if (min >= max) {
+    if (min > max) {
       throw new Error(
         `Min value (${min}) must be less than Max value (${max})`
       );
@@ -304,3 +302,6 @@ function formatDateToYYYYMMDD(additionalMonths = 0): DateFormat {
 
   return `${year}-${month}-${day}`;
 }
+
+export default useMockData;
+export type { Schema as useMockDataSchema, Options as useMockDataOptions };
