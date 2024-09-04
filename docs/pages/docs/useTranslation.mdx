@@ -1,0 +1,60 @@
+### 1️⃣ Spec
+
+- 기능 : 사용자가 설정한 언어에 따라 텍스트를 변경해줌
+  - changeLanguage 함수를 사용해 언어 변경 가능
+  - useTranslation에서 리턴 받은 t 함수를 통해 언어 리소스에서 번역된 텍스트를 가져올 수 있음
+
+### 3️⃣ 예시 코드
+
+```ts
+import ReactDOM from 'react-dom/client';
+import App from './App.tsx';
+import { TranslationProvider } from './context/TranslationContext';
+
+const translations = {
+  en: {
+    greeting: 'Hello ${name}, You have ${count} new messages.',
+    farewell: 'Goodbye ${name}',
+  },
+  ko: {
+    greeting: '안녕하세요 ${name}, 새 메시지가 ${count}개 있습니다.',
+    farewell: '안녕히 가세요 ${name}',
+  },
+};
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <TranslationProvider translations={translations} defaultLanguage="en">
+    <App />{' '}
+  </TranslationProvider>
+);
+```
+
+- useTranslation을 사용하는 곳 상위 컴포넌트에서 TranslationProvider로 감싸주는 작업 필요
+
+```ts
+import { useTranslation } from './hooks/useTranslation';
+
+const App = () => {
+  const { t, language, changeLanguage } = useTranslation();
+
+  const handleLanguageChange = (lang: string) => {
+    changeLanguage(lang);
+  };
+
+  return (
+    <div>
+      <h1>{t('greeting', { name: 'Choo', count: 5 })}</h1>
+      <p>{t('farewell', { name: 'Choo' })}</p>
+
+      <div>
+        <button onClick={() => handleLanguageChange('en')}>English</button>
+        <button onClick={() => handleLanguageChange('ko')}>한국어</button>
+      </div>
+
+      <p>Current Language: {language}</p>
+    </div>
+  );
+};
+
+export default App;
+```
