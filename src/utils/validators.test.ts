@@ -33,6 +33,38 @@ describe('validators', () => {
     expect(validators.isObject(null)).toBe(false);
   });
 
+  test('isDate', () => {
+    const testCases = [
+      {
+        input: new Date(),
+        expected: true,
+      },
+      {
+        input: new Date('invalid date'),
+        expected: false,
+      },
+      {
+        input: '2024-09-06',
+        expected: false,
+      },
+      {
+        input: new Date('2024-09-06'),
+        expected: true,
+      },
+      { input: 123456789, expected: false },
+      { input: null, expected: false },
+      { input: undefined, expected: false },
+      {
+        input: { year: 2024, month: 9, day: 6 },
+        expected: false,
+      },
+    ];
+
+    testCases.forEach(({ input, expected }) => {
+      expect(validators.isDate(input)).toBe(expected);
+    });
+  });
+
   test('isFunction', () => {
     expect(validators.isFunction(() => {})).toBe(true);
     expect(validators.isFunction(function () {})).toBe(true);

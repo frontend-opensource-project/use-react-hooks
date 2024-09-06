@@ -19,6 +19,9 @@ const validators = {
   isObject(value: unknown): value is Record<string, unknown> {
     return value !== null && typeof value === 'object' && !Array.isArray(value);
   },
+  isDate(value: unknown): value is Date {
+    return value instanceof Date && !isNaN(value.getTime());
+  },
   isSameType(value1: unknown, value2: unknown): boolean {
     const typeChecks = [
       validators.isString,
