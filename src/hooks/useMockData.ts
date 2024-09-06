@@ -256,11 +256,16 @@ const dataGenerator = {
     return new Date(randomTime);
   },
   generateSimpleUUID() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-      const r = this.generateRandomIndex(16) | 0;
-      const v = c === 'x' ? r : (r & 0x3) | 0x8;
-      return v.toString(16);
-    });
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+      /[xy]/g,
+      (character) => {
+        const randomValue = this.generateRandomIndex(16) | 0;
+        const computedValue =
+          character === 'x' ? randomValue : (randomValue & 0x3) | 0x8;
+
+        return computedValue.toString(16);
+      }
+    );
   },
   generateRandomValueInRange(min: number, max: number) {
     if (min > max) {
@@ -275,6 +280,7 @@ const dataGenerator = {
     if (range <= 0) {
       throw new Error('Range must be greater than 0');
     }
+
     return Math.floor(Math.random() * range);
   },
 };
