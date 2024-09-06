@@ -241,8 +241,12 @@ const dataGenerator = {
     return `https://picsum.photos/${width}/${height}`;
   },
   generateRandomDateInRange(range: { start: DateFormat; end: DateFormat }) {
-    const start = new Date(range.start);
-    const end = new Date(range.end);
+    const start = new Date(range.start) as Date | null;
+    const end = new Date(range.end) as Date | null;
+
+    if (!validators.isDate(start) || !validators.isDate(end)) {
+      throw new Error('Invalid date object.');
+    }
 
     if (start > end) {
       throw new Error('startDate must be earlier than endDate');
