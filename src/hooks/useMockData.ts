@@ -163,22 +163,34 @@ const useMockData = <S extends Schema>({
   };
 
   const generateValueFromType = (type: PrimitiveType) => {
-    switch (type) {
-      case 'string':
+    const generators = {
+      string() {
         return dataGenerator.generateRandomName(typeOptions.string);
-      case 'number':
+      },
+      number() {
         return dataGenerator.generateRandomNumberInRange(typeOptions.number);
-      case 'boolean':
+      },
+      boolean() {
         return dataGenerator.generateRandomBoolean();
-      case 'image':
+      },
+      image() {
         return dataGenerator.generateRandomImageURL(typeOptions.image);
-      case 'date':
+      },
+      date() {
         return dataGenerator.generateRandomDateInRange(typeOptions.date);
-      case 'UUID':
+      },
+      UUID() {
         return dataGenerator.generateSimpleUUID();
-      default:
-        throw new Error('Invalid type');
+      },
+    };
+
+    const generatorFunction = generators[type];
+
+    if (!generatorFunction) {
+      throw new Error('Invalid type');
     }
+
+    return generatorFunction();
   };
 
   const [mockData, setMockData] = useState(() => {
