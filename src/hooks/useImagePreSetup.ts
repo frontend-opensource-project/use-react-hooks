@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { fileImgToWebP } from '../utils';
+import { imgTo } from '../utils';
 
 interface UseImagePreSetupProps {
   imageFiles: File[] | null;
@@ -44,9 +44,11 @@ export const convertToWebPHandler = async (
   file: File,
   quality: number
 ): Promise<ProcessedFileResult> => {
-  const webpBlob = await fileImgToWebP(file, quality);
-  const webpUrl = URL.createObjectURL(webpBlob);
-  return { webpBlob, previewUrl: webpUrl };
+  const url = URL.createObjectURL(file);
+  const imgToUrl = imgTo(url);
+  const imgToWebP = await imgToUrl('image/webp', quality);
+  const webpUrl = URL.createObjectURL(imgToWebP);
+  return { webpBlob: imgToWebP, previewUrl: webpUrl };
 };
 
 export const DEFAULT_WEBP_QUALITY = 0.8;

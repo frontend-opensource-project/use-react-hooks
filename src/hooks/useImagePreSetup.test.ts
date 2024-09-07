@@ -5,11 +5,10 @@ import useImagePreSetup, {
   urlFromFileHandler,
   validateWebPQuality,
 } from './useImagePreSetup';
-import { fileImgToWebP } from '../utils';
 
-jest.mock('../utils', () => ({
-  fileImgToWebP: jest.fn(),
-}));
+import { imgTo } from '../utils';
+
+jest.mock('../utils/imgTo');
 
 describe('useImagePreSetup', () => {
   let consoleWarnSpy: jest.SpyInstance;
@@ -35,12 +34,13 @@ describe('useImagePreSetup', () => {
     consoleWarnSpy.mockRestore();
   });
 
-  test('파일이 주어지면 fileImgToWebP가 올바르게 호출되고 로딩 상태가 정상적으로 변경된다.', async () => {
-    (fileImgToWebP as jest.Mock).mockImplementation(() => {
-      return Promise.resolve({
-        webpBlob: new Blob(),
-        previewUrl: 'mock-url',
-      });
+  test('파일이 주어지면 변환함수가 올바르게 호출되고 로딩 상태가 정상적으로 변경된다.', async () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    (imgTo as jest.Mock).mockImplementation((_url: string) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      return (_type: string) => {
+        return Promise.resolve(new Blob());
+      };
     });
 
     const { result } = renderHook(() =>
@@ -50,14 +50,14 @@ describe('useImagePreSetup', () => {
     expect(result.current.isLoading).toBe(true);
 
     await waitFor(() => {
-      expect(fileImgToWebP).toHaveBeenCalledTimes(mockFiles.length);
+      expect(imgTo).toHaveBeenCalledTimes(mockFiles.length);
     });
 
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
     });
 
-    expect(fileImgToWebP).toHaveBeenCalledTimes(mockFiles.length);
+    expect(imgTo).toHaveBeenCalledTimes(mockFiles.length);
     expect(result.current.isError).toBe(false);
     expect(result.current.previewUrls.length).toBe(mockFiles.length);
     expect(result.current.webpImages.length).toBe(mockFiles.length);
