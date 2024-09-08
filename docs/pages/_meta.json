@@ -3,10 +3,14 @@
     "type": "page"
   },
   "index": {
-    "title": "Home"
+    "title": "홈"
+  },
+  "guide": {
+    "title": "가이드",
+    "type": "page"
   },
   "docs": {
-    "title": "docs",
+    "title": "문서",
     "type": "page"
   }
 }
