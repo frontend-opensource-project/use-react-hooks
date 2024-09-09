@@ -22,11 +22,19 @@ const validators = {
   isDate(value: unknown): value is Date {
     return value instanceof Date && !isNaN(value.getTime());
   },
+  isNull(value: unknown): value is null {
+    return value === null;
+  },
+  isBoolean(value: unknown): value is boolean {
+    return typeof value === 'boolean';
+  },
   isSameType(value1: unknown, value2: unknown): boolean {
     const typeChecks = [
       validators.isString,
       validators.isNumber,
       validators.isArray,
+      validators.isBoolean,
+      validators.isNull,
       validators.isObject,
     ];
 
@@ -35,6 +43,10 @@ const validators = {
   getType(value: unknown): string {
     if (validators.isArray(value)) {
       return 'array';
+    }
+
+    if (validators.isNull(value)) {
+      return 'null';
     }
 
     return typeof value;
