@@ -1,3 +1,8 @@
 {
-  "useTranslation": "useTranslation"
+  "hooks": {
+    "title": "Hooks",
+    "theme": {
+      "collapsed": false
+    }
+  }
 }
