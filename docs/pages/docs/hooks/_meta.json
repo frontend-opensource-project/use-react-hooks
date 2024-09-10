@@ -1,4 +1,5 @@
 {
   "useTranslation": "useTranslation",
-  "useMousePosition": "useMousePosition"
+  "useMousePosition": "useMousePosition",
+  "useToggle": "useToggle"
 }

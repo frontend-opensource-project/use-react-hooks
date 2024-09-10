@@ -1,0 +1,40 @@
+# useToggle
+
+## Introduce
+
+`boolean` 값을 토글하는 훅입니다.
+
+```ts
+const [state, toggle] = useToggle(true);
+```
+
+- 상태를 토글하거나, 전달된 값으로 상태를 설정할 수 있습니다.
+- 상태 변경 함수는 인자로 `boolean` 값을 받을 수 있으며, 전달된 값이 `boolean`이 아니면 현재 상태의 반대값으로 설정됩니다.
+- 모달을 표시하고 숨기거나, 사이드 메뉴를 열거나 닫을 때처럼 어떤 동작을 반대 동작으로 바꾸고 싶을 때 유용합니다.
+
+### Props
+
+- `initialValue` : 토글의 시작 상태 설정 (true/false)
+
+### Returns
+
+- `state` : 현재 상태값
+- `toggle` : 상태를 토글하거나 지정된 값을 설정
+
+## Examples
+
+```ts copy filename="TestComponent.tsx" /targetRef/
+const TestComponent = () => {
+  const [state, toggle] = useToggle(true);
+
+  return (
+    <div>
+      <div>{state ? 'ON' : 'OFF'}</div>
+      <button onClick={toggle}>Toggle</button>
+      <button onClick={() => toggle(true)}>set ON</button>
+      <button onClick={() => toggle(false)}>set OFF</button>
+      <button onClick={() => toggle('something')}>set something (Also toggle)</button>
+    </div>
+  );
+};
+```
