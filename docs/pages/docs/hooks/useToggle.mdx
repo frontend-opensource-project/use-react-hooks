@@ -4,8 +4,8 @@
 
 `boolean` 값을 토글하는 훅입니다.
 
-```ts
-const [state, toggle] = useToggle(true);
+```tsx
+const useToggle = ( initialValue: boolean): [boolean, (nextValue?: unknown) => void]
 ```
 
 - 상태를 토글하거나, 전달된 값으로 상태를 설정할 수 있습니다.
@@ -23,7 +23,7 @@ const [state, toggle] = useToggle(true);
 
 ## Examples
 
-```ts copy filename="TestComponent.tsx" /targetRef/
+```tsx copy filename="TestComponent.tsx" /targetRef/
 const TestComponent = () => {
   const [state, toggle] = useToggle(true);
 
@@ -33,7 +33,9 @@ const TestComponent = () => {
       <button onClick={toggle}>Toggle</button>
       <button onClick={() => toggle(true)}>set ON</button>
       <button onClick={() => toggle(false)}>set OFF</button>
-      <button onClick={() => toggle('something')}>set something (Also toggle)</button>
+      <button onClick={() => toggle('something')}>
+        set something (Also toggle)
+      </button>
     </div>
   );
 };
