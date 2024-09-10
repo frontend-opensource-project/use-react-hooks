@@ -1,0 +1,82 @@
+# useKeyCombination
+
+## Introduce
+
+지정된 키 조합을 눌렀을 때 콜백 함수를 호출하는 훅입니다.
+
+- 지정된 키들을 모두 눌렀을 때 콜백 함수를 호출하며, 필요에 따라 기본 동작을 막을 수도 있습니다.
+- 예를 들어, `Ctrl + K` 키 조합을 감지하여 특정 작업을 실행하고자 할 때 사용할 수 있습니다.
+
+```ts
+interface UseKeyCombination {
+  shortcutKeys: string[];
+  callback: () => void;
+  isPrevent?: boolean;
+}
+
+const useKeyCombination = ({
+  shortcutKeys,
+  callback,
+  isPrevent = false,
+}: UseKeyCombination): void
+```
+
+### Props
+
+- `shortcutKeys` : 키 조합을 나타내는 키 코드의 배열
+- `callback` : 키 조합이 감지되었을 때 실행할 콜백 함수
+- `isPrevent` : true로 설정하면 키 조합이 눌렸을 때 기본 동작 방지 (기본값: false)
+
+### Returns
+
+_없음_
+
+## Examples
+
+```tsx copy
+import { useCallback, useRef, useState } from 'react';
+import useKeyCombination from './hooks/useKeyCombination';
+
+function App() {
+  const [bold, setBold] = useState(false);
+  const [isSave, setIsSave] = useState(false);
+  const input = useRef<HTMLInputElement>(null);
+
+  const keyActions = {
+    toggleBold: {
+      shortcutKeys: ['ControlLeft', 'KeyB'],
+      callback: useCallback(() => {
+        setBold((state) => !state);
+      }, [setBold]),
+    },
+    save: {
+      shortcutKeys: ['MetaLeft', 'KeyS'],
+      callback: useCallback(() => setIsSave((state) => !state), [setIsSave]),
+      isPrevent: true,
+    },
+    search: {
+      shortcutKeys: ['MetaLeft', 'KeyK'],
+      callback: useCallback(() => input.current?.focus(), []),
+    },
+  };
+
+  useKeyCombination(keyActions.toggleBold);
+  useKeyCombination(keyActions.save);
+  useKeyCombination(keyActions.search);
+
+  return (
+    <div>
+      <input type="text" ref={input} placeholder="Press command + K" />
+      <div>USE-REACT-HOOKS</div>
+      <ul>
+        <li style={{ fontWeight: bold ? 'bold' : 'normal' }}>
+          command + B : Bold
+        </li>
+        <li>command + S: {isSave ? 'SAVE!' : 'Not saved yet'}</li>
+      </ul>
+    </div>
+  );
+}
+
+export default App;
+```
