@@ -24,13 +24,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": [
-    "src/index.ts",
-    "src/hooks/**/*",
-    "src/utils/**/*",
-    "src/types/**/*",
-    "src/context/**/*",
-    "src/mocks/**/*"
-  ],
-  "exclude": ["**/*.test.ts", "**/*.test.tsx"]
+  "include": ["src/**/*"],
+  "exclude": ["**/main.tsx", "**/App.tsx", "src/docs", "**/*.test.*"]
 }
