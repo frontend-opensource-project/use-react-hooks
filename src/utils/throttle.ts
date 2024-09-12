@@ -1,4 +1,4 @@
-import { GenericFn } from '../types';
+type GenericFn<T extends unknown[]> = (...args: T) => void;
 
 export const throttle = <T extends unknown[]>(
   callbackFn: GenericFn<T>,

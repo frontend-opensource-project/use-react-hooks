@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react';
 import useDetectInactivity from './useDetectInactivity';
-import { useTimer } from '../useTimer';
-import { isTouchDevice } from '../../utils';
+import { useTimer } from '@/hooks/useTimer';
+import { isTouchDevice } from '@/utils';
 
 jest.mock('../useTimer');
 

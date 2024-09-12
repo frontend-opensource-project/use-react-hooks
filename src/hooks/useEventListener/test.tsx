@@ -1,7 +1,7 @@
 import { cleanup, fireEvent, render, renderHook } from '@testing-library/react';
 import useEventListener from './useEventListener';
 import { act, useRef } from 'react';
-import * as utils from '../../utils';
+import * as utils from '@/utils';
 
 describe('useEventListener', () => {
   let handler: jest.Mock;

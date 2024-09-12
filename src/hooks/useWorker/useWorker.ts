@@ -1,7 +1,7 @@
 import { MutableRefObject, useCallback, useRef, useState } from 'react';
 
-import { validators } from '../../utils';
-import { useUnmountEffect } from '../useUnmountEffect';
+import { validators } from '@/utils';
+import { useUnmountEffect } from '@/hooks/useUnmountEffect';
 
 type WorkerScript<A, R, C> = (arg: A, accessClosure?: C) => R;
 

@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
 import useDetectDevice from './useDetectDevice';
-import * as utils from '../../utils';
+import * as utils from '@/utils';
 
 const mockUserAgent = (userAgent: string) => {
   Object.defineProperty(navigator, 'userAgent', {

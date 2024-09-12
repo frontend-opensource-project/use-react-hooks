@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import useTranslation from './useTranslation';
-import { TranslationProvider } from '../../context/TranslationContext';
+import { TranslationProvider } from '@/context/TranslationContext';
 
 const translations = {
   en: {

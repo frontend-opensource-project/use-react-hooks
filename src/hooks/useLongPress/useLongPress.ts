@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Fn } from '../../types';
+
+type Fn = () => void;
 
 /**
  * 사용자가 요소를 길게 눌렀을 때 콜백 함수를 호출하는 훅

@@ -6,7 +6,7 @@ import {
   useRef,
   useState,
 } from 'react';
-import { throttle } from '../../utils';
+import { throttle } from '@/utils';
 
 interface MousePosOptions {
   delayTime?: number;

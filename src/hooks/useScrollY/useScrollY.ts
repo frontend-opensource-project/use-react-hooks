@@ -1,7 +1,8 @@
 import { useCallback, useEffect } from 'react';
-import { Fn } from '../../types';
-import { debounce } from '../../utils/debounce';
-import { useLocalStorage } from '../useLocalStorage';
+import { debounce } from '@/utils';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
+
+type Fn = () => void;
 
 const useScrollY = (): { moveTrigger: Fn } => {
   const isClient = typeof window !== 'undefined';

@@ -1,6 +1,7 @@
 import { useSyncExternalStore } from 'react';
-import { Fn } from '../../types';
-import { isClient } from '../../utils';
+import { isClient } from '@/utils';
+
+type Fn = () => void;
 
 interface UsePrefersColorSchemeProps {
   serverSnapshot?: ColorSchemeType;

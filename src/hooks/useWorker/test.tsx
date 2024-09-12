@@ -6,7 +6,7 @@ import {
   mockPostMessage,
   mockTerminate,
   mockWorkerScript,
-} from '../../mocks/mockWorker';
+} from '@/mocks/mockWorker';
 
 beforeEach(() => {
   globalThis.URL.createObjectURL = jest.fn();

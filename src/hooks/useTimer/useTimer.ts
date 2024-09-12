@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 
-import { type CancelToken, delayExecution } from '../../utils';
-import useUnmountEffect from '../useUnmountEffect/useUnmountEffect';
+import { type CancelToken, delayExecution } from '@/utils';
+import { useUnmountEffect } from '@/hooks/useUnmountEffect';
 
 type Callback = () => void;
 

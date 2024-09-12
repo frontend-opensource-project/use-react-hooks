@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { imgToBlob } from '../../utils';
+import { imgToBlob } from '@/utils';
 
 interface UseClipboardProps {
   resetTime?: number;

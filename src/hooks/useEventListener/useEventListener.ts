@@ -1,5 +1,5 @@
 import { RefObject, useEffect, useRef } from 'react';
-import { isClient } from '../../utils';
+import { isClient } from '@/utils';
 
 type EventMap = {
   window: WindowEventMap;

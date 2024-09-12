@@ -3,7 +3,7 @@ import useIntersectionObserver from './useIntersectionObserver';
 import {
   MockIntersectionObserver,
   mockIntersectionObserver,
-} from '../../mocks/mockIntersectionObserver';
+} from '@/mocks/mockIntersectionObserver';
 
 describe('useIntersectionObserver', () => {
   let rootElement: Element;

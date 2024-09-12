@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { isClient } from '../../utils';
+import { isClient } from '@/utils';
 
 interface UseDeviceDetectReturns {
   isMobile: boolean;

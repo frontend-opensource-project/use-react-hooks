@@ -6,7 +6,7 @@ import {
   PromiseCircularityError,
 } from 'async-wave';
 
-import { delayExecution } from '../../utils';
+import { delayExecution } from '@/utils';
 
 type Task<R> = R | ((input: R) => R | Promise<R> | void | Promise<void>);
 

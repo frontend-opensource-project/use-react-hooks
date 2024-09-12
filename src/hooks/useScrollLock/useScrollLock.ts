@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { isClient } from '../../utils';
+import { isClient } from '@/utils';
 
 /**
  * 페이지의 스크롤을 잠그거나 해제하여 사용자가 스크롤할 수 없도록 하는 훅

@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { ConfirmContext as context } from '../../context/ConfirmContext';
+import { ConfirmContext as context } from '@/context/ConfirmContext';
 
 /**
  * 컨펌 다이얼로그를 구현할 때 사용하는 훅.

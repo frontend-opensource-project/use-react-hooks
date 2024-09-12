@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { validators } from '../../utils';
-import { ValueResolver } from '../../types';
+import { validators } from '@/utils';
+
+type ValueResolver<T> = T | ((prevPayload: T) => T);
 
 /**
  * 로컬 스토리지와 동기화된 상태를 관리하는 훅

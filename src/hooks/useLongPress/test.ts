@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react';
-import useLongPress from '../useLongPress/useLongPress';
+import useLongPress from './useLongPress';
 
 const callback = jest.fn();
 const defaultDelay = 500;

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useTimer } from '../useTimer';
-import { isTouchDevice, throttle } from '../../utils';
+import { useTimer } from '@/hooks/useTimer';
+import { isTouchDevice, throttle } from '@/utils';
 
 type Fn = () => void;
 

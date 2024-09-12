@@ -1,5 +1,11 @@
 import { useEffect, useState } from 'react';
-import { PositiveInteger } from '../../types/number';
+
+export type PositiveInteger<T extends number> = `${T}` extends
+  | `-${string}`
+  | `${string}.${string}`
+  | '0'
+  ? never
+  : T;
 
 interface WindowSize {
   width: number | null;

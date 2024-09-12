@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Fn } from '../../types';
-import { hasNavigator } from '../../utils';
+import { hasNavigator } from '@/utils';
+
+type Fn = () => void;
 
 interface useOnlineStatusProps {
   onlineCallback?: Fn;
