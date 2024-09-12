@@ -11,6 +11,7 @@ const config: JestConfigWithTsJest = {
   },
   setupFiles: ['jest-canvas-mock', './src/mocks/mockWorker.ts'],
   setupFilesAfterEnv: ['./jest.setup.ts'],
+  testPathIgnorePatterns: ['/dist/'],
   coveragePathIgnorePatterns: ['./src/mocks/'],
   coverageThreshold: {
     global: {
