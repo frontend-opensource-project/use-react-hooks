@@ -1,10 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-
-interface UseGeolocationReturnType extends Partial<GeolocationCoordinates> {
-  loading: boolean;
-  error: GeolocationPositionError | null;
-  timestamp: EpochTimeStamp | undefined;
-}
+import { UseGeolocationReturnType } from './type';
 
 /**
  * 사용자의 위치 정보를 가져오는 커스텀 훅

@@ -1,13 +1,6 @@
 import { useSyncExternalStore } from 'react';
 import { isClient } from '@/utils';
-
-type Fn = () => void;
-
-interface UsePrefersColorSchemeProps {
-  serverSnapshot?: ColorSchemeType;
-}
-
-type ColorSchemeType = 'dark' | 'light';
+import { Fn, UsePrefersColorSchemeProps, ColorSchemeType } from './type';
 
 const DEFAULT_COLOR_SCHEME: ColorSchemeType = 'light';
 

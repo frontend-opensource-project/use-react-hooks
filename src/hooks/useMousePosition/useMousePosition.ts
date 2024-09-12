@@ -1,37 +1,11 @@
-import {
-  Dispatch,
-  SetStateAction,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { throttle } from '@/utils';
-
-interface MousePosOptions {
-  delayTime?: number;
-  animationMode?: boolean;
-}
-
-interface CursorState {
-  viewX: number | null;
-  viewY: number | null;
-  pageX: number | null;
-  pageY: number | null;
-  screenX: number | null;
-  screenY: number | null;
-  elementX: number | null;
-  elementY: number | null;
-}
-
-interface RefScale {
-  refW: number | null;
-  refH: number | null;
-}
-
-interface MouseResult extends CursorState, RefScale {
-  targetRef: Dispatch<SetStateAction<Element | null>>;
-}
+import {
+  CursorState,
+  UseMousePositionProps,
+  UseMousePositionReturns,
+  RefScale,
+} from './type';
 
 const initialCursorState: CursorState = {
   viewX: null,
@@ -48,10 +22,10 @@ const DEFAULT_DELAY_TIME = 1000 / 60;
 
 /**
  * 마우스의 위치와 관련된 정보를 추적하는 훅
- * @param {MousePosOptions} [options] - 마우스 위치 추적의 설정 옵션
+ * @param {UseMousePositionProps} [options] - 마우스 위치 추적의 설정 옵션
  * @param {number} [options.delayTime=1000/60] - 이벤트 핸들링을 throttle할 시간 간격 (ms 단위)
  * @param {boolean} [options.animationMode=false] - animationMode를 활성화할지 여부
- * @returns {MouseResult} MouseResult - 마우스 위치와 요소의 크기 및 좌표 정보를 포함한 객체
+ * @returns {UseMousePositionReturns} UseMousePositionReturns - 마우스 위치와 요소의 크기 및 좌표 정보를 포함한 객체
  * @returns {number | null} viewX - 뷰포트에서의 마우스 x 좌표
  * @returns {number | null} viewY - 뷰포트에서의 마우스 y 좌표
  * @returns {number | null} pageX - 페이지에서의 마우스 x 좌표
@@ -72,7 +46,7 @@ const DEFAULT_DELAY_TIME = 1000 / 60;
 const useMousePosition = ({
   delayTime = DEFAULT_DELAY_TIME,
   animationMode = false,
-}: MousePosOptions = {}): MouseResult => {
+}: UseMousePositionProps = {}): UseMousePositionReturns => {
   const [cursorState, setCursorState] =
     useState<CursorState>(initialCursorState);
   const [ref, setRef] = useState<Element | null>(null);

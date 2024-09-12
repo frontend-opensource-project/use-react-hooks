@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-
-type Fn = () => void;
+import { Fn } from './type';
 
 /**
  * 지정된 시간 간격만큼 반복적으로 콜백 함수를 호출하는 훅

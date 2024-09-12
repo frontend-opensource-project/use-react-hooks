@@ -1,15 +1,6 @@
 import { useState, useEffect } from 'react';
 import { imgToBlob } from '@/utils';
-
-interface UseClipboardProps {
-  resetTime?: number;
-}
-
-interface UseClipboardReturns {
-  copied: boolean;
-  copyText: (text: string) => void;
-  copyImg: (path: string) => void;
-}
+import { UseClipboardProps, UseClipboardReturns } from './type';
 
 /**
  * 클립보드에 텍스트나 이미지를 복사하는 커스텀 훅

@@ -1,12 +1,5 @@
 import { useEffect } from 'react';
-
-type Fn = () => void;
-
-interface UseKeyCombination {
-  shortcutKeys: string[];
-  callback: Fn;
-  isPrevent?: boolean;
-}
+import { UseKeyCombinationProps } from './type';
 
 /**
  * 지정된 키 조합이 눌렸을 때 콜백 함수를 호출하는 훅.
@@ -24,7 +17,7 @@ export const useKeyCombination = ({
   shortcutKeys,
   callback,
   isPrevent = false,
-}: UseKeyCombination) => {
+}: UseKeyCombinationProps) => {
   const shortcutKeysId = shortcutKeys.join();
 
   useEffect(() => {

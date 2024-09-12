@@ -1,16 +1,5 @@
 import { useEffect, useState } from 'react';
-
-export type PositiveInteger<T extends number> = `${T}` extends
-  | `-${string}`
-  | `${string}.${string}`
-  | '0'
-  ? never
-  : T;
-
-interface WindowSize {
-  width: number | null;
-  height: number | null;
-}
+import { PositiveInteger, UseWindowSizeReturns } from './type';
 
 /**
  * useWindowSize : 브라우저의 너비와 높이를 제공하는 훅
@@ -23,10 +12,10 @@ interface WindowSize {
 
 const useWindowSize = <T extends number>(
   delayTime: PositiveInteger<T> | 0 = 200 as PositiveInteger<T>
-): WindowSize => {
+): UseWindowSizeReturns => {
   const isClient = typeof window === 'object';
 
-  const [windowSize, setWindowSize] = useState<WindowSize>({
+  const [windowSize, setWindowSize] = useState({
     width: isClient ? window.innerWidth : null,
     height: isClient ? window.innerHeight : null,
   });

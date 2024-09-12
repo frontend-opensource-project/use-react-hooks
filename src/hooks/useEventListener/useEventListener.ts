@@ -1,19 +1,6 @@
 import { RefObject, useEffect, useRef } from 'react';
 import { isClient } from '@/utils';
-
-type EventMap = {
-  window: WindowEventMap;
-  document: DocumentEventMap;
-  htmlElement: HTMLElementEventMap;
-  svgElement: SVGElementEventMap;
-};
-
-type EventElement = {
-  window: Window;
-  document: Document;
-  htmlElement: RefObject<HTMLElement> | HTMLElement;
-  svgElement: RefObject<SVGElement> | SVGElement;
-};
+import { EventMap, EventElement } from './type';
 
 /**
  * 특정 이벤트에 대한 이벤트 리스너를 추가하여, 이벤트 발생 시 핸들러를 실행하는 훅.

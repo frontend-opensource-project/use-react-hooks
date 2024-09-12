@@ -1,16 +1,6 @@
 import { useEffect, useState } from 'react';
 import { hasNavigator } from '@/utils';
-
-type Fn = () => void;
-
-interface useOnlineStatusProps {
-  onlineCallback?: Fn;
-  offlineCallback?: Fn;
-}
-
-interface UseOnlineStatusReturns {
-  isOnline: boolean;
-}
+import { useOnlineStatusProps, UseOnlineStatusReturns } from './type';
 
 /**
  * 온라인/오프라인 네트워크 상태를 판별하는 훅.

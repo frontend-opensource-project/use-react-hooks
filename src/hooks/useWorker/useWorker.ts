@@ -2,8 +2,7 @@ import { MutableRefObject, useCallback, useRef, useState } from 'react';
 
 import { validators } from '@/utils';
 import { useUnmountEffect } from '@/hooks/useUnmountEffect';
-
-type WorkerScript<A, R, C> = (arg: A, accessClosure?: C) => R;
+import { WorkerScript } from './type';
 
 /**
  * 웹 워커를 사용하여 비동기 작업을 처리하는 훅.

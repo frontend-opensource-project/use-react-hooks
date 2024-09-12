@@ -1,16 +1,5 @@
 import { useCallback, useEffect, useRef, RefObject } from 'react';
-
-type EventType =
-  | 'mousedown'
-  | 'mouseup'
-  | 'touchstart'
-  | 'touchend'
-  | 'keydown';
-
-interface UseOutsideInteractionProps {
-  handleOutsideInteraction: () => void;
-  events?: EventType[];
-}
+import { EventType, UseOutsideInteractionProps } from './type';
 
 const defaultEvents: EventType[] = ['mousedown', 'touchstart', 'keydown'];
 

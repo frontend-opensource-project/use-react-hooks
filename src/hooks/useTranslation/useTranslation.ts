@@ -1,13 +1,8 @@
 import { useContext } from 'react';
 import { TranslationContext } from '@/context/TranslationContext';
+import { UseTranslationReturns } from './type';
 
 const DYNAMIC_VALUE_PATTERN = /\$\{(.*?)\}/g;
-
-interface UseTranslationReturns {
-  t: (key: string, variables?: { [key: string]: string | number }) => string;
-  language: string;
-  changeLanguage: (lang: string) => void;
-}
 
 /**
  * useTranslation에서 리턴된 번역 함수(t)를 사용해 번역 텍스트 값을 얻을 수 있는 hook

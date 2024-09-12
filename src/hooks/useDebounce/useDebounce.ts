@@ -1,6 +1,5 @@
 import { useCallback, useRef } from 'react';
-
-type GenericFn<T extends unknown[]> = (...args: T) => void;
+import { GenericFn } from './type';
 
 /**
  * 주어진 콜백 함수를 디바운스하여, 일정 시간(delay)동안 값이 변경되지 않을 때까지 호출을 지연시키는 훅

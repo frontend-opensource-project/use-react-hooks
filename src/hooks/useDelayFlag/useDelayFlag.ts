@@ -1,12 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-
-type PositiveInteger<T extends number> = `${T}` extends
-  | `-${string}`
-  | `${string}.${string}`
-  | '0'
-  ? never
-  : T;
-
+import { PositiveInteger } from './type';
 /**
  * 인자로 받은 플래그를 주어진 시간만큼 지연시키는 커스텀 훅.
  *

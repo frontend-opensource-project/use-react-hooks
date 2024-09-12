@@ -2,8 +2,7 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import { type CancelToken, delayExecution } from '@/utils';
 import { useUnmountEffect } from '@/hooks/useUnmountEffect';
-
-type Callback = () => void;
+import { Fn } from './type';
 
 /**
  * 일정 시간(ms) 후에 지정된 콜백 함수를 실행하는 타이머 훅.
@@ -22,8 +21,8 @@ type Callback = () => void;
  * - 콜백 함수가 변경될 때마다 참조를 업데이트합니다.
  * - 컴포넌트가 언마운트될 때 타이머를 정리합니다.
  */
-const useTimer = (callback: Callback, ms: number) => {
-  const callbackRef = useRef<Callback>(callback);
+const useTimer = (callback: Fn, ms: number) => {
+  const callbackRef = useRef<Fn>(callback);
   const timerRef = useRef<ReturnType<typeof delayExecution> | null>(null);
   const cancelTokenRef = useRef<CancelToken>({ isCancelled: false });
 

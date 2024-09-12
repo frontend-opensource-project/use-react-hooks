@@ -1,32 +1,11 @@
 import { useEffect, useState } from 'react';
 import { isClient } from '@/utils';
-
-interface UseDeviceDetectReturns {
-  isMobile: boolean;
-  isDesktop: boolean;
-  os: string;
-  browser: string;
-}
-
-const DEVICE_PATTERNS = {
-  mobile: /Mobi/i,
-};
-
-const OS_PATTERNS = {
-  windows: /Windows/i,
-  macOS: /Macintosh|Mac/i,
-  linux: /Linux/i,
-  android: /Android/i,
-  iOS: /iPhone|iPad|iPod/i,
-};
-
-const BROWSER_PATTERNS = {
-  whale: /Whale/i,
-  edge: /Edg/i,
-  chrome: /Chrome/i,
-  safari: /Safari/i,
-  firefox: /Firefox/i,
-};
+import {
+  UseDeviceDetectReturns,
+  DEVICE_PATTERNS,
+  OS_PATTERNS,
+  BROWSER_PATTERNS,
+} from './type';
 
 /**
  * 사용자 디바이스의 유형, os, 브라우저를 감지하는 훅.

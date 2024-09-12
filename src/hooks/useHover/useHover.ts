@@ -1,9 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
-
-interface UseHoverReturns<T> {
-  isHovered: boolean;
-  callbackRef: (node: T) => void;
-}
+import { UseHoverReturns } from './type';
 
 /**
  * ref(callbackRef) 요소에 마우스가 올려져있는지 감지하는 훅

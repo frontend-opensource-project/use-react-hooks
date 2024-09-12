@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useTimer } from '@/hooks/useTimer';
 import { isTouchDevice, throttle } from '@/utils';
-
-type Fn = () => void;
+import { Fn } from './type';
 
 /**
  * 일정 시간(ms) 동안 활동이 없을 때 지정된 콜백 함수를 실행하는 훅.

@@ -1,24 +1,5 @@
-import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
-
-interface IntersectionObserverOptions {
-  root?: Element | null;
-  rootMargin?: string;
-  threshold?: number | number[];
-  visibleOnce?: boolean;
-  initialView?: boolean;
-  onChange?: (isView: boolean, entry: IntersectionObserverEntry) => void;
-  onEnter?: () => void;
-  onLeave?: () => void;
-}
-
-interface Entry {
-  isView: boolean;
-  entry?: IntersectionObserverEntry | null;
-}
-
-interface IntersectionObserverResult extends Entry {
-  intersectionRef: Dispatch<SetStateAction<Element | null>>;
-}
+import { useEffect, useRef, useState } from 'react';
+import { IntersectionObserverProps, IntersectionObserverReturns } from './type';
 
 /**
  * IntersectionObserver API를 이용하여 요소의 가시성을 감지하는 훅
@@ -31,7 +12,7 @@ interface IntersectionObserverResult extends Entry {
  * 타겟 엘리먼트의 가시성 상태가 변경될 때 호출할 콜백 함수
  * @param {() => void} onEnter 타겟 엘리먼트가 화면에 나타날 때 호출할 콜백 함수
  * @param {() => void} onLeave 타겟 엘리먼트가 화면에서 사라질 때 호출할 콜백 함수
- * @returns {IntersectionObserverResult} useIntersectionObserver의 결과 객체
+ * @returns {IntersectionObserverReturns} useIntersectionObserver의 결과 객체
  * @description
  * 주어진 요소의 가시성 상태 변화를 감지하여 변화에 따라 지정된 콜백을 호출합니다.
  */
@@ -45,7 +26,7 @@ const useIntersectionObserver = ({
   onLeave,
   visibleOnce = false,
   initialView = false,
-}: IntersectionObserverOptions = {}): IntersectionObserverResult => {
+}: IntersectionObserverProps = {}): IntersectionObserverReturns => {
   const [ref, setRef] = useState<Element | null>(null);
   const [entryState, setEntryState] = useState<{
     isView: boolean;

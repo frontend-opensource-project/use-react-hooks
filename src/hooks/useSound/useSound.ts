@@ -1,41 +1,14 @@
 import { useEffect, useState, useRef, useReducer } from 'react';
-
-// 타입 정의
-type Fn = () => void;
-type SafeAudioAction = (audio: HTMLAudioElement) => void;
-
-interface useSoundProps {
-  url: string;
-  onLoad?: Fn;
-  onPlay?: Fn;
-  onPause?: Fn;
-  onEnd?: Fn;
-  loop?: boolean;
-  defaultVolume?: number;
-  defaultPlaybackRate?: number;
-}
-
-interface UseSoundReturnType {
-  error: ErrorEvent | null;
-  volume: number;
-  playbackRate: number;
-  isLoop: boolean;
-  isMuted: boolean;
-  isLoading: boolean;
-  isPlaying: boolean;
-  isPaused: boolean;
-  duration: number;
-  currentTime: number;
-  play: Fn;
-  pause: Fn;
-  stop: Fn;
-  setMute: Fn;
-  setUnmute: Fn;
-  setIsLoop: (loop: boolean) => void;
-  setPosition: (time: number) => void;
-  setVolume: (volume: number) => void;
-  setPlaybackRate: (rate: number) => void;
-}
+import {
+  Fn,
+  SafeAudioAction,
+  UseSoundProps,
+  UseSoundReturns,
+  ACTION_TYPES,
+  AudioState,
+  Action,
+} from './type';
+import { reducer } from './reducer';
 
 // 오디오 객체 설정 함수
 const setupAudioElement = (audio: HTMLAudioElement, state: AudioState) => {
@@ -100,7 +73,7 @@ const setupEventHandlers = (
 };
 
 /**
- * @typedef {Object} UseSoundReturnType
+ * @typedef {Object} UseSoundReturns
  * @property {ErrorEvent | null} error - 오디오 로드 중 발생한 오류
  * @property {number} volume - 현재 볼륨 (0.0 ~ 1.0)
  * @property {number} playbackRate - 현재 재생 속도 (0.5 ~ 4.0)
@@ -134,7 +107,7 @@ const setupEventHandlers = (
  * @param {Fn} [props.onPlay] - 오디오 재생 시 호출할 콜백 함수
  * @param {Fn} [props.onPause] - 오디오 정지 시 호출할 콜백 함수
  * @param {Fn} [props.onEnd] - 오디오 완료 시 호출되는 콜백 함수
- * @returns {UseSoundReturnType}
+ * @returns {UseSoundReturns}
  */
 function useSound({
   url,
@@ -145,7 +118,7 @@ function useSound({
   onPlay,
   onPause,
   onEnd,
-}: useSoundProps): UseSoundReturnType {
+}: UseSoundProps): UseSoundReturns {
   const [volume] = useState(() =>
     setValidRange(0, 1, defaultVolume, 'defaultVolume')
   );
@@ -274,45 +247,6 @@ function useSound({
 
 export default useSound;
 
-// 타입 및 초기값 정의
-interface AudioState {
-  isMuted: boolean;
-  duration: number;
-  currentTime: number;
-  isPaused: boolean;
-  isLoading: boolean;
-  isPlaying: boolean;
-  error: ErrorEvent | null;
-  isLoop: boolean;
-  volume: number;
-  playbackRate: number;
-}
-
-const ACTION_TYPES = {
-  SET_DURATION: 'SET_DURATION',
-  SET_CURRENT_TIME: 'SET_CURRENT_TIME',
-  SET_IS_PAUSED: 'SET_IS_PAUSED',
-  SET_IS_LOADING: 'SET_IS_LOADING',
-  SET_IS_PLAYING: 'SET_IS_PLAYING',
-  SET_ERROR: 'SET_ERROR',
-  SET_IS_LOOP: 'SET_IS_LOOP',
-  SET_VOLUME: 'SET_VOLUME',
-  SET_PLAYBACK_RATE: 'SET_PLAYBACK_RATE',
-  SET_IS_MUTED: 'SET_IS_MUTED',
-} as const;
-
-type Action =
-  | { type: typeof ACTION_TYPES.SET_DURATION; payload: number }
-  | { type: typeof ACTION_TYPES.SET_CURRENT_TIME; payload: number }
-  | { type: typeof ACTION_TYPES.SET_IS_PAUSED; payload: boolean }
-  | { type: typeof ACTION_TYPES.SET_IS_LOADING; payload: boolean }
-  | { type: typeof ACTION_TYPES.SET_IS_PLAYING; payload: boolean }
-  | { type: typeof ACTION_TYPES.SET_ERROR; payload: ErrorEvent | null }
-  | { type: typeof ACTION_TYPES.SET_IS_LOOP; payload: boolean }
-  | { type: typeof ACTION_TYPES.SET_VOLUME; payload: number }
-  | { type: typeof ACTION_TYPES.SET_PLAYBACK_RATE; payload: number }
-  | { type: typeof ACTION_TYPES.SET_IS_MUTED; payload: boolean };
-
 const initialState: AudioState = {
   isMuted: false,
   duration: 0,
@@ -324,34 +258,6 @@ const initialState: AudioState = {
   isLoop: false,
   volume: 1,
   playbackRate: 1,
-};
-
-// 리듀서 함수
-const reducer = (state: AudioState, action: Action): AudioState => {
-  switch (action.type) {
-    case ACTION_TYPES.SET_DURATION:
-      return { ...state, duration: action.payload };
-    case ACTION_TYPES.SET_CURRENT_TIME:
-      return { ...state, currentTime: action.payload };
-    case ACTION_TYPES.SET_IS_PAUSED:
-      return { ...state, isPaused: action.payload };
-    case ACTION_TYPES.SET_IS_LOADING:
-      return { ...state, isLoading: action.payload };
-    case ACTION_TYPES.SET_IS_PLAYING:
-      return { ...state, isPlaying: action.payload };
-    case ACTION_TYPES.SET_ERROR:
-      return { ...state, error: action.payload };
-    case ACTION_TYPES.SET_IS_LOOP:
-      return { ...state, isLoop: action.payload };
-    case ACTION_TYPES.SET_VOLUME:
-      return { ...state, volume: action.payload };
-    case ACTION_TYPES.SET_PLAYBACK_RATE:
-      return { ...state, playbackRate: action.payload };
-    case ACTION_TYPES.SET_IS_MUTED:
-      return { ...state, isMuted: action.payload };
-    default:
-      return state;
-  }
 };
 
 // 범위 체크 함수 (유효하지 않은 범위는 조정)

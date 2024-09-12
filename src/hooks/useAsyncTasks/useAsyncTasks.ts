@@ -5,33 +5,9 @@ import {
   type AsyncWaveOptions,
   PromiseCircularityError,
 } from 'async-wave';
-
 import { delayExecution } from '@/utils';
-
-type Task<R> = R | ((input: R) => R | Promise<R> | void | Promise<void>);
-
-type HookOptionProps = {
-  initialLazyDelay: number;
-  successLazyDelay: number;
-};
-
-type HookOptions = {
-  options: Partial<HookOptionProps>;
-};
-
-type SyncOnBefore = { onBefore: () => void };
-
-type Options<R> = Partial<
-  Omit<AsyncWaveOptions<R>, 'onBefore'> & SyncOnBefore & Partial<HookOptions>
->;
-
-type StateInfo<R> = {
-  isLoading: boolean;
-  data: R | null;
-  error: PromiseCircularityError | null;
-  isError: boolean;
-  reset: () => void;
-};
+import { Task, Options, StateInfo, TaskAction, ACTION_TYPES } from './type';
+import { reducer } from './reducer';
 
 /**
  * useAsyncTasks
@@ -69,7 +45,7 @@ const useAsyncTasks = <R>(tasks: Task<R>[], options: Options<R>) => {
       isError: Boolean(state.error),
       reset() {
         dispatch({
-          type: ActionType.RESET,
+          type: ACTION_TYPES.RESET,
         });
       },
     }),
@@ -95,7 +71,7 @@ const generateTaskHandlers = <R>(
     async onBefore() {
       if (!isMountedRef.current) return;
 
-      dispatch({ type: ActionType.LOADING });
+      dispatch({ type: ACTION_TYPES.LOADING });
       options?.initialLazyDelay &&
         (await delayExecution(options.initialLazyDelay).start());
       onBefore?.();
@@ -105,14 +81,14 @@ const generateTaskHandlers = <R>(
 
       options?.successLazyDelay &&
         (await delayExecution(options.successLazyDelay).start());
-      dispatch({ type: ActionType.SUCCESS, payload });
+      dispatch({ type: ACTION_TYPES.SUCCESS, payload });
       onSuccess?.(payload);
     },
     onError(error: PromiseCircularityError) {
       if (!isMountedRef.current) return;
 
       dispatch({
-        type: ActionType.ERROR,
+        type: ACTION_TYPES.ERROR,
         payload: error,
       });
       onError?.(error);
@@ -126,49 +102,5 @@ const generateTaskHandlers = <R>(
 
   return handler;
 };
-
-enum ActionType {
-  LOADING = 'loading',
-  SUCCESS = 'success',
-  ERROR = 'error',
-  RESET = 'reset',
-}
-
-type TaskState<R> = {
-  isLoading: boolean;
-  data: R | null;
-  error: PromiseCircularityError | null;
-};
-
-type TaskAction<R> =
-  | { type: ActionType.LOADING }
-  | { type: ActionType.SUCCESS; payload: R }
-  | { type: ActionType.ERROR; payload: PromiseCircularityError }
-  | { type: ActionType.RESET };
-
-/**
- * reducer 함수
- * @param {TaskState<R>} state - 현재 상태
- * @param {TaskAction<R>} action - 액션 객체
- * @returns {TaskState<R>} 새로운 상태
- */
-function reducer<R>(state: TaskState<R>, action: TaskAction<R>): TaskState<R> {
-  switch (action.type) {
-    case ActionType.LOADING:
-      return { ...state, isLoading: true, error: null };
-    case ActionType.SUCCESS:
-      return {
-        isLoading: false,
-        data: action.payload,
-        error: null,
-      };
-    case ActionType.ERROR:
-      return { ...state, isLoading: false, error: action.payload };
-    case ActionType.RESET:
-      return { isLoading: false, data: null, error: null };
-    default:
-      throw new Error('Unhandled task action type');
-  }
-}
 
 export default useAsyncTasks;
