@@ -33,11 +33,11 @@ _없음_
 
 ## Examples
 
-```tsx copy
+```tsx copy filename="TestComponent.tsx"
 import { useCallback, useRef, useState } from 'react';
 import useKeyCombination from './hooks/useKeyCombination';
 
-function App() {
+function TestComponent() {
   const [bold, setBold] = useState(false);
   const [isSave, setIsSave] = useState(false);
   const input = useRef<HTMLInputElement>(null);
@@ -77,6 +77,4 @@ function App() {
     </div>
   );
 }
-
-export default App;
 ```
