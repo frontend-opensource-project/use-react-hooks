@@ -1,0 +1,95 @@
+import { Callout } from 'nextra/components';
+
+# useGeolocation
+
+<Callout type="info">
+  이 훅은 브라우저의 Geolocation API를 사용하여 사용자의 위치 정보를 가져옵니다.
+  지원되지 않는 브라우저에서는 정확한 위치 정보를 제공하지 않을 수 있습니다.
+</Callout>
+
+## Introduce
+
+`useGeolocation` 훅은 사용자의 위치 정보를 가져와 상태를 관리하는 기능을 제공합니다.
+이 훅은 위치 정보의 위도, 경도, 고도 등 다양한 위치 데이터를 반환하며, 위치 정보 수집 중 발생한 오류도 함께 반환합니다.
+
+```ts
+export interface UseGeolocationReturnType {
+  loading: boolean;
+  error: GeolocationPositionError | null;
+  timestamp?: EpochTimeStamp;
+  latitude?: number;
+  longitude?: number;
+  altitude?: number;
+  accuracy?: number;
+  altitudeAccuracy?: number;
+  heading?: number;
+  speed?: number;
+}
+
+const useGeolocation = (
+  options?: PositionOptions
+): UseGeolocationReturnType;
+```
+
+### Props
+
+- `options` : 위치 정보를 가져올 때 사용할 옵션
+  - `enableHighAccuracy` : 위치 정보를 높은 정확도로 수집할지 여부 (기본값: `false`)
+  - `timeout` : 위치 정보를 가져오기 위해 대기할 최대 시간 (밀리초 단위)
+  - `maximumAge` : 위치 정보를 캐싱할 최대 시간 (밀리초 단위)
+
+### Returns
+
+- `loading: boolean` : 위치 정보를 가져오는 중인지 여부
+- `error: GeolocationPositionError | null` : 발생한 오류
+- `timestamp?: EpochTimeStamp` : 위치 정보의 타임스탬프
+- `latitude?: number` : 현재 위치의 위도
+- `longitude?: number` : 현재 위치의 경도
+- `altitude?: number` : 현재 위치의 고도
+- `accuracy?: number` : 위치 정보의 정확도
+- `altitudeAccuracy?: number` : 고도 정보의 정확도
+- `heading?: number` : 이동 방향
+- `speed?: number` : 현재 속도
+
+## Examples
+
+```ts copy filename="GeolocationComponent.tsx"
+import useGeolocation from './useGeolocation';
+
+const GeolocationComponent = () => {
+  const {
+    latitude,
+    longitude,
+    altitude,
+    accuracy,
+    altitudeAccuracy,
+    heading,
+    speed,
+    timestamp,
+    error,
+    loading,
+  } = useGeolocation({ enableHighAccuracy: true });
+
+  if (loading) {
+    return <p>위치 정보를 가져오는 중입니다...</p>;
+  }
+
+  if (error) {
+    return <p>오류 발생: {error.message}</p>;
+  }
+
+  return (
+    <div>
+      <h2>위치 정보</h2>
+      <p>위도: {latitude}</p>
+      <p>경도: {longitude}</p>
+      <p>고도: {altitude}</p>
+      <p>정확도: {accuracy} meters</p>
+      <p>고도 정확도: {altitudeAccuracy} meters</p>
+      <p>방향: {heading} degrees</p>
+      <p>속도: {speed} m/s</p>
+      <p>타임스탬프: {new Date(timestamp || 0).toLocaleTimeString()}</p>
+    </div>
+  );
+};
+```
