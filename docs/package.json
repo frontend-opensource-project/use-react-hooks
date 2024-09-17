@@ -12,6 +12,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@frontend-opensource/use-react-hooks": "file:..",
     "next": "^14.2.7",
     "nextra": "^2.13.4",
     "nextra-theme-docs": "^2.13.4",

@@ -1,0 +1,87 @@
+# useMousePosition
+
+## Introduce
+
+마우스의 현재 위치를 감지하여 반환합니다.
+
+```ts
+interface UseMousePositionProps {
+  delayTime?: number;
+  animationMode?: boolean;
+}
+
+interface UseMousePositionReturns {
+  viewX: number | null;
+  viewY: number | null;
+  pageX: number | null;
+  pageY: number | null;
+  screenX: number | null;
+  screenY: number | null;
+  elementX: number | null;
+  elementY: number | null;
+  refW: number | null;
+  refH: number | null;
+  targetRef: Dispatch<SetStateAction<Element | null>>;
+}
+
+const useMousePosition = (props: UseMousePositionProps): UseMousePositionReturns
+```
+
+### Props
+
+#### 이벤트핸들링 빈도 및 애니메이션 옵션 활용
+
+- `delayTime` : 이벤트 핸들링을 지연시킬 값 (기본값: 1000/60ms)
+- `animationMode` : 부드러운 이동 혹은 애니메이션 효과를 위해 애니메이션 모드 활성화 여부 선택
+
+### Returns
+
+#### 기본
+
+- `viewX` : 뷰포트에서의 마우스 x 좌표
+- `viewY` : 뷰포트에서의 마우스 y 좌표
+- `pageX` : 페이지에서의 마우스 x 좌표
+- `pageY` : 페이지에서의 마우스 y 좌표
+- `screenX` : 화면에서의 마우스 x 좌표
+- `screenY` : 화면에서의 마우스 y 좌표
+
+#### Element 지정 시 
+
+- `elementX` : 지정된 Element left 기준의 마우스 x 좌표
+- `elementY` : 지정된 Element top 기준의 마우스 y 좌표
+- `refW` : 지정된 Element의 너비
+- `refH` : 지정된 Element의 높이
+- `targetRef` : 해당 엘리먼트 기준으로 마우스 좌표를 계산하기 위해 지정하는 참조 객체
+
+## Examples
+
+Element를 지정해서 상대 좌표 및 Element 크기 활용 예시
+
+```ts copy filename="TestComponent.tsx" /targetRef/
+const TestComponent = () => {
+  const { elementX, elementY, refW, refH, targetRef } = useMousePosition({ delayTime: 100 });
+
+  return (
+    <div
+      ref={targetRef}
+      style={{ width: '300px', height: '200px', border: '1px solid black' }}
+    >
+      <p>Element X: {elementX}</p>
+      <p>Element Y: {elementY}</p>
+      <p>Element Width: {refW}px</p>
+      <p>Element Height: {refH}px</p>
+    </div>
+  );
+};
+```
+
+import { Callout } from 'nextra/components';
+
+<Callout type="info">
+  `delayTime`이 기본값(1000/60ms) 보다 커지면 훅의 성능이 개선될 수 있지만, 반응
+  속도는 약간 느려질 수 있습니다.
+</Callout>
+
+<Callout type="warning">
+  `animationMode` 활성 시 delayTime 설정이 무시됩니다.
+</Callout>

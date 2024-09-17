@@ -1,4 +1,4 @@
-import { ValueResolver } from '../types';
+type ValueResolver<T> = T | ((prevPayload: T) => T);
 
 const validators = {
   isClient(): boolean {
