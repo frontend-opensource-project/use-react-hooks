@@ -1,4 +1,6 @@
 {
   "useTranslation": "useTranslation",
-  "useMousePosition": "useMousePosition"
+  "useMousePosition": "useMousePosition",
+  "useSound" : "useSound"
 }
+
