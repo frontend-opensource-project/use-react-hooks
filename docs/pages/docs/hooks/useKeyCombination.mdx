@@ -18,7 +18,7 @@ const useKeyCombination = ({
   shortcutKeys,
   callback,
   isPrevent = false,
-}: UseKeyCombination): void
+}: UseKeyCombinationProps): void
 ```
 
 ### Props
@@ -26,10 +26,6 @@ const useKeyCombination = ({
 - `shortcutKeys` : 키 조합을 나타내는 키 코드의 배열
 - `callback` : 키 조합이 감지되었을 때 실행할 콜백 함수
 - `isPrevent` : true로 설정하면 키 조합이 눌렸을 때 기본 동작 방지 (기본값: false)
-
-### Returns
-
-_없음_
 
 ## Examples
 

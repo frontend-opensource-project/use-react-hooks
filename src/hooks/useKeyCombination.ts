@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Fn } from '../types';
 
-interface UseKeyCombination {
+interface UseKeyCombinationProps {
   shortcutKeys: string[];
   callback: Fn;
   isPrevent?: boolean;
@@ -23,7 +23,7 @@ export const useKeyCombination = ({
   shortcutKeys,
   callback,
   isPrevent = false,
-}: UseKeyCombination) => {
+}: UseKeyCombinationProps) => {
   const shortcutKeysId = shortcutKeys.join();
 
   useEffect(() => {
