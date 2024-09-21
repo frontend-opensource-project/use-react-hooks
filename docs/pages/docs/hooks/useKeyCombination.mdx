@@ -8,7 +8,7 @@
 - 예를 들어, `Ctrl + K` 키 조합을 감지하여 특정 작업을 실행하고자 할 때 사용할 수 있습니다.
 
 ```ts
-interface UseKeyCombination {
+interface UseKeyCombinationProps {
   shortcutKeys: string[];
   callback: () => void;
   isPrevent?: boolean;
