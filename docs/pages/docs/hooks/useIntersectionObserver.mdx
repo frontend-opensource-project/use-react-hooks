@@ -1,0 +1,133 @@
+# useIntersectionObserver
+
+## Introduce
+
+IntersectionObserver API를 활용하여 요소의 가시성을 감지합니다.
+
+```ts
+interface UseIntersectionObserverProps {
+  root?: Element | null;
+  rootMargin?: string;
+  threshold?: number | number[];
+  visibleOnce?: boolean;
+  initialView?: boolean;
+  onChange?: (isView: boolean, entry: IntersectionObserverEntry) => void;
+  onEnter?: () => void;
+  onLeave?: () => void;
+}
+
+interface UseIntersectionObserverReturns {
+  intersectionRef: Dispatch<SetStateAction<Element | null>>;
+  isView: boolean;
+  entry?: IntersectionObserverEntry | null;
+}
+
+const useIntersectionObserver = (props: UseIntersectionObserverProps): UseIntersectionObserverReturns
+```
+
+### Props
+
+#### IntersectionObserver API 기본 옵션
+
+- `root` : 뷰포트 대신 사용할 요소 객체 지정. 기본적으로 브라우저의 뷰포트가 사용됨(null)
+- `rootMargin` : Root의 범위를 확장하거나 축소시킴
+- `threshold` : observer가 실행되기 위한 최소한의 타켓의 가시성 비율
+
+#### 부가옵션
+
+- `initialView` : 초기 감지값 설정 옵션
+- `visibleOnce` : 처음 한번만 감지하는 옵션
+
+#### callback 함수
+
+- `onChange` : 타겟 Element의 가시성 상태가 변경될 때 호출할 콜백 함수
+- `onEnter` : 타겟 Element가 화면에 나타날 때 호출할 콜백 함수
+- `onLeave` : 타겟 Element가 화면에서 사라질 때 호출할 콜백 함수
+
+### Returns
+
+- `intersectionRef` : 훅에서 사용할 요소의 상태를 설정하는 데 사용되는 디스패치 함수. 감지하고자 하는 Element에 설정
+- `isView` : Element가 현재 뷰포트 내에 보이는지 여부를 나타내는 상태 값
+- `entry` : Intersection Observer API를 사용하여 Element의 교차 상태 관련 정보를 나타내는 객체
+
+import { Callout } from 'nextra/components';
+
+<Callout type="info">
+  아래 공식문서에서 `entry`에 대한 더 자세한 사항을 확인할 수 있습니다.
+  https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserverEntry
+</Callout>
+
+## Examples
+
+### Lazy Loading
+
+타겟 Element가 뷰포트에 보일때마다 리스트에 3개의 item이 비동기적으로 추가되는 예시
+
+```tsx copy filename="TestComponent.tsx"
+const TestComponent = () => {
+  const nextItemRef = useRef(1);
+  const [items, setItems] = useState<number[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchItems = async () => {
+    return new Promise<number[]>((resolve) => {
+      setTimeout(() => {
+        const newItems = [
+          nextItemRef.current,
+          nextItemRef.current + 1,
+          nextItemRef.current + 2,
+        ];
+        nextItemRef.current += 3;
+        resolve(newItems);
+      }, 1000);
+    });
+  };
+
+  const handleIntersectionChange = async (isView: boolean) => {
+    if (isView && !loading) {
+      setLoading(true);
+      try {
+        const newItems = await fetchItems();
+        setItems((prevItems) => [...prevItems, ...newItems]);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setLoading(false);
+      }
+    }
+  };
+
+  const { intersectionRef } = useIntersectionObserver({
+    threshold: 0.5,
+    onChange: handleIntersectionChange,
+  });
+
+  return (
+    <div>
+      <div style={{ height: '1000px' }}></div>
+      <div
+        style={{
+          padding: '30px',
+          backgroundColor: 'lightblue',
+        }}>
+        {items.map((item, index) => (
+          <div
+            key={index}
+            style={{
+              margin: '10px',
+              height: '20px',
+              backgroundColor: 'lightyellow',
+              padding: '10px',
+            }}>
+            Item {item}
+          </div>
+        ))}
+        {loading && <p>아이템 로드 중...</p>}
+      </div>
+      <div ref={intersectionRef}> </div>
+    </div>
+  );
+};
+
+export default TestComponent;
+```
