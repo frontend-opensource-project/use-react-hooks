@@ -27,24 +27,48 @@ const useConfirm = (): UseConfirmReturns
 
 ## Examples
 
-```tsx copy
-import { useConfirm } from '@frontend-opensource/use-react-hooks';
+import { Callout } from 'nextra/components';
+
+<Callout type="info">
+  `useConfirm()`을 사용하기 전에 먼저 `ConfirmProvider`를 선언해야 합니다.
+</Callout>
+
+```tsx copy filename="App.tsx"
+import { ConfirmProvider } from '@frontend-opensource/use-react-hooks';
 
 function App() {
-  const { confirm } = useConfirm();
+  return (
+    <ConfirmProvider>
+      <TestComponent />
+    </ConfirmProvider>
+  );
+}
+```
+
+```tsx copy filename="TestComponent.tsx"
+import { useConfirm } from '@frontend-opensource/use-react-hooks';
+
+const TestComponent = () => {
+  const { message, isOpen, confirm, onConfirm, onCancel } = useConfirm();
 
   const handleRemove = async () => {
     if (await confirm('정말 삭제하시겠습니까?')) {
-      console.log('삭제 완료');
+      // 컨펌 로직
     } else {
-      console.log('삭제 취소');
+      // 취소 로직
     }
   };
 
   return (
-    <div>
+    <>
       <button onClick={handleRemove}>삭제하기</button>
-    </div>
+
+      <Dialog open={isOpen}>
+        <p>{message}</p>
+        <button onClick={onConfirm}>확인</button>
+        <button onClick={onCancel}>취소</button>
+      </Dialog>
+    </>
   );
-}
+};
 ```
