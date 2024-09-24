@@ -1,5 +1,6 @@
 {
-  "useTranslation": "useTranslation",
+  "useDeepCompareEffect": "useDeepCompareEffect",
   "useMousePosition": "useMousePosition",
-  "useTimer": "useTimer"
+  "useTimer": "useTimer",
+  "useTranslation": "useTranslation"
 }
