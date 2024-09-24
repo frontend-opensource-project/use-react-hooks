@@ -1,0 +1,50 @@
+# useConfirm
+
+## Introduce
+
+- 컨펌 로직을 담고 있는 훅입니다.
+- 컨펌 다이얼로그를 구현할 때 유용하게 사용할 수 있습니다.
+
+```ts
+interface UseConfirmReturns {
+  message?: string;
+  isOpen: boolean;
+  confirm: (message: string) => Promise<boolean>;
+  onConfirm: () => void;
+  onCancel: () => void;
+}
+
+const useConfirm = (): UseConfirmReturns
+```
+
+### Returns
+
+- `message`: 컨펌 메시지. confirm() 함수에 전달된 값을 그대로 반환.
+- `isOpen`: 컨펌 다이얼로그 open/close 상태를 제어할 수 있는 값. confirm() 함수 실행 단계에서 message를 체크하여 값을 반환.
+- `confirm`: 컨펌 로직을 실행하는 비동기 함수. 컨펌 다이얼로그를 열고 사용자의 컨펌 여부를 반환.
+- `onConfirm`: 컨펌을 실행하는 함수.
+- `onCancel`: 취소를 실행하는 함수.
+
+## Examples
+
+```tsx copy
+import { useConfirm } from '@frontend-opensource/use-react-hooks';
+
+function App() {
+  const { confirm } = useConfirm();
+
+  const handleRemove = async () => {
+    if (await confirm('정말 삭제하시겠습니까?')) {
+      console.log('삭제 완료');
+    } else {
+      console.log('삭제 취소');
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={handleRemove}>삭제하기</button>
+    </div>
+  );
+}
+```

@@ -1,4 +1,5 @@
 {
+  "useConfirm": "useConfirm",
   "useTranslation": "useTranslation",
   "useMousePosition": "useMousePosition",
   "useTimer": "useTimer"
