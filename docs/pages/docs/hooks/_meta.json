@@ -1,5 +1,6 @@
 {
-  "useTranslation": "useTranslation",
+  "useClipboard": "useClipboard",
   "useMousePosition": "useMousePosition",
-  "useTimer": "useTimer"
+  "useTimer": "useTimer",
+  "useTranslation": "useTranslation"
 }
