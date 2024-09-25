@@ -1,5 +1,6 @@
 {
-  "useTranslation": "useTranslation",
+  "useDelayFlag": "useDelayFlag",
   "useMousePosition": "useMousePosition",
-  "useTimer": "useTimer"
+  "useTimer": "useTimer",
+  "useTranslation": "useTranslation"
 }
