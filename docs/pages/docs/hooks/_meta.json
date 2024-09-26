@@ -1,5 +1,6 @@
 {
   "useTranslation": "useTranslation",
   "useMousePosition": "useMousePosition",
+  "useTimer": "useTimer",
   "useToggle": "useToggle"
 }

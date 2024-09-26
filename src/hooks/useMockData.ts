@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import { validators } from '../utils';
-import { Fn } from '../types';
 
 type PrimitiveType =
   | 'string'
@@ -62,7 +61,7 @@ interface UseMockDataProps<S extends Schema> {
 
 interface UseMockDataReturns<T> {
   mockData: T;
-  addItem: Fn;
+  addItem: () => void;
 }
 
 const defaultOptions: Options = {
