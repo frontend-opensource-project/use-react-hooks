@@ -15,12 +15,8 @@ type UseDelayFlagReturns = boolean;
 const useSomethingHook = (props: UseDelayFlagProps): UseDelayFlagReturns
 ```
 
-import { Callout } from 'nextra/components';
-
-<Callout type="info">
-  데이터 페칭 시, 페칭(또는 로딩) 플래그를 지정한 시간동안 유지하여 로딩 UI의
-  깜빡임 현상 제거, 중복 호출 방지 등의 용도로 사용할 수 있습니다.
-</Callout>
+- 데이터 페칭 시, 페칭(또는 로딩) 플래그를 지연시킨 시간동안 유지하여 로딩 UI의 깜빡임 현상 제거, 중복 호출 방지 등의 용도로 사용할 수 있습니다.
+- 지연시킨 시간보다 플래그의 업데이트가 더 늦을 경우 지연 시간을 무시하고 플래그의 실제 업데이트 시점을 반환합니다.
 
 ### Props
 
