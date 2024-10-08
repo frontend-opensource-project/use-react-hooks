@@ -1,5 +1,6 @@
 {
   "useDeepCompareEffect": "useDeepCompareEffect",
+  "useDetectDevice": "useDetectDevice",
   "useKeyCombination": "useKeyCombination",
   "useLongPress": "useLongPress",
   "useMousePosition": "useMousePosition",
