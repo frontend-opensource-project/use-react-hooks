@@ -1,6 +1,14 @@
 {
+  "useConfirm": "useConfirm",
+  "useDeepCompareEffect": "useDeepCompareEffect",
   "useDelayFlag": "useDelayFlag",
+  "useDetectDevice": "useDetectDevice",
+  "useKeyCombination": "useKeyCombination",
+  "useLongPress": "useLongPress",
   "useMousePosition": "useMousePosition",
+  "useScrollLock": "useScrollLock",
+  "useSound": "useSound",
   "useTimer": "useTimer",
+  "useToggle": "useToggle",
   "useTranslation": "useTranslation"
 }
