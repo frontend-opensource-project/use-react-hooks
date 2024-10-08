@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Fn } from './type';
+import { Fn, UseLongPressReturns } from './type';
 
 /**
  * 사용자가 요소를 길게 눌렀을 때 콜백 함수를 호출하는 훅
@@ -12,7 +12,7 @@ import { Fn } from './type';
  * @description
  * 사용자가 지정한 시간 이상 요소를 눌렀을 때 콜백 함수가 호출되며, 마우스와 터치 이벤트를 모두 지원합니다.
  */
-const useLongPress = (callback: Fn, delay = 500) => {
+const useLongPress = (callback: Fn, delay = 500): UseLongPressReturns => {
   const [isPress, setIsPress] = useState(false);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
