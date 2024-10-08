@@ -16,10 +16,10 @@ import { ValueResolver } from './type';
 const useLocalStorage = <T>(key: string, initialValue: T) => {
   const storageManager = useRef(createLocalStorageManager<T>(key));
   const [storedValue, setStoredValue] = useState<T>(() => {
-    const item = storageManager.current.getItem(initialValue);
+    const item = storageManager.current.getItem();
 
-    // 초기값 타입이 다른 경우, 전달된 초기값을 저장하고 반환합니다.
-    if (!validators.isSameType(item, initialValue)) {
+    // 초기값 타입이 다른 경우, 전달된 초기값을 저장하고 반환.
+    if (!item || !validators.isSameType(item, initialValue)) {
       storageManager.current.setItem(initialValue, initialValue);
 
       return initialValue;
@@ -75,17 +75,17 @@ const createLocalStorageManager = <T>(key: string) => {
         return prevValue;
       }
     },
-    getItem(fallback: T): T {
+    getItem(): T | null {
       const ERROR_GET_MESSAGE = 'Failed to get item in localStorage';
 
       try {
         const item = storage.getItem(key);
 
-        return item ? JSON.parse(item) : fallback;
+        return item ? JSON.parse(item) : null;
       } catch (error) {
         console.warn(ERROR_GET_MESSAGE, error);
 
-        return fallback;
+        return null;
       }
     },
   };
