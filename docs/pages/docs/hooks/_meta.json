@@ -2,6 +2,7 @@
   "useDeepCompareEffect": "useDeepCompareEffect",
   "useKeyCombination": "useKeyCombination",
   "useMousePosition": "useMousePosition",
+  "useSound": "useSound",
   "useTimer": "useTimer",
   "useToggle": "useToggle",
   "useTranslation": "useTranslation"
