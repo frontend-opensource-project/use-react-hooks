@@ -1,7 +1,8 @@
 {
   "useConfirm": "useConfirm",
-  "useTranslation": "useTranslation",
+  "useDeepCompareEffect": "useDeepCompareEffect",
   "useMousePosition": "useMousePosition",
   "useTimer": "useTimer",
-  "useToggle": "useToggle"
+  "useToggle": "useToggle",
+  "useTranslation": "useTranslation"
 }
