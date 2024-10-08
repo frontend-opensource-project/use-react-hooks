@@ -120,7 +120,7 @@ describe('validators', () => {
     );
 
     expect(() => validators.validateTypeConsistency(undefined, null)).toThrow(
-      `New value type does not match stored value type\n current:undefined->undefined, prev:null->object`
+      `New value type does not match stored value type\n current:undefined->undefined, prev:null->null`
     );
   });
 
