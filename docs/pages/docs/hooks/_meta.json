@@ -1,5 +1,6 @@
 {
   "useConfirm": "useConfirm",
+  "useDebounce": "useDebounce",
   "useDeepCompareEffect": "useDeepCompareEffect",
   "useDetectDevice": "useDetectDevice",
   "useKeyCombination": "useKeyCombination",
