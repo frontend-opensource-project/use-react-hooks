@@ -1,6 +1,7 @@
 {
   "useDeepCompareEffect": "useDeepCompareEffect",
   "useKeyCombination": "useKeyCombination",
+  "useLongPress": "useLongPress",
   "useMousePosition": "useMousePosition",
   "useSound": "useSound",
   "useTimer": "useTimer",
