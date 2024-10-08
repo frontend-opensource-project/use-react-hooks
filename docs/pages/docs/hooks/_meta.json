@@ -1,4 +1,5 @@
 {
+  "useConfirm": "useConfirm",
   "useDeepCompareEffect": "useDeepCompareEffect",
   "useDetectDevice": "useDetectDevice",
   "useKeyCombination": "useKeyCombination",
