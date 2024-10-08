@@ -3,6 +3,7 @@
   "useKeyCombination": "useKeyCombination",
   "useLongPress": "useLongPress",
   "useMousePosition": "useMousePosition",
+  "useScrollLock": "useScrollLock",
   "useSound": "useSound",
   "useTimer": "useTimer",
   "useToggle": "useToggle",
