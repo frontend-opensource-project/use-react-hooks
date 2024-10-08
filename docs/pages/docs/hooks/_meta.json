@@ -1,6 +1,9 @@
 {
-  "useTranslation": "useTranslation",
+  "useDeepCompareEffect": "useDeepCompareEffect",
+  "useKeyCombination": "useKeyCombination",
   "useMousePosition": "useMousePosition",
-  "useSound" : "useSound"
+  "useSound": "useSound",
+  "useTimer": "useTimer",
+  "useToggle": "useToggle",
+  "useTranslation": "useTranslation"
 }
-

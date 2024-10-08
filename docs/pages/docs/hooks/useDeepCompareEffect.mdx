@@ -1,0 +1,46 @@
+# useDeepCompareEffect
+
+## Introduce
+
+의존성 배열의 깊은 비교를 통해 변화를 감지하고 콜백을 실행시키는 훅입니다.
+
+```ts
+const useDeepCompareEffect = (callback: () => void, dependencies: unknown[]) => void
+```
+
+### Props
+
+- `callback` : 의존성 배열의 변화가 감지되었을 때 실행할 콜백 함수
+- `dependencies` : 의존성 배열
+
+## Examples
+
+```tsx copy filename="TestComponent.tsx"
+function App() {
+  const [, setCount] = useState(0);
+  const effectCountRef = useRef(0);
+  const deepCompareCountRef = useRef(0);
+
+  useEffect(() => {
+    effectCountRef.current += 1;
+    // 빈 객체는 매번 새로운 참조를 갖기 때문에 effectCount는 계속 증가
+  }, [{}]);
+
+  useDeepCompareEffect(() => {
+    deepCompareCountRef.current += 1;
+    // 빈 객체를 같은 값으로 판단해 deepCompareCountRef는 한 번(첫 시도)만 증가
+  }, [{}]);
+
+  return (
+    <div>
+      <p>effectCount: {effectCountRef.current}</p>
+      <p>deepCompareCount: {deepCompareCountRef.current}</p>
+      <p>
+        <button type="button" onClick={() => setCount((c) => c + 1)}>
+          리렌더링 발생
+        </button>
+      </p>
+    </div>
+  );
+}
+```
