@@ -1,0 +1,62 @@
+# useDelayFlag
+
+## Introduce
+
+플래그를 원하는 시간만큼 지연시킨 후에 업데이트하는 훅입니다.
+
+```ts
+type UseDelayFlagProps<T extends number> = {
+  flag: boolean;
+  delayTime?: PositiveInteger<T>;
+};
+
+type UseDelayFlagReturns = boolean;
+
+const useSomethingHook = (props: UseDelayFlagProps): UseDelayFlagReturns
+```
+
+- 데이터 페칭 시, 페칭(또는 로딩) 플래그를 지연시킨 시간동안 유지하여 로딩 UI의 깜빡임 현상 제거, 중복 호출 방지 등의 용도로 사용할 수 있습니다.
+- 지연시킨 시간보다 플래그의 업데이트가 더 늦을 경우 지연 시간을 무시하고 플래그의 실제 업데이트 시점을 반환합니다.
+
+### Props
+
+- `flag` : 지연시킬 플래그
+- `delayTime` : 지연시킬 시간(ms)
+  - 양의 정수만 가능
+  - 기본값: `1000`
+
+### Returns
+
+- delayTime 만큼 지연시킨 후에 업데이트된 flag 반환
+
+## Examples
+
+```tsx copy
+import { useEffect, useState } from 'react';
+import { useDelayFlag } from '@frontend-opensource/use-react-hooks';
+
+function App() {
+  const [flag, setFlag] = useState(true);
+  const delayFlag = useDelayFlag({ flag, delayTime: 3000 });
+
+  // 1초 뒤에 flag를 업데이트하는 함수
+  const updateFlagAsync = async () => {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    setFlag(false);
+  };
+
+  useEffect(() => {
+    updateFlagAsync();
+  }, []);
+
+  return (
+    <div>
+      {/* 1초 뒤에 flag 업데이트됨 */}
+      {flag ? <p>Loading...</p> : <p>Loaded</p>}
+
+      {/* 3초 뒤에 delayFlag 업데이트됨 */}
+      {delayFlag ? <p>Delayed Loading...</p> : <p>Delayed Loaded</p>}
+    </div>
+  );
+}
+```
