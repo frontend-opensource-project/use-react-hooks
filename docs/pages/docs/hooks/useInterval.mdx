@@ -1,0 +1,51 @@
+# useInterval
+
+## Introduce
+
+지정된 시간 간격만큼 반복적으로 콜백 함수를 호출하는 훅입니다.
+
+```tsx
+const useInterval = (callback: () => void, ms: number): () => void
+```
+
+- 지정된 시간 간격으로 콜백 함수를 호출하는 타이머를 설정합니다.
+- `ms` 값이 변경될 때마다 interval이 재설정되며, 컴포넌트가 언마운트될 때 자동으로 타이머가 정리됩니다.
+- 반환된 `clear` 함수를 호출하여 수동으로 타이머를 중지할 수도 있습니다.
+
+### Props
+
+- `callback` : 지정된 간격마다 호출될 콜백 함수
+- `ms` : 콜백 함수가 호출되는 시간 간격(밀리초)
+
+### Returns
+
+- interval 중지 함수
+
+## Examples
+
+```tsx copy filename="TestComponent.tsx"
+function TestComponent() {
+  const [count, setCount] = useState(0);
+  const [delay, setDelay] = useState(1000);
+
+  const clear = useInterval(() => {
+    setCount(count + 1);
+  }, delay);
+
+  const handleStop = () => {
+    clear();
+  };
+
+  const handleDelay = ({ target }) => {
+    setDelay(target.value);
+  };
+
+  return (
+    <div>
+      <input type="number" value={delay} onChange={handleDelay} />
+      <button onClick={handleStop}>stop</button>
+      <div>{count}</div>
+    </div>
+  );
+}
+```
