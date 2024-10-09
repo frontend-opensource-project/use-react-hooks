@@ -10,5 +10,6 @@
   "useSound": "useSound",
   "useTimer": "useTimer",
   "useToggle": "useToggle",
-  "useTranslation": "useTranslation"
+  "useTranslation": "useTranslation",
+  "useInterval": "useInterval"
 }
