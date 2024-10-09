@@ -1,6 +1,6 @@
 export type Fn = () => void;
 
-export interface useOnlineStatusProps {
+export interface UseOnlineStatusProps {
   onlineCallback?: Fn;
   offlineCallback?: Fn;
 }

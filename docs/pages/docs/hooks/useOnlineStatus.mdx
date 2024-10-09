@@ -1,0 +1,59 @@
+# useOnlineStatus
+
+## Introduce
+
+온라인/오프라인 네트워크 상태를 판별하는 훅입니다.
+
+```tsx
+interface UseOnlineStatusProps {
+  onlineCallback?: () => void;
+  offlineCallback?: () => void;
+}
+
+interface UseOnlineStatusReturns {
+  isOnline: boolean;
+}
+
+const useOnlineStatus = ( props: UseOnlineStatusProps): UseOnlineStatusReturns
+```
+
+- 브라우저의 온라인/오프라인 상태를 추적하는 훅입니다.
+- 온라인 상태가 변경될 때 실행할 콜백 함수를 선택적으로 지정할 수 있습니다.
+
+import { Callout } from 'nextra/components';
+
+<Callout type="info">
+  콜백 함수들은 useCallback을 사용해 메모이제이션하여 의도하지 않은 재생성을
+  방지하고 성능을 최적화할 것을 권장합니다.
+</Callout>
+
+### Props
+
+- `onlineCallback` : 브라우저가 온라인 상태가 될 때 실행할 콜백 함수
+- `offlineCallback` : 브라우저가 오프라인 상태가 될 때 실행할 콜백 함수
+
+### Returns
+
+- `isOnline` : 현재 온라인 상태
+
+## Examples
+
+```tsx copy filename="TestComponent.tsx"
+function TestComponent() {
+  const { isOnline } = useOnlineStatus({ onlineCallback, offlineCallback });
+
+  function onlineCallback() {
+    console.log('online');
+  }
+
+  function offlineCallback() {
+    console.log('offline');
+  }
+
+  return (
+    <div>
+      <h1>{isOnline ? 'online' : 'offline'}</h1>
+    </div>
+  );
+}
+```
