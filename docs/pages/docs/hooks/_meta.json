@@ -10,5 +10,7 @@
   "useSound": "useSound",
   "useTimer": "useTimer",
   "useToggle": "useToggle",
-  "useTranslation": "useTranslation"
+  "useTranslation": "useTranslation",
+  "useUnmountEffect": "useUnmountEffect"
+
 }
