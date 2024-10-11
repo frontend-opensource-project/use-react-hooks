@@ -3,6 +3,7 @@
   "useDebounce": "useDebounce",
   "useDeepCompareEffect": "useDeepCompareEffect",
   "useDetectDevice": "useDetectDevice",
+  "useHover": "useHover",
   "useKeyCombination": "useKeyCombination",
   "useLongPress": "useLongPress",
   "useMousePosition": "useMousePosition",
