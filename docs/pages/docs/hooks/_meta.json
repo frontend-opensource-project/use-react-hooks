@@ -2,6 +2,7 @@
   "useConfirm": "useConfirm",
   "useDebounce": "useDebounce",
   "useDeepCompareEffect": "useDeepCompareEffect",
+  "useDelayFlag": "useDelayFlag",
   "useDetectDevice": "useDetectDevice",
   "useKeyCombination": "useKeyCombination",
   "useLongPress": "useLongPress",
