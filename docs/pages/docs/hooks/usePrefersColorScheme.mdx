@@ -12,12 +12,12 @@ import { Callout } from 'nextra/components';
 
 ```ts
 export interface UsePrefersColorSchemeProps {
-  serverSnapshot?: ColorSchemeType;
+  serverSnapshot?: UsePrefersColorSchemeReturns;
 }
 
-export type ColorSchemeType = 'dark' | 'light';
+export type UsePrefersColorSchemeReturns = 'dark' | 'light';
 
-const usePrefersColorScheme = (props: UsePrefersColorSchemeProps = {}): ColorSchemeType;
+const usePrefersColorScheme = (props: UsePrefersColorSchemeProps = {}): UsePrefersColorSchemeReturns;
 ```
 
 ### Props
@@ -26,7 +26,7 @@ const usePrefersColorScheme = (props: UsePrefersColorSchemeProps = {}): ColorSch
 
 ### Returns
 
-- `ColorSchemeType` : 선호 색상 모드 값을 반환합니다. 두 가지 옵션이 있습니다.
+- `UsePrefersColorSchemeReturns` : 선호 색상 모드 값을 반환합니다. 두 가지 옵션이 있습니다.
   - `dark` : 다크 모드
   - `light` : 라이트 모드
 
