@@ -1,52 +1,48 @@
 import { useState, useEffect, useRef } from 'react';
-import { PositiveInteger } from './type';
+import { UseDelayFlagProps, UseDelayFlagReturns } from './type';
 /**
- * 인자로 받은 플래그를 주어진 시간만큼 지연시키는 커스텀 훅.
+ * 플래그를 원하는 시간만큼 지연시킨 후에 업데이트하는 훅
  *
- * @param {boolean} flag 지연시키고자 하는 플래그.
- * @param {PositiveInteger<T>} [delayTime] 지연 시간(ms). 양의 정수로 지정(Default=1000).
+ * @param {boolean} flag 지연시킬 플래그
+ * @param {number} [delayTime=1000] 지연 시간(ms, 양의 정수)
  *
- * @returns {boolean} true 상태의 입력된 플래그를 delayTime 시간이 지난 후 false로 업데이트해 반환.
+ * @returns {boolean} delayTime 만큼 지연시킨 후에 업데이트된 flag 반환
  *
  * @description
- * - 이 훅은 플래그를 특정 시간 동안 유지하고자 할 때 유용합니다.
- * - 데이터 페칭 시, 페칭(또는 로딩) 플래그를 특정 시간 동안 유지하여 로딩 UI의 깜빡임 현상 제거, 중복 호출 방지 등의 용도로 사용할 수 있습니다.
+ * - 데이터 페칭 시, 페칭(또는 로딩) 플래그를 지연시킨 시간동안 유지하여 로딩 UI의 깜빡임 현상 제거, 중복 호출 방지 등의 용도로 사용할 수 있습니다.
+ * - 지연시킨 시간보다 플래그의 업데이트가 더 늦을 경우 지연 시간을 무시하고 플래그의 실제 업데이트 시점을 반환합니다.
  */
-const useDelayFlag = <T extends number>(
-  flag: boolean,
-  delayTime?: PositiveInteger<T>
-): boolean => {
-  const startTimeRef = useRef(0);
-  const [delayFlag, setDelayFlag] = useState(false);
+const useDelayFlag = <T extends number>({
+  flag,
+  delayTime,
+}: UseDelayFlagProps<T>): UseDelayFlagReturns => {
+  const startTime = useRef(0);
+  const [delayFlag, setDelayFlag] = useState(flag);
 
-  const initializeFlag = () => {
-    startTimeRef.current = Date.now();
-    setDelayFlag(true);
-  };
-
-  const resetFlag = () => {
-    setDelayFlag(false);
+  const switchFlag = () => {
+    setDelayFlag((prev) => !prev);
   };
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout | null = null;
 
-    const delayFlag = () => {
-      const elapsedTime = Date.now() - startTimeRef.current;
+    const delay = () => {
+      const elapsedTime = Date.now() - startTime.current;
       const remainingTime = (delayTime || 1000) - elapsedTime;
 
       if (remainingTime > 0) {
-        timeoutId = setTimeout(resetFlag, remainingTime);
+        timeoutId = setTimeout(switchFlag, remainingTime);
       } else {
-        resetFlag();
+        switchFlag();
       }
     };
 
-    if (flag) {
-      initializeFlag();
-    } else if (startTimeRef.current) {
-      delayFlag();
+    if (!startTime.current) {
+      startTime.current = Date.now();
+      return;
     }
+
+    if (flag !== delayFlag) delay();
 
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
