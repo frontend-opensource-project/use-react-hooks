@@ -4,6 +4,7 @@
   "useDeepCompareEffect": "useDeepCompareEffect",
   "useDelayFlag": "useDelayFlag",
   "useDetectDevice": "useDetectDevice",
+  "useGeolocation": "useGeolocation",
   "useHover": "useHover",
   "useInterval": "useInterval",
   "useKeyCombination": "useKeyCombination",
