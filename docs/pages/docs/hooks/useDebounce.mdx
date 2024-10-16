@@ -1,0 +1,56 @@
+# useDebounce
+
+## Introduce
+
+일정 시간(delay) 동안 호출이 연속적으로 발생하면, 마지막 호출이 끝난 후에만 콜백 함수가 실행되도록 지연시키는 훅입니다.
+
+```tsx
+const useDebounce = <T extends unknown[]>(
+  callback: (...args: T) => void,
+  delay: number
+): (...args: T) => void
+```
+
+- 입력 필드나 스크롤 이벤트와 같은 상황에서 **불필요한 렌더링이나 API 호출**을 줄여 성능을 최적화할 수 있습니다.
+
+### Props
+
+- `callback` : 사용자가 연속적인 동작을 멈춘 후 실행되는 콜백함수
+- `delay` : 지연 시간(밀리초)
+
+### Returns
+
+- `(...args: T) => void` : 디바운스된 콜백 함수
+
+## Examples
+
+```tsx copy filename="TestComponent.tsx"
+const TestComponent = () => {
+  const [searchText, setSearchText] = useState('');
+  const [debouncedText, setDebouncedText] = useState(searchText);
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setSearchText(newValue);
+    debounceSearchText(newValue);
+  };
+
+  const debounceSearchText = useDebounce((text: string) => {
+    setDebouncedText(text);
+  }, 200);
+
+  const filteredUsers = users.filter((u) =>
+    u.name.toLowerCase().includes(debouncedText.toLowerCase())
+  );
+
+  return (
+    <div>
+      <input type="text" value={searchText} onChange={handleChange} />
+      <ul>
+        {filteredUsers.map((u) => (
+          <li key={u.id}>{u.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+```

@@ -1,0 +1,182 @@
+# useSound
+
+## Introduce
+
+useSound 훅은 오디오를 재생하고, 재생 상태를 제어하며, 오디오의 여러 속성을 설정할 수 있는 기능을 제공합니다.
+이 훅을 사용하여 오디오를 로드하고 재생하는 동안 다양한 이벤트(재생, 일시정지, 종료 등)에 대한 콜백을 설정할 수 있습니다.
+
+```ts
+export interface UseSoundProps {
+  url: string;
+  onLoad?: Fn;
+  onPlay?: Fn;
+  onPause?: Fn;
+  onEnd?: Fn;
+  loop?: boolean;
+  defaultVolume?: number;
+  defaultPlaybackRate?: number;
+}
+
+export interface UseSoundReturns {
+  error: ErrorEvent | null;
+  volume: number;
+  playbackRate: number;
+  isLoop: boolean;
+  isMuted: boolean;
+  isLoading: boolean;
+  isPlaying: boolean;
+  isPaused: boolean;
+  duration: number;
+  currentTime: number;
+  play: Fn;
+  pause: Fn;
+  stop: Fn;
+  setMute: Fn;
+  setUnmute: Fn;
+  setIsLoop: (loop: boolean) => void;
+  setPosition: (time: number) => void;
+  setVolume: (volume: number) => void;
+  setPlaybackRate: (rate: number) => void;
+}
+const useSound = (props: UseSoundProps): UseSoundReturns
+```
+
+### Props
+
+- `url` : 오디오 파일의 URL (필수)
+- `loop` : 반복 재생 여부 (기본값: `false`)
+- `defaultVolume` : 초기 볼륨 값 (범위: 0.0 ~ 1.0, 기본값: `1`)
+- `defaultPlaybackRate` : 초기 재생 속도 값 (범위: 0.5 ~ 4.0, 기본값: `1`)
+- `onLoad` : 오디오가 성공적으로 로드되었을 때 호출되는 콜백 함수
+- `onPlay` : 오디오 재생이 시작되었을 때 호출되는 콜백 함수
+- `onPause` : 오디오가 일시 정지 되었을 때 호출되는 콜백 함수
+- `onEnd` : 오디오 재생이 끝났을 때 호출되는 콜백 함수
+
+### Returns
+
+- ##### 오디오 상태
+    - `error` : 오디오 로드 중 발생한 오류 (`ErrorEvent` 또는 `null`)
+    - `volume` : 현재 볼륨 값 (0.0 ~ 1.0)
+    - `playbackRate` : 현재 재생 속도 값 (0.5 ~ 4.0)
+    - `isLoop` : 반복 재생 여부
+    - `isMuted` : 음소거 여부
+    - `isLoading` : 오디오가 로드 중인지 여부
+    - `isPlaying` : 오디오가 재생 중인지 여부
+    - `isPaused` : 오디오가 일시 정지되었는지 여부
+    - `duration` : 오디오의 전체 길이 (초 단위)
+    - `currentTime` : 오디오의 현재 재생 위치 (초 단위)
+
+
+-  ##### 오디오 제어 함수
+    - `play` : 오디오를 재생하는 함수
+    - `pause` : 오디오를 일시 정지하는 함수
+    - `stop` : 오디오를 정지하는 함수 (재생 위치가 0으로 돌아갑니다)
+    - `setMute` : 오디오를 음소거하는 함수
+    - `setUnmute` : 오디오 음소거를 해제하는 함수
+    - `setIsLoop` : 반복 재생 여부를 설정하는 함수 (`loop: boolean`)
+    - `setPosition` : 오디오 재생 위치를 설정하는 함수 (`time: number`)
+    - `setVolume` : 볼륨 값을 설정하는 함수 (`volume: number`)
+    - `setPlaybackRate` : 재생 속도를 설정하는 함수 (`rate: number`)
+
+## Examples
+
+```ts copy filename="useSound.tsx"
+const App = () => {
+  const result = useSound({
+    url: 'https://github.com/rafaelreis-hotmart/Audio-Sample-files/raw/master/sample.mp3',
+  });
+
+  const {
+    volume,
+    playbackRate,
+    isLoop,
+    duration,
+    currentTime,
+    play,
+    pause,
+    stop,
+    setIsLoop,
+    setPosition,
+    setVolume,
+    setPlaybackRate,
+  } = result;
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setVolume(parseFloat(e.target.value));
+  };
+
+  const handlePlaybackRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPlaybackRate(parseFloat(e.target.value));
+  };
+
+  const handlePositionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPosition(parseFloat(e.target.value));
+  };
+
+  return (
+    <div>
+      <button onClick={play}>재생</button>
+      <button onClick={pause}>일시정지</button>
+      <button onClick={stop}>정지</button>
+      <div>
+        <label>
+          볼륨:
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={volume}
+            onChange={handleVolumeChange}
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          배속:
+          <input
+            type="range"
+            min="0.5"
+            max="2"
+            step="0.1"
+            value={playbackRate}
+            onChange={handlePlaybackRateChange}
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          재생 위치:
+          <input
+            type="range"
+            min="0"
+            max={duration}
+            step="0.1"
+            value={currentTime}
+            onChange={handlePositionChange}
+          />
+        </label>
+      </div>
+      <div>
+        <label>
+          반복 재생:
+          <input
+            type="checkbox"
+            checked={isLoop}
+            onChange={(e) => setIsLoop(e.target.checked)}
+          />
+        </label>
+      </div>
+    </div>
+  );
+};
+
+export default App;
+```
+
+import { Callout } from 'nextra/components';
+
+
+<Callout type="info">
+  브라우저마다 지원하는 오디오 포맷이 다를 수 있습니다. 대부분의 브라우저는 MP3, WAV, OGG 등을 지원하며, 파일을 로드하기 전에 호환성을 확인하는 것이 좋습니다.
+</Callout>
