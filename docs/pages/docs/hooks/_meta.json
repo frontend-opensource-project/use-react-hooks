@@ -11,6 +11,7 @@
   "useLongPress": "useLongPress",
   "useMousePosition": "useMousePosition",
   "useOnlineStatus": "useOnlineStatus",
+  "usePrefersColorScheme": "usePrefersColorScheme",
   "useScrollLock": "useScrollLock",
   "useSound": "useSound",
   "useTimer": "useTimer",
