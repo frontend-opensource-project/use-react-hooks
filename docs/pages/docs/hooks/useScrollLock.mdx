@@ -1,0 +1,44 @@
+# useScrollLock
+
+## Introduce
+
+페이지의 스크롤을 잠궈 사용자가 스크롤할 수 없도록 합니다.
+
+(스크롤 바가 비활성화된 상태로, UI형태가 유지된 형태)
+
+```ts
+const useScrollLock = (props: boolean): void
+```
+
+### Props
+
+boolean 값으로 스크롤의 잠금 여부를 관리합니다.
+
+## Examples
+
+```tsx copy filename="TestComponent.tsx"
+
+const TestComponent = () => {
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  useScrollLock(isModalOpen);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  return (
+    <div style={styles.container}>
+      {isModalOpen && (
+        <div style={styles.modal}>
+          <div style={styles.modalContent}>
+     ...
+    </div>
+  );
+};
+
+```

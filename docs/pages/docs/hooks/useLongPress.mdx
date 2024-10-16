@@ -1,0 +1,55 @@
+# useLongPress
+
+## Introduce
+
+사용자가 요소를 길게 눌렀을 때 콜백 함수를 호출합니다.
+
+```ts
+export type Fn = () => void;
+
+export interface UseLongPressReturns {
+  onMouseDown: Fn;
+  onMouseUp: Fn;
+  onMouseLeave: Fn;
+  onTouchStart: Fn;
+  onTouchEnd: Fn;
+}
+
+const useLongPress = (callback: Fn, delay: number = 500): UseLongPressReturns
+```
+
+사용자가 요소를 지정한 시간 이상 누르고 있을 때 콜백 함수가 호출되며, 마우스와 터치 이벤트를 모두 지원합니다.
+
+### Props
+
+- `callback` : 사용자가 요소를 길게 눌렀을 때 호출될 콜백 함수
+- `delay` : 사용자가 요소를 길게 눌러야 하는 시간(밀리초, 기본값 500ms)
+
+### Returns
+
+- UseLongPressReturns : 요소에 연결될 이벤트 핸들러 객체. 다음 다섯 가지 이벤트가 반환됩니다.
+  - onMouseDown
+  - onMouseUp
+  - onMouseLeave
+  - onTouchStart
+  - onTouchEnd
+
+## Examples
+
+```tsx copy filename="TestComponent.tsx"
+function TestComponent() {
+  const [isLongPressed, setLongPressed] = useState(false);
+
+  const attrs = useLongPress(() => {
+    setLongPressed(true);
+  });
+
+  return (
+    <div>
+      <h1>{isLongPressed ? '✨ LONG PRESS ✨' : 'USE-REACT-HOOKS'}</h1>
+      <button {...attrs}>PRESS</button>
+      <button onClick={() => setLongPressed(false)}>RESET</button>
+    </div>
+  );
+}
+```
