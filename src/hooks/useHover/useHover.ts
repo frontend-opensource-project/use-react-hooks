@@ -2,7 +2,7 @@ import { useCallback, useRef, useState } from 'react';
 import { UseHoverReturns } from './type';
 
 /**
- * ref로 지정한 요소에 마우스가 올라와 있는지 감지하는 훅입
+ * ref로 지정한 요소에 마우스가 올라와 있는지 감지하는 훅
  *
  * @returns
  * - `isHovered`: 마우스가 요소 위에 있는지 여부를 나타내는 불리언 값
