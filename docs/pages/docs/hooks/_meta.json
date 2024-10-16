@@ -1,4 +1,5 @@
 {
+  "useClipboard": "useClipboard",
   "useConfirm": "useConfirm",
   "useDebounce": "useDebounce",
   "useDeepCompareEffect": "useDeepCompareEffect",

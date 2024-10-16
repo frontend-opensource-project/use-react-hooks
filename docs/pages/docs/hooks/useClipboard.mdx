@@ -1,0 +1,62 @@
+# useClipboard
+
+## Introduce
+
+클립보드에 텍스트나 이미지를 복사할 수 있도록 도와주는 훅입니다.
+
+```ts
+// 훅 인터페이스
+export interface UseClipboardProps {
+  resetTime?: number;
+}
+
+export interface UseClipboardReturns {
+  copied: boolean;
+  copyText: (text: string) => void;
+  copyImg: (path: string) => void;
+}
+
+const useSomethingHook = (props: UseSomethingHookProps): UseSomethingHookReturns
+```
+
+import { Callout } from 'nextra/components';
+
+<Callout type="info">이미지는 URL을 입력해 복사할 수 있습니다.</Callout>
+
+<Callout type="warning">
+  클립보드 API가 지원되지 않는 환경에선 에러가 발생합니다.
+</Callout>
+
+### Props
+
+- `resetTime`: 복사 후, 복사된 상태(`copied`) 플래그가 리셋되는 시간(ms)
+  - default: 5000
+
+### Returns
+
+- `copied`: 클립보드 복사가 성공했는지를 나타내는 플래그
+- `copyText`: 텍스트를 클립보드에 복사하는 비동기 함수
+- `copyImg`: 이미지를 클립보드에 복사하는 함수
+
+## Examples
+
+```tsx copy filename="TestComponent.tsx"
+import { useClipboard } from '@frontend-opensource/use-react-hooks';
+
+const TestComponent = () => {
+  const { copied, copyText, copyImg } = useClipboard();
+
+  return (
+    <div>
+      <button onClick={() => copyText('Hello World')}>Copy Text</button>
+      <button
+        onClick={() =>
+          copyImg('https://avatars.githubusercontent.com/u/173591906?s=200&v=4')
+        }>
+        Copy Image
+      </button>
+      <p> {copied ? 'Copied!' : ''}</p>
+    </div>
+  );
+};
+```

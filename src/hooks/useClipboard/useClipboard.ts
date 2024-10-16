@@ -3,17 +3,18 @@ import { imgToBlob } from '@/utils';
 import { UseClipboardProps, UseClipboardReturns } from './type';
 
 /**
- * 클립보드에 텍스트나 이미지를 복사하는 커스텀 훅
+ * 클립보드에 텍스트나 이미지를 복사할 수 있도록 도와주는 훅
  *
- * @param {number} [resetTime=5000] - 복사 작업이 완료된 후 플래그를 리셋할 시간(ms)
+ * @param {number} [resetTime=5000] - 복사 후, 복사된 상태(copied) 플래그가 리셋되는 시간(ms)
  *
  * @returns
- * - `copied`: 복사 작업의 성공 여부를 나타내는 플래그
+ * - `copied`: 클립보드 복사가 성공했는지를 나타내는 플래그
  * - `copyText`: 텍스트를 클립보드에 복사하는 비동기 함수
- * - `copyImg`: 주어진 경로의 이미지를 클립보드에 복사하는 함수
+ * - `copyImg`: 이미지를 클립보드에 복사하는 함수
  *
  * @description
- * 클립보드 API가 지원되지 않는 경우 에러를 발생시킵니다.
+ * - 이미지는 URL을 입력해 복사할 수 있습니다.
+ * - 클립보드 API가 지원되지 않는 환경에선 에러가 발생합니다.
  */
 const useClipboard = ({
   resetTime = 5000,
