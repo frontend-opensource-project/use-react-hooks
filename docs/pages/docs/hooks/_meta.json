@@ -4,6 +4,7 @@
   "useDeepCompareEffect": "useDeepCompareEffect",
   "useDelayFlag": "useDelayFlag",
   "useDetectDevice": "useDetectDevice",
+  "useHover": "useHover",
   "useKeyCombination": "useKeyCombination",
   "useLongPress": "useLongPress",
   "useMousePosition": "useMousePosition",
