@@ -5,13 +5,14 @@
   "useDelayFlag": "useDelayFlag",
   "useDetectDevice": "useDetectDevice",
   "useHover": "useHover",
+  "useInterval": "useInterval",
   "useKeyCombination": "useKeyCombination",
   "useLongPress": "useLongPress",
   "useMousePosition": "useMousePosition",
+  "useOnlineStatus": "useOnlineStatus",
   "useScrollLock": "useScrollLock",
   "useSound": "useSound",
   "useTimer": "useTimer",
   "useToggle": "useToggle",
-  "useTranslation": "useTranslation",
-  "useOnlineStatus": "useOnlineStatus"
+  "useTranslation": "useTranslation"
 }
