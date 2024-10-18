@@ -5,7 +5,7 @@ import { UseClipboardProps, UseClipboardReturns } from './type';
 /**
  * 클립보드에 텍스트나 이미지를 복사할 수 있도록 도와주는 훅
  *
- * @param {number} [resetTime=5000] - 복사 후, 복사된 상태(copied) 플래그가 리셋되는 시간(ms)
+ * @param {number} [resetTime=5000] - 복사 성공 후, 복사 상태에 대한 플래그(copied)가 리셋되는 시간(ms)
  *
  * @returns
  * - `copied`: 클립보드 복사가 성공했는지를 나타내는 플래그

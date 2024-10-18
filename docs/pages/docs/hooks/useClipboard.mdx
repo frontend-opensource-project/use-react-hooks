@@ -16,7 +16,7 @@ export interface UseClipboardReturns {
   copyImg: (path: string) => void;
 }
 
-const useSomethingHook = (props: UseSomethingHookProps): UseSomethingHookReturns
+const useClipboard = (props: UseClipboardProps): UseClipboardReturns
 ```
 
 import { Callout } from 'nextra/components';
@@ -30,7 +30,7 @@ import { Callout } from 'nextra/components';
 
 ### Props
 
-- `resetTime`: 복사 후, 복사된 상태(`copied`) 플래그가 리셋되는 시간(ms)
+- `resetTime`: 복사 성공 후, 복사 상태에 대한 플래그(`copied`)가 리셋되는 시간(ms)
   - default: 5000
 
 ### Returns
@@ -50,10 +50,7 @@ const TestComponent = () => {
   return (
     <div>
       <button onClick={() => copyText('Hello World')}>Copy Text</button>
-      <button
-        onClick={() =>
-          copyImg('https://avatars.githubusercontent.com/u/173591906?s=200&v=4')
-        }>
+      <button onClick={() => copyImg('https://example.com/image.png')}>
         Copy Image
       </button>
       <p> {copied ? 'Copied!' : ''}</p>
