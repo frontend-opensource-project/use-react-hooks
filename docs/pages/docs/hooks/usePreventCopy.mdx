@@ -1,0 +1,36 @@
+# usePreventCopy
+
+## Introduce
+
+브라우저에서 복사 이벤트를 차단하는 훅입니다.
+
+```ts
+const usePreventCopy = (callback?: () => void): void
+```
+
+- 복사(또는 잘라내기) 이벤트를 차단하고 콜백 함수를 실행합니다.
+- 콜백 함수를 인자로 넘기지 않으면 단순히 복사 이벤트만 차단합니다.
+
+### Props
+
+- `callback`: 복사 이벤트가 발생할 때 실행할 콜백 함수
+
+## Examples
+
+```tsx copy filename="TestComponent.tsx"
+import { usePreventCopy } from '@frontend-opensource/use-react-hooks';
+
+const TestComponent = () => {
+  const callbackCopy = () => {
+    alert('복사할 수 없습니다.');
+  };
+
+  usePreventCopy(callbackCopy);
+
+  return (
+    <div>
+      <h1>USE-REACT-HOOKS</h1>
+    </div>
+  );
+};
+```
