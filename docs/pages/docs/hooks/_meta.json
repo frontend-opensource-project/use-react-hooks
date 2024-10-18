@@ -12,6 +12,7 @@
   "useMousePosition": "useMousePosition",
   "useOnlineStatus": "useOnlineStatus",
   "usePrefersColorScheme": "usePrefersColorScheme",
+  "usePreventCopy": "usePreventCopy",
   "useScrollLock": "useScrollLock",
   "useSound": "useSound",
   "useTimer": "useTimer",
