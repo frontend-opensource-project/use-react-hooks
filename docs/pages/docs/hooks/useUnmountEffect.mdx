@@ -1,0 +1,39 @@
+# useUnmountEffect
+
+## Introduce
+
+- `useUnmountEffect`는 컴포넌트가 언마운트될 때 지정한 콜백 함수를 실행하는 훅입니다.
+- 컴포넌트가 언마운트 되는 시점에 클린업 작업을 수행하고자 할 때 유용합니다.
+
+```tsx
+interface UseUnmountEffectReturns {
+  setUnmountCallback: (callback: () => void) => void;
+}
+
+const useUnmountEffect = ():UseUnmountEffectReturns
+```
+
+## Props
+
+- `callback`: 컴포넌트가 언마운트될 때 실행할 콜백 함수
+
+## Examples
+
+```tsx copy filename="TestComponent.tsx"
+function TestComponent() {
+  const { setUnmountCallback } = useUnmountEffect();
+
+  setUnmountCallback(() => {
+    console.log('TestComponent가 언마운트되었습니다.');
+  });
+
+  return (
+      <>
+        <DummyComponents/>
+        <SomeComponents/>
+      </>
+    )
+}
+
+export default ExampleComponent;
+```
