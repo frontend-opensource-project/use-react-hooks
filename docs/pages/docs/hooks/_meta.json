@@ -18,5 +18,7 @@
   "useSound": "useSound",
   "useTimer": "useTimer",
   "useToggle": "useToggle",
-  "useTranslation": "useTranslation"
+  "useTranslation": "useTranslation",
+  "useOutsideClick": "useOutsideClick",
+  "useKeyDown" : "useKeyDown"
 }

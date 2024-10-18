@@ -1,0 +1,51 @@
+# useOutsideClick
+
+## Introduce
+
+- 지정된 엘리먼트 외부에서 발생하는 클릭 이벤트를 감지하고, 외부 클릭 시 콜백 함수를 호출하는 훅입니다.
+- 모달, 드롭다운 메뉴 등에서 외부 클릭을 감지하여 닫기 기능을 구현할 때 유용합니다.
+
+```tsx
+export interface UseOutsideClickProps {
+  onClickOutside: () => void;
+  events?: EventType[];
+}
+
+type EventType = 'mousedown' | 'mouseup' | 'touchstart' | 'touchend';
+
+const useOutsideClick = ({
+  onClickOutside,
+  events = ['mousedown', 'touchstart'],
+}: UseOutsideClickProps): RefObject<HTMLElement>
+```
+
+## Props
+- `onClickOutside` : 엘리먼트 외부에서 전달한 이벤트가 발생했을 때 호출되는 콜백 함수입니다.
+- `events` : 감지할 이벤트 타입을 지정할 수 있습니다. 기본값은 ['mousedown', 'touchstart']입니다.
+
+## Returns
+- 클릭 이벤트를 감지할 DOM 엘리먼트에 연결할 ref 객체를 반환합니다.
+
+## Examples
+
+```tsx copy filename="TestComponent.tsx"
+function ExampleComponent() {
+  const handleClickOutside = () => {
+    alert('외부 클릭이 감지되었습니다.');
+  };
+
+  const ref = useOutsideClick({
+    onClickOutside: handleClickOutside,
+  });
+
+  return (
+    <div>
+      <div ref={ref} style={{ padding: '20px', backgroundColor: '#f0f0f0' }}>
+        이 박스 외부를 클릭하면 알림이 뜹니다.
+      </div>
+    </div>
+  );
+}
+
+export default ExampleComponent;
+```
