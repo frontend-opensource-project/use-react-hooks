@@ -1,4 +1,4 @@
-import { useEffect, useRef, useReducer, useMemo } from 'react';
+import { useEffect, useRef, useReducer, useMemo, useState } from 'react';
 import type { Dispatch, MutableRefObject } from 'react';
 import {
   asyncWave,
@@ -34,10 +34,10 @@ const useAsyncTasks = <R>(tasks: Task<R>[], options: Options<R>) => {
     data: null,
     error: null,
   });
+  const [resetTrigger, setResetTrigger] = useState(0); // reset 호출 시 useEffect 재실행을 위한 상태
 
   useEffect(() => {
     isMountedRef.current = true;
-
     (async () => {
       await asyncWave<R>(
         [...tasks],
@@ -49,7 +49,7 @@ const useAsyncTasks = <R>(tasks: Task<R>[], options: Options<R>) => {
       isMountedRef.current = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [resetTrigger]);
 
   const stateInfo: StateInfo<R> = useMemo(
     () => ({
@@ -59,6 +59,8 @@ const useAsyncTasks = <R>(tasks: Task<R>[], options: Options<R>) => {
         dispatch({
           type: ACTION_TYPES.RESET,
         });
+        isMountedRef.current = false;
+        setResetTrigger((prev) => prev + 1);
       },
     }),
     [state]
