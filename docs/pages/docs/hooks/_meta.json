@@ -19,6 +19,7 @@
   "useTimer": "useTimer",
   "useToggle": "useToggle",
   "useTranslation": "useTranslation",
+  "useAsyncTasks": "useAsyncTasks"
   "useOutsideClick": "useOutsideClick",
   "useKeyDown" : "useKeyDown"
 }
