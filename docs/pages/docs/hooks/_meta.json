@@ -11,6 +11,7 @@
   "useKeyCombination": "useKeyCombination",
   "useLongPress": "useLongPress",
   "useMousePosition": "useMousePosition",
+  "useIntersectionObserver": "useIntersectionObserver",
   "useOnlineStatus": "useOnlineStatus",
   "usePrefersColorScheme": "usePrefersColorScheme",
   "usePreventCopy": "usePreventCopy",
