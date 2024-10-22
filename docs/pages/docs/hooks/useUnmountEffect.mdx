@@ -13,7 +13,7 @@ interface UseUnmountEffectReturns {
 const useUnmountEffect = ():UseUnmountEffectReturns
 ```
 
-## Props
+## Returns
 
 - `callback`: 컴포넌트가 언마운트될 때 실행할 콜백 함수
 
@@ -28,11 +28,11 @@ function TestComponent() {
   });
 
   return (
-      <>
-        <DummyComponents/>
-        <SomeComponents/>
-      </>
-    )
+    <>
+      <DummyComponents />
+      <SomeComponents />
+    </>
+  );
 }
 
 export default ExampleComponent;
