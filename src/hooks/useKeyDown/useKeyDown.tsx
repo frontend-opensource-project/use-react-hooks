@@ -12,7 +12,7 @@ import { UseKeyDownProps } from '@/hooks/useKeyDown/type';
 const useKeyDown = ({ key, onKeyPress }: UseKeyDownProps): void => {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === key && !event.repeat) {
+      if (event.key.toLowerCase() === key.toLowerCase() && !event.repeat) {
         onKeyPress();
       }
     };

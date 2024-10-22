@@ -1,16 +1,26 @@
 {
+  "useClipboard": "useClipboard",
   "useConfirm": "useConfirm",
   "useDebounce": "useDebounce",
   "useDeepCompareEffect": "useDeepCompareEffect",
+  "useDelayFlag": "useDelayFlag",
   "useDetectDevice": "useDetectDevice",
+  "useGeolocation": "useGeolocation",
+  "useHover": "useHover",
+  "useInterval": "useInterval",
   "useKeyCombination": "useKeyCombination",
   "useLongPress": "useLongPress",
   "useMousePosition": "useMousePosition",
+  "useIntersectionObserver": "useIntersectionObserver",
+  "useOnlineStatus": "useOnlineStatus",
+  "usePrefersColorScheme": "usePrefersColorScheme",
+  "usePreventCopy": "usePreventCopy",
   "useScrollLock": "useScrollLock",
   "useSound": "useSound",
   "useTimer": "useTimer",
   "useToggle": "useToggle",
   "useTranslation": "useTranslation",
-  "useUnmountEffect": "useUnmountEffect"
-
+  "useUnmountEffect": "useUnmountEffect",
+  "useOutsideClick": "useOutsideClick",
+  "useKeyDown": "useKeyDown"
 }
