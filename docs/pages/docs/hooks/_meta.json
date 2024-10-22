@@ -15,10 +15,11 @@
   "usePrefersColorScheme": "usePrefersColorScheme",
   "usePreventCopy": "usePreventCopy",
   "useScrollLock": "useScrollLock",
+  "useScrollY": "useScrollY",
   "useSound": "useSound",
   "useTimer": "useTimer",
   "useToggle": "useToggle",
   "useTranslation": "useTranslation",
   "useOutsideClick": "useOutsideClick",
-  "useKeyDown" : "useKeyDown"
+  "useKeyDown": "useKeyDown"
 }
