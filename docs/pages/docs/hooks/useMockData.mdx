@@ -1,0 +1,96 @@
+# useMockData
+
+## Introduce
+
+주어진 스키마와 옵션을 바탕으로 모의 데이터를 생성합니다.
+
+필요한 형태의 데이터를 쉽게 테스트하고 사용할 수 있도록 구성이 되어있습니다.
+
+```ts
+interface UseMockDataProps<S extends Schema> {
+  options?: Partial<Options>;
+  schema: S;
+}
+
+interface UseMockDataReturns<T> {
+  mockData: T;
+  addItem: () => void;
+}
+
+const useMockData = <S extends Schema>(
+  props: UseMockDataProps<S>
+): UseMockDataReturns<SchemaToType<S>[]> => { ... }
+```
+
+- `addItem()` 함수를 사용해 생성된 더미데이터에 데이터를 추가합니다.
+
+### Props
+
+- `schema` : 모의 데이터의 구조를 정의하는 스키마 객체입니다. 각 필드의 타입과 구조를 설정할 수 있습니다.
+- `options` : 데이터 생성과 관련된 옵션 지정이 가능합니다. 기본적으로 설정된 defaultOptions가 사용되며, 필요 시 이를 덮어쓸 수 있습니다.
+- `options.count` : 생성될 요소의 개수를 명시합니다.
+- `options.type` : 더미 데이터 요소의 범위를 지정합니다.
+
+### Returns
+
+- `mockData` : 주어진 스키마에 따라 생성된 모의 데이터 배열입니다.
+- `addItem` : 새로운 모의 데이터를 추가하는 함수입니다. 호출 시 현재 schema에 기반해 새로운 항목이 배열에 추가됩니다.
+
+import { Callout } from 'nextra/components';
+
+<Callout type="warning">
+  스키마에 정의된 날짜 범위가 유효하지 않을 경우 오류가 발생할 수 있습니다. (예:
+  시작 날짜가 종료 날짜보다 나중인 경우)
+</Callout>
+
+## Examples
+
+```tsx copy filename="TestComponent.tsx"
+import React from 'react';
+import useMockData, { useMockDataSchema } from './useMockData';
+
+const schema: useMockDataSchema = {
+  user: {
+    id: 'UUID',
+    name: 'string',
+    posts: [
+      {
+        title: 'string',
+        content: 'string',
+        tags: ['string'],
+        comments: [
+          {
+            userId: 'UUID',
+            comment: 'string',
+            createdAt: 'date',
+          },
+        ],
+      },
+    ],
+    profile: {
+      avatar: 'image',
+      bio: 'string',
+      followers: [
+        {
+          followerId: 'UUID',
+          followedAt: 'date',
+        },
+      ],
+    },
+  },
+};
+
+const TestComponent: React.FC = () => {
+  const { mockData, addItem } = useMockData({ schema });
+
+  return (
+    <div>
+      <h1>Mock Data with Nested Structures</h1>
+      <pre>{JSON.stringify(mockData, null, 2)}</pre>
+      <button onClick={addItem}>Add Item</button>
+    </div>
+  );
+};
+
+export default TestComponent;
+```

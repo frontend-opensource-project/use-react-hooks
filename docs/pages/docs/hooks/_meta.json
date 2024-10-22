@@ -20,5 +20,6 @@
   "useToggle": "useToggle",
   "useTranslation": "useTranslation",
   "useOutsideClick": "useOutsideClick",
-  "useKeyDown" : "useKeyDown"
+  "useKeyDown": "useKeyDown",
+  "useMockData": "useMockData"
 }
