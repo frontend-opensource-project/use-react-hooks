@@ -20,6 +20,7 @@
   "useTimer": "useTimer",
   "useToggle": "useToggle",
   "useTranslation": "useTranslation",
+  "useUnmountEffect": "useUnmountEffect",
   "useOutsideClick": "useOutsideClick",
   "useKeyDown": "useKeyDown"
 }
