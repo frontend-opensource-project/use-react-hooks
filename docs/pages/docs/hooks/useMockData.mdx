@@ -115,6 +115,42 @@ const schema: useMockDataSchema = {
 const TestComponent: React.FC = () => {
   const { mockData, addItem } = useMockData({ schema });
 
+  // mockData 데이터
+  // [
+  //   {
+  //     "user": {
+  //       "id": "249ad9db-db18-4a92-b38d-6f17894e36e3",
+  //       "name": "Rhudl",
+  //       "posts": [
+  //         {
+  //           "title": "Utvdwx",
+  //           "content": "Hqskuyacjz",
+  //           "tags": [
+  //             "Ufgca"
+  //           ],
+  //           "comments": [
+  //             {
+  //               "userId": "97a3b3c9-1a96-492c-954b-96c62f731291",
+  //               "comment": "Iffaf",
+  //               "createdAt": "2024-11-16T15:23:23.481Z"
+  //             }
+  //           ]
+  //         }
+  //       ],
+  //       "profile": {
+  //         "avatar": "https://picsum.photos/2427/697",
+  //         "bio": "Wtxaccpqj",
+  //         "followers": [
+  //           {
+  //             "followerId": "a6c324ce-18be-49d3-a4d3-86ecb8bc9756",
+  //             "followedAt": "2024-10-26T13:14:18.015Z"
+  //           }
+  //         ]
+  //       }
+  //     }
+  //   }
+  // ]
+
   return (
     <div>
       <h1>Mock Data with Nested Structures</h1>
