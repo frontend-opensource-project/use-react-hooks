@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { validators } from '../utils';
+import { validators } from '../../utils';
 
 interface UsePermissionProps {
   permission: Permission; // 정의된 타입과 문자열 타입 모두 허용

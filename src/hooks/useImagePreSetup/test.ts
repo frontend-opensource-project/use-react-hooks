@@ -6,9 +6,9 @@ import useImagePreSetup, {
   validateWebPQuality,
 } from './useImagePreSetup';
 
-import { imgTo } from '../utils';
+import { imgTo } from '@/utils';
 
-jest.mock('../utils/imgTo');
+jest.mock('@/utils/imgTo');
 
 describe('useImagePreSetup', () => {
   let consoleWarnSpy: jest.SpyInstance;
