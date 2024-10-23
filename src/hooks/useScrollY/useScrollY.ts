@@ -3,6 +3,12 @@ import { debounce } from '@/utils';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Fn } from './type';
 
+/**
+ * 현재 페이지의 스크롤 위치를 저장하고 이동하는 함수를 반환하는 훅
+ *
+ * @returns
+ * - `moveTrigger`: 저장된 스크롤 위치로 이동하는 함수
+ */
 const useScrollY = (): { moveTrigger: Fn } => {
   const isClient = typeof window !== 'undefined';
 

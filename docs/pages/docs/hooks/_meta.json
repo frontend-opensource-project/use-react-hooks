@@ -16,6 +16,7 @@
   "usePrefersColorScheme": "usePrefersColorScheme",
   "usePreventCopy": "usePreventCopy",
   "useScrollLock": "useScrollLock",
+  "useScrollY": "useScrollY",
   "useSound": "useSound",
   "useTimer": "useTimer",
   "useToggle": "useToggle",
