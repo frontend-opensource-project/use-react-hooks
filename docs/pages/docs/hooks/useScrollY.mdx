@@ -1,0 +1,37 @@
+# useScrollY
+
+## Introduce
+
+현재 페이지의 스크롤 위치를 저장하고 이동하는 함수를 반환하는 훅입니다.
+
+```ts
+interface UseScrollYReturns {
+  moveTrigger: () => void;
+}
+
+const useScrollY = (): UseScrollYReturns
+```
+
+### Returns
+
+- `moveTrigger`: 저장된 스크롤 위치로 이동하는 함수
+
+## Examples
+
+```tsx copy filename="TestComponent.tsx"
+import { useScrollY } from '@frontend-opensource/use-react-hooks';
+
+function TestComponent() {
+  const { moveTrigger } = useScrollY();
+
+  useEffect(() => {
+    moveTrigger();
+  }, []);
+
+  return (
+    <div>
+      <h1>USE-REACT-HOOKS</h1>
+    </div>
+  );
+}
+```

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { imgTo } from '../utils';
+import { imgTo } from '@/utils';
 
 interface UseImagePreSetupProps {
   imageFiles: File[] | null;

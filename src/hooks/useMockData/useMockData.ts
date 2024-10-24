@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { validators } from '../utils';
+import { validators } from '@/utils';
 
 type PrimitiveType =
   | 'string'

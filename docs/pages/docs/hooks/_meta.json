@@ -11,15 +11,18 @@
   "useKeyCombination": "useKeyCombination",
   "useLongPress": "useLongPress",
   "useMousePosition": "useMousePosition",
+  "useIntersectionObserver": "useIntersectionObserver",
   "useOnlineStatus": "useOnlineStatus",
   "usePrefersColorScheme": "usePrefersColorScheme",
   "usePreventCopy": "usePreventCopy",
   "useScrollLock": "useScrollLock",
+  "useScrollY": "useScrollY",
   "useSound": "useSound",
   "useTimer": "useTimer",
   "useToggle": "useToggle",
   "useTranslation": "useTranslation",
-  "useAsyncTasks": "useAsyncTasks"
+  "useAsyncTasks": "useAsyncTasks",
+  "useUnmountEffect": "useUnmountEffect",
   "useOutsideClick": "useOutsideClick",
-  "useKeyDown" : "useKeyDown"
+  "useKeyDown": "useKeyDown"
 }
