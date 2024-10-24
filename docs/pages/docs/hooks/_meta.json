@@ -16,10 +16,12 @@
   "usePrefersColorScheme": "usePrefersColorScheme",
   "usePreventCopy": "usePreventCopy",
   "useScrollLock": "useScrollLock",
+  "useScrollY": "useScrollY",
   "useSound": "useSound",
   "useTimer": "useTimer",
   "useToggle": "useToggle",
   "useTranslation": "useTranslation",
+  "useUnmountEffect": "useUnmountEffect",
   "useOutsideClick": "useOutsideClick",
   "useKeyDown": "useKeyDown",
   "useMockData": "useMockData"
