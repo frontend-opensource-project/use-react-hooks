@@ -1,0 +1,164 @@
+# useMockData
+
+## Introduce
+
+주어진 스키마와 옵션을 바탕으로 모의 데이터를 생성합니다.
+
+필요한 형태의 데이터를 쉽게 테스트하고 사용할 수 있도록 구성이 되어있습니다.
+
+```ts
+interface UseMockDataProps<S extends Schema> {
+  options?: Partial<Options>;
+  schema: S;
+}
+
+interface UseMockDataReturns<T> {
+  mockData: T;
+  addItem: () => void;
+}
+
+const useMockData = <S extends Schema>(
+  props: UseMockDataProps<S>
+): UseMockDataReturns<SchemaToType<S>[]> => { ... }
+```
+
+### Props
+
+- `schema` : 모의 데이터의 구조를 정의하는 스키마 객체입니다. 각 필드의 타입과 구조를 설정할 수 있습니다.
+- `options` : 데이터 생성과 관련된 옵션을 지정할 수 있는 객체입니다. 기본적으로 설정된 `defaultOptions`이 사용되며, 필요 시 이를 덮어쓸 수 있습니다.
+- `options.count` : 생성될 요소의 개수를 명시합니다.
+- `options.type` : 각 데이터 타입에 대한 기본 생성 범위를 설정하는 객체입니다.
+
+```ts
+const defaultOptions: Options = {
+  count: 1, // 생성될 더미데이터 요소의 개수
+  type: {
+    string: {
+      // 문자열 길이 범위
+      min: 3,
+      max: 10,
+    },
+    number: {
+      // 숫자 생성 범위
+      min: 1,
+      max: 100,
+    },
+    image: {
+      // 이미지 너비, 높이 범위
+      width: {
+        min: 800,
+        max: 2560,
+      },
+      height: {
+        min: 600,
+        max: 1440,
+      },
+    },
+    date: {
+      // 날짜 범위
+      start: formatDateToYYYYMMDD(),
+      end: formatDateToYYYYMMDD(1),
+    },
+  },
+};
+```
+
+### Returns
+
+- `mockData` : 주어진 스키마에 따라 생성된 모의 데이터 배열입니다.
+- `addItem` : 새로운 모의 데이터를 추가하는 함수입니다. 호출 시 현재 schema에 기반해 새로운 항목이 배열에 추가됩니다.
+
+import { Callout } from 'nextra/components';
+
+<Callout type="warning">
+  스키마에 정의된 날짜 범위가 유효하지 않을 경우 오류가 발생할 수 있습니다. (예:
+  시작 날짜가 종료 날짜보다 나중인 경우)
+</Callout>
+
+## Examples
+
+```tsx copy filename="TestComponent.tsx"
+import React from 'react';
+import useMockData, { useMockDataSchema } from './useMockData';
+
+const schema: useMockDataSchema = {
+  user: {
+    id: 'UUID',
+    name: 'string',
+    posts: [
+      {
+        title: 'string',
+        content: 'string',
+        tags: ['string'],
+        comments: [
+          {
+            userId: 'UUID',
+            comment: 'string',
+            createdAt: 'date',
+          },
+        ],
+      },
+    ],
+    profile: {
+      avatar: 'image',
+      bio: 'string',
+      followers: [
+        {
+          followerId: 'UUID',
+          followedAt: 'date',
+        },
+      ],
+    },
+  },
+};
+
+const TestComponent: React.FC = () => {
+  const { mockData, addItem } = useMockData({ schema });
+
+  // mockData 데이터
+  // [
+  //   {
+  //     "user": {
+  //       "id": "249ad9db-db18-4a92-b38d-6f17894e36e3",
+  //       "name": "Rhudl",
+  //       "posts": [
+  //         {
+  //           "title": "Utvdwx",
+  //           "content": "Hqskuyacjz",
+  //           "tags": [
+  //             "Ufgca"
+  //           ],
+  //           "comments": [
+  //             {
+  //               "userId": "97a3b3c9-1a96-492c-954b-96c62f731291",
+  //               "comment": "Iffaf",
+  //               "createdAt": "2024-11-16T15:23:23.481Z"
+  //             }
+  //           ]
+  //         }
+  //       ],
+  //       "profile": {
+  //         "avatar": "https://picsum.photos/2427/697",
+  //         "bio": "Wtxaccpqj",
+  //         "followers": [
+  //           {
+  //             "followerId": "a6c324ce-18be-49d3-a4d3-86ecb8bc9756",
+  //             "followedAt": "2024-10-26T13:14:18.015Z"
+  //           }
+  //         ]
+  //       }
+  //     }
+  //   }
+  // ]
+
+  return (
+    <div>
+      <h1>Mock Data with Nested Structures</h1>
+      <pre>{JSON.stringify(mockData, null, 2)}</pre>
+      <button onClick={addItem}>Add Item</button>
+    </div>
+  );
+};
+
+export default TestComponent;
+```
