@@ -56,10 +56,12 @@ const useLocalStorage = <T>(key: string, initialValue: T) => {
 };
 
 const createLocalStorageManager = <T>(key: string) => {
-  const storage = new LocalStorage();
+  const storage = validators.isClient() ? new LocalStorage() : null;
 
   const manager = {
     setItem(currentValue: ValueResolver<T>, prevValue: T): T {
+      if (!storage) return prevValue;
+
       const ERROR_SET_MESSAGE = 'Failed to set item in localStorage';
 
       try {
@@ -76,6 +78,8 @@ const createLocalStorageManager = <T>(key: string) => {
       }
     },
     getItem(): T | null {
+      if (!storage) return null;
+
       const ERROR_GET_MESSAGE = 'Failed to get item in localStorage';
 
       try {
