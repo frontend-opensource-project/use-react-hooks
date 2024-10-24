@@ -21,6 +21,7 @@
   "useTimer": "useTimer",
   "useToggle": "useToggle",
   "useTranslation": "useTranslation",
+  "useAsyncTasks": "useAsyncTasks",
   "useUnmountEffect": "useUnmountEffect",
   "useOutsideClick": "useOutsideClick",
   "useKeyDown": "useKeyDown"
