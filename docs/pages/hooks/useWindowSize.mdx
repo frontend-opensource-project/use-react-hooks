@@ -1,0 +1,43 @@
+# useWindowSize
+
+## Introduce
+
+브라우저의 너비와 높이를 반환하는 훅입니다. 브라우저 창의 크기가 변경될 때마다 업데이트된 값을 반환합니다.
+
+```ts
+interface UseWindowSizeReturns {
+  width: number | null;
+  height: number | null;
+}
+
+const useWindowSize = <T extends number>(
+  delayTime: PositiveInteger<T>
+): UseWindowSizeReturns
+```
+
+### Props
+
+- `delayTime`: 과도한 이벤트 실행을 방지하기 위해 resize 이벤트를 지연시키는 시간(ms)
+  - default: 200
+
+### Returns
+
+- `width`: 브라우저의 너비
+- `height`: 브라우저의 높이
+
+## Examples
+
+```tsx copy filename="TestComponent.tsx"
+import { useWindowSize } from '@frontend-opensource/use-react-hooks';
+
+function TestComponent() {
+  const { width, height } = useWindowSize();
+
+  return (
+    <div>
+      <p>width: {width}px</p>
+      <p>height: {height}px</p>
+    </div>
+  );
+}
+```

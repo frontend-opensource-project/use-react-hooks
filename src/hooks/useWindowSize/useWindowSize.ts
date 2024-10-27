@@ -2,12 +2,15 @@ import { useEffect, useState } from 'react';
 import { PositiveInteger, UseWindowSizeReturns } from './type';
 
 /**
- * useWindowSize : 브라우저의 너비와 높이를 제공하는 훅
- * @param {number} [delayTime=200] 지연 시간(ms). 리사이즈 이벤트 딜레이 설정. Default=200
- * @returns {{ width: number, height: number }} 브라우저의 너비와 높이를 담은 객체
- * @description
- * 브라우저 창의 사이즈가 변경될 때마다 해당 창의 너비와 높이를 업데이트합니다.
- * UI의 세밀한 조작 등 동적인 변화에 유용합니다.
+ * 브라우저의 너비와 높이를 반환하는 훅
+ *
+ * @param {number} [delayTime=200] 과도한 이벤트 실행을 방지하기 위해 resize 이벤트를 지연시키는 시간(ms)
+ *
+ * @returns {{ width: number, height: number }}
+ * - width: 브라우저의 너비
+ * - height: 브라우저의 높이
+ *
+ * @description 브라우저 창의 크기가 변경될 때마다 업데이트된 값을 반환합니다.
  */
 
 const useWindowSize = <T extends number>(

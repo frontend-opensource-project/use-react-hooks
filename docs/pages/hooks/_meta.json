@@ -8,11 +8,13 @@
   "useGeolocation": "useGeolocation",
   "useHover": "useHover",
   "useInterval": "useInterval",
+  "useIntersectionObserver": "useIntersectionObserver",
   "useKeyCombination": "useKeyCombination",
+  "useKeyDown": "useKeyDown",
   "useLongPress": "useLongPress",
   "useMousePosition": "useMousePosition",
-  "useIntersectionObserver": "useIntersectionObserver",
   "useOnlineStatus": "useOnlineStatus",
+  "useOutsideClick": "useOutsideClick",
   "usePrefersColorScheme": "usePrefersColorScheme",
   "usePreventCopy": "usePreventCopy",
   "useScrollLock": "useScrollLock",
@@ -22,8 +24,7 @@
   "useToggle": "useToggle",
   "useTranslation": "useTranslation",
   "useUnmountEffect": "useUnmountEffect",
-  "useOutsideClick": "useOutsideClick",
-  "useKeyDown": "useKeyDown",
+  "useWindowSize": "useWindowSize",
   "_template": {
     "display": "hidden"
   }
