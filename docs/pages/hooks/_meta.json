@@ -24,5 +24,10 @@
   "useUnmountEffect": "useUnmountEffect",
   "useOutsideClick": "useOutsideClick",
   "useKeyDown": "useKeyDown",
-  "useMockData": "useMockData"
+  "useMockData": "useMockData",
+  "useWorker": "useWorker",
+  "useLocalStorage": "useLocalStorage",
+  "_template": {
+    "display": "hidden"
+  }
 }
