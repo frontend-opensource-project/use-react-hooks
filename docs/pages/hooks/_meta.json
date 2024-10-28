@@ -23,5 +23,12 @@
   "useTranslation": "useTranslation",
   "useUnmountEffect": "useUnmountEffect",
   "useOutsideClick": "useOutsideClick",
-  "useKeyDown": "useKeyDown"
+  "useKeyDown": "useKeyDown",
+  "usePermission": "usePermission",
+  "useMockData": "useMockData",
+  "useWorker": "useWorker",
+  "useLocalStorage": "useLocalStorage",
+  "_template": {
+    "display": "hidden"
+  }
 }
