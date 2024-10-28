@@ -23,6 +23,5 @@
   "useTranslation": "useTranslation",
   "useUnmountEffect": "useUnmountEffect",
   "useOutsideClick": "useOutsideClick",
-  "useKeyDown": "useKeyDown",
-  "useLocalStorage": "useLocalStorage"
+  "useKeyDown": "useKeyDown"
 }
