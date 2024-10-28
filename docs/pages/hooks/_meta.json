@@ -23,8 +23,5 @@
   "useTranslation": "useTranslation",
   "useUnmountEffect": "useUnmountEffect",
   "useOutsideClick": "useOutsideClick",
-  "useKeyDown": "useKeyDown",
-  "_template": {
-    "display": "hidden"
-  }
+  "useKeyDown": "useKeyDown"
 }
