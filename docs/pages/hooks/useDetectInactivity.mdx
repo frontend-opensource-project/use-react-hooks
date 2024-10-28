@@ -1,0 +1,42 @@
+# useDetectInactivity
+
+## Introduce
+
+일정 시간동안 사용자 이벤트가 발생하지 않았을 때 보조 함수를 실행하는 훅입니다.
+
+```ts
+const useDetectInactivity = (time: number, onInactivity: () => void): boolean
+```
+
+import { Callout } from 'nextra/components';
+
+<Callout type="info">
+  디바이스 환경에 맞게 설정된 이벤트를 5초마다 리스닝하여 이벤트가 감지될 때마다
+  타이머를 리셋합니다.
+</Callout>
+
+### Props
+
+- `time`: 비활성 상태로 간주되는 시간(ms)
+  - default: 5000
+- `onInactivity`: 비활성 상태가 되었을 때 실행될 함수
+
+### Returns
+
+boolean 값의 비활성 상태 여부를 반환
+
+## Examples
+
+```tsx copy filename="TestComponent.tsx"
+import { useDetectInactivity } from '@frontend-opensource/use-react-hooks';
+
+const TestComponent = () => {
+  function noActivity() {
+    alert('움직임이 감지되지 않아 1분 후 자동으로 로그아웃됩니다.');
+  }
+
+  const isInactivity = useDetectInactivity(300000, noActivity);
+
+  return <div>{isInactivity && <h1>비활성 상태입니다</h1>}</div>;
+};
+```

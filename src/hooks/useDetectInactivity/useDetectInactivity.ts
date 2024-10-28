@@ -4,16 +4,16 @@ import { isTouchDevice, throttle } from '@/utils';
 import { Fn } from './type';
 
 /**
- * 일정 시간(ms) 동안 활동이 없을 때 지정된 콜백 함수를 실행하는 훅.
+ * 일정 시간동안 사용자 이벤트가 발생하지 않았을 때 보조 함수를 실행하는 훅
  *
- * @param {number} time - 비활성 상태로 간주되기까지의 시간(밀리초). 양의 정수로 지정. (최소값 5000ms)
- * @param {Fn} onInactivity - 비활성 상태가 감지되었을 때 호출되는 콜백 함수.
+ * @param {number} [time=5000] 비활성 상태로 간주되는 시간(ms)
+ * @param {Fn} onInactivity 비활성 상태가 되었을 때 실행될 함수
  *
- * @returns {boolean} - 현재 비활동 상태 여부를 나타내는 boolean 값.
+ * @returns {boolean} 비활성 상태 여부
  *
  * @description
- * 사용자가 정의한 시간(time) 동안 활동이 없으면 비활성 상태로 간주하고, 지정된 콜백 함수(onInactivity)를 호출합니다.
- * 해당 환경에 맞게 설정된 이벤트를 5초마다 리스닝하여, 활동이 감지될 시 타이머를 리셋합니다.
+ * - 사용자가 정의한 시간동안 이벤트가 발생하지 않으면 비활성 상태로 간주하고, 지정된 보조 함수를 실행합니다.
+ * - 디바이스 환경에 맞게 설정된 이벤트를 5초마다 리스닝하여 이벤트가 감지될 때마다 타이머를 리셋합니다.
  */
 
 const useDetectInactivity = (time: number, onInactivity: Fn) => {
