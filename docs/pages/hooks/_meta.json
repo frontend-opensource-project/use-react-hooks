@@ -25,5 +25,8 @@
   "useOutsideClick": "useOutsideClick",
   "useKeyDown": "useKeyDown",
   "useWorker": "useWorker",
-  "useLocalStorage": "useLocalStorage"
+  "useLocalStorage": "useLocalStorage",
+  "_template": {
+    "display": "hidden"
+  }
 }
