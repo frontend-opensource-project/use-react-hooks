@@ -1,16 +1,11 @@
 {
-  "*": {
-    "type": "page"
-  },
   "index": {
-    "title": "홈"
+    "title": "useReactHooks"
   },
-  "guide": {
-    "title": "가이드",
-    "type": "page"
-  },
-  "docs": {
-    "title": "문서",
-    "type": "page"
+  "hooks": {
+    "title": "Hooks",
+    "theme": {
+      "collapsed": false
+    }
   }
 }
