@@ -6,11 +6,44 @@
 
 ```ts
 interface UsePermissionProps {
-  permission: Permission;
+  permission:
+    | 'accessibility-events'
+    | 'accelerometer'
+    | 'ambient-light-sensor'
+    | 'background-fetch'
+    | 'background-sync'
+    | 'bluetooth'
+    | 'camera'
+    | 'captured-surface-control'
+    | 'clipboard-read'
+    | 'clipboard-write'
+    | 'display-capture'
+    | 'fullscreen'
+    | 'geolocation'
+    | 'gyroscope'
+    | 'idle-detection'
+    | 'keyboard-lock'
+    | 'local-fonts'
+    | 'magnetometer'
+    | 'microphone'
+    | 'midi'
+    | 'nfc'
+    | 'notifications'
+    | 'payment-handler'
+    | 'periodic-background-sync'
+    | 'persistent-storage'
+    | 'pointer-lock'
+    | 'push'
+    | 'screen-wake-lock'
+    | 'speaker-selection'
+    | 'storage-access'
+    | 'system-wake-lock'
+    | 'top-level-storage-access'
+    | 'window-management';
 }
 
 interface UsePermissionReturns {
-  status: PermissionState;
+  status: 'granted' | 'prompt' | 'denied' | 'notSupported';
 }
 
 const useSomethingHook = (props: UsePermissionProps): UsePermissionReturns
