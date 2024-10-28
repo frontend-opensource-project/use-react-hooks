@@ -24,5 +24,6 @@
   "useUnmountEffect": "useUnmountEffect",
   "useOutsideClick": "useOutsideClick",
   "useKeyDown": "useKeyDown",
-  "useWorker": "useWorker"
+  "useWorker": "useWorker",
+  "useLocalStorage": "useLocalStorage"
 }
