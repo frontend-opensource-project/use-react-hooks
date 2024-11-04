@@ -18,6 +18,7 @@
   "useMousePosition": "useMousePosition",
   "useOnlineStatus": "useOnlineStatus",
   "useOutsideClick": "useOutsideClick",
+  "usePermission": "usePermission",
   "usePrefersColorScheme": "usePrefersColorScheme",
   "usePreventCopy": "usePreventCopy",
   "useScrollLock": "useScrollLock",
