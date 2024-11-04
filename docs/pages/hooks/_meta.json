@@ -1,4 +1,5 @@
 {
+  "useAsyncTasks": "useAsyncTasks",
   "useClipboard": "useClipboard",
   "useConfirm": "useConfirm",
   "useDebounce": "useDebounce",
@@ -7,19 +8,27 @@
   "useDetectDevice": "useDetectDevice",
   "useGeolocation": "useGeolocation",
   "useHover": "useHover",
+  "useIntersectionObserver": "useIntersectionObserver",
   "useInterval": "useInterval",
   "useKeyCombination": "useKeyCombination",
+  "useKeyDown": "useKeyDown",
+  "useLocalStorage": "useLocalStorage",
   "useLongPress": "useLongPress",
+  "useMockData": "useMockData",
   "useMousePosition": "useMousePosition",
   "useOnlineStatus": "useOnlineStatus",
+  "useOutsideClick": "useOutsideClick",
   "usePrefersColorScheme": "usePrefersColorScheme",
   "usePreventCopy": "usePreventCopy",
   "useScrollLock": "useScrollLock",
+  "useScrollY": "useScrollY",
   "useSound": "useSound",
   "useTimer": "useTimer",
   "useToggle": "useToggle",
   "useTranslation": "useTranslation",
-  "useAsyncTasks": "useAsyncTasks"
-  "useOutsideClick": "useOutsideClick",
-  "useKeyDown" : "useKeyDown"
+  "useUnmountEffect": "useUnmountEffect",
+  "useWorker": "useWorker",
+  "_template": {
+    "display": "hidden"
+  }
 }

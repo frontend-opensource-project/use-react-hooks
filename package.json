@@ -12,7 +12,7 @@
     "build": "rm -rf node_modules/.tmp && tsc -b --verbose",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "prepare": "husky",
+    "prepare": "if [ -d .git ] && command -v husky >/dev/null 2>&1; then husky install; else echo 'Skipping husky install'; fi",
     "lint-staged": "lint-staged",
     "test": "jest",
     "coverage": "jest --coverage"
