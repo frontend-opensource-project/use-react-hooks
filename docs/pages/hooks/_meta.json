@@ -29,6 +29,7 @@
   "useToggle": "useToggle",
   "useTranslation": "useTranslation",
   "useUnmountEffect": "useUnmountEffect",
+  "useWindowSize": "useWindowSize",
   "useWorker": "useWorker",
   "_template": {
     "display": "hidden"
