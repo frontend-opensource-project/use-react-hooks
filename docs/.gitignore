@@ -1,5 +1,6 @@
 # Ignore Next.js build output
 .next/
+out/
 
 # Logs
 logs
