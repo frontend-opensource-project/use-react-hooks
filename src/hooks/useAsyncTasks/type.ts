@@ -36,6 +36,7 @@ export interface TaskState<R> {
   isLoading: boolean;
   data: R | null;
   error: PromiseCircularityError | null;
+  resetTrigger: number;
 }
 
 export type TaskAction<R> =
