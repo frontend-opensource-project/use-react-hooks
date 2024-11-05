@@ -6,6 +6,7 @@
   "useDeepCompareEffect": "useDeepCompareEffect",
   "useDelayFlag": "useDelayFlag",
   "useDetectDevice": "useDetectDevice",
+  "useDetectInactivity": "useDetectInactivity",
   "useEventListener": "useEventListener",
   "useGeolocation": "useGeolocation",
   "useHover": "useHover",
