@@ -1,30 +1,14 @@
-# React + TypeScript + Vite
+# useReactHooks
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+`useReactHooks`는 리액트 개발 시 반복적인 커스텀 훅 제작의 비효율을 개선하여, 효율적이고 재사용 가능한 훅을 제공합니다.
+누구나 쉽게 접근할 수 있는 오픈소스 프로젝트로, 커뮤니티의 기여와 확장을 통해 함께 성장해 나가고자 합니다.
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```shell copy
+  npm install @frontend-opensource/use-react-hooks
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### 특징
+
+- 유용한 커스텀 훅 제공: 실무에서 자주 사용되는 다양한 커스텀 훅들이 포함되어 있어, 개발자는 복잡한 기능을 손쉽게 구현할 수 있습니다.
+- 오픈소스 기여 가능: 많은 개발자가 라이브러리를 포크하고 커스터마이징할 수 있도록 오픈소스로 배포되어 있으며, 자유롭게 기여할 수 있습니다.
+- npm 패키지 배포: 누구나 쉽게 설치하고 사용할 수 있도록 npm 패키지로 배포되어 있습니다.

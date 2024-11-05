@@ -1,0 +1,65 @@
+# useEventListener
+
+## Introduce
+
+특정 객체에 이벤트 리스너를 손쉽게 추가할 수 있는 훅입니다.
+
+```ts
+export type EventMap = {
+  window: WindowEventMap;
+  document: DocumentEventMap;
+  htmlElement: HTMLElementEventMap;
+  svgElement: SVGElementEventMap;
+};
+
+export type EventElement = {
+  window: Window;
+  document: Document;
+  htmlElement: RefObject<HTMLElement> | HTMLElement;
+  svgElement: RefObject<SVGElement> | SVGElement;
+};
+
+const useEventListener = <
+  K extends keyof EventMap,
+  E extends keyof EventMap[K] & string,
+>(
+  eventName: E,
+  handler: (event: EventMap[K][E]) => void,
+  element?: EventElement[K] | null,
+  options?: AddEventListenerOptions
+): void
+```
+
+- 현재 이벤트 리스너를 추가할 수 있는 객체는 `window`, `document`, `htmlElement`, `svgElement` 4가지입니다.
+
+### Props
+
+- `eventName`: 추가할 이벤트의 이름
+- `handler`: 이벤트 발생 시 실행되는 핸들러 함수
+- `element`: 이벤트를 추가할 대상 Element
+  - default: `window`
+- `options`: 이벤트 리스너 기본 옵션
+
+{/* 훅 사용중에 로그가 나올 수 있는 부분은 Callout type="warning"을 사용하여 표기합니다. */}
+
+## Examples
+
+```tsx copy filename="TestComponent.tsx"
+import { useEventListener } from '@frontend-opensource/use-react-hooks';
+
+const TestComponent = () => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const handleClick = () => {
+    console.log('Button clicked!');
+  };
+
+  useEventListener('click', handleClick, buttonRef);
+
+  return (
+    <div>
+      <button ref={buttonRef}>Click</button>
+    </div>
+  );
+};
+```
