@@ -2,6 +2,38 @@
   "name": "@frontend-opensource/use-react-hooks",
   "private": false,
   "version": "1.1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/frontend-opensource-project/use-react-hooks"
+  },
+  "homepage": "https://frontend-opensource-project.github.io/use-react-hooks/",
+  "contributors": [
+    {
+      "name": "박소현",
+      "email": "foresec@naver.com",
+      "url": "https://github.com/foresec"
+    },
+    {
+      "name": "박수현",
+      "email": "suhyeon1740@gmail.com",
+      "url": "https://github.com/suhyeoonn"
+    },
+    {
+      "name": "박종찬",
+      "email": "chanii8@naver.com",
+      "url": "https://github.com/bicochan"
+    },
+    {
+      "name": "방정배",
+      "email": "jeongbaebang_dev@naver.com",
+      "url": "https://github.com/jeongbaebang"
+    },
+    {
+      "name": "추지예",
+      "email": "jiyechoo@gmail.com",
+      "url": "https://github.com/Choozii"
+    }
+  ],
   "type": "module",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
