@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { imgToBlob } from '@/utils';
+import { imgToBlob, hasNavigator } from '@/utils';
 import { UseClipboardProps, UseClipboardReturns } from './type';
 
 /**
@@ -21,12 +21,17 @@ const useClipboard = ({
 }: UseClipboardProps = {}): UseClipboardReturns => {
   const [copied, setCopied] = useState(false);
 
-  if (!navigator.clipboard) {
-    throw new Error('Clipboard API not supported.');
-  }
-
   const handleCopy = async (copy: () => Promise<void>) => {
+    if (!hasNavigator()) {
+      throw new Error('Navigator not supported.');
+    }
+
+    if (!navigator.clipboard) {
+      throw new Error('Clipboard API not supported.');
+    }
+
     setCopied(false);
+
     try {
       await copy();
       setCopied(true);
