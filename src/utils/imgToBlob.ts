@@ -1,9 +1,8 @@
-const img = new Image();
-const canvas = document.createElement('canvas');
-const ctx = canvas.getContext('2d');
-
 export const imgToBlob = (path: string): Promise<Blob> => {
   return new Promise((resolve, reject) => {
+    const img = new Image();
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
     img.crossOrigin = 'Anonymous';
     img.onload = function () {
       if (this instanceof HTMLImageElement) {

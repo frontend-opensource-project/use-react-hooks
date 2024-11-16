@@ -41,7 +41,7 @@
     "install:docs": "npm install --prefix ./docs",
     "dev:docs": "npm run dev --prefix ./docs",
     "dev": "vite",
-    "build": "rm -rf node_modules/.tmp && tsc -b --verbose",
+    "build": "rm -rf node_modules/.tmp && tsc -b --verbose && tsc-alias -p tsconfig.app.json",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "prepare": "if [ -d .git ] && command -v husky >/dev/null 2>&1; then husky install; else echo 'Skipping husky install'; fi",
@@ -99,6 +99,7 @@
     "prettier": "^3.3.2",
     "ts-jest": "^29.2.2",
     "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.10",
     "typescript": "^5.2.2",
     "vite": "^5.3.1"
   },
