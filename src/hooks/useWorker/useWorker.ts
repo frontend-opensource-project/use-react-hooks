@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { MutableRefObject, useCallback, useRef, useState } from 'react';
 
 import { validators } from '@/utils';
@@ -51,19 +52,19 @@ const useWorker = <Arg, Return, Closure = never>(
 
     safeWorkerHelper((worker) => {
       // 작업이 완료된 스레드로부터 이벤트 수신 #1
-      worker.current.onmessage = (
-        e: MessageEvent<Return & { error?: string }>
-      ) => {
-        const payload = e.data;
+      worker.current.onmessage(
+        (e: MessageEvent<Return & { error?: string }>) => {
+          const payload = e.data;
 
-        if (payload?.error) {
-          console.error(payload.error);
+          if (payload?.error) {
+            console.error(payload.error);
+            clearWorker();
+          }
+
+          setResult(payload);
           clearWorker();
         }
-
-        setResult(payload);
-        clearWorker();
-      };
+      );
 
       // 작업을 수행할 작업 스레드로 인수 전달 #2
       worker.current.postMessage([args, closure]);
@@ -84,7 +85,10 @@ const useWorker = <Arg, Return, Closure = never>(
 
 export default useWorker;
 
-class FunctionWorker<A, R, C> extends Worker {
+class FunctionWorker<A, R, C> {
+  worker: Worker | null = null;
+  workerBlob: Blob | null = null;
+
   constructor(workerScript: WorkerScript<A, R, C>) {
     if (!validators.isClient() || !window.Worker || !globalThis.Blob) {
       throw new WebWorkerError("Your browser doesn't support web workers.");
@@ -99,7 +103,7 @@ class FunctionWorker<A, R, C> extends Worker {
     // this === DedicatedWorkerGlobalScope
     const workerFunction = (script: WorkerScript<A, R, C>) => {
       // 작업 스레드로 전달된 인수 수신 #2
-      this.onmessage = async ({ data }: MessageEvent<[A, C]>) => {
+      this.onmessage(async ({ data }: MessageEvent<[A, C]>) => {
         try {
           // 작업 수행
           const workerResult = await script(data[0], data[1]);
@@ -109,21 +113,46 @@ class FunctionWorker<A, R, C> extends Worker {
         } catch (error) {
           this.postMessage({ error });
         }
-      };
+      });
     };
 
     try {
-      const workerBlob = new Blob(
+      this.workerBlob = new Blob(
         [`(${workerFunction.toString()})(${workerScript.toString()})`],
         { type: 'application/javascript' }
       );
-
-      super(URL.createObjectURL(workerBlob));
+      this.worker = new Worker(URL.createObjectURL(this.workerBlob));
     } catch (error) {
       throw new WebWorkerError(
         `Failed to create workerBlob: ${error instanceof Error ? error.message : 'unknown error'}`
       );
     }
+  }
+
+  onmessage(callback: (message: MessageEvent) => any) {
+    if (this.worker) {
+      this.worker.onmessage = callback;
+    }
+  }
+
+  postMessage(message: any): void {
+    if (this.worker) {
+      this.worker.postMessage(message);
+    }
+  }
+
+  terminate(): void {
+    if (this.worker) {
+      this.worker.terminate();
+    }
+  }
+}
+
+class WebWorkerError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.message = message;
+    this.name = 'WebWorkerError';
   }
 }
 
@@ -134,11 +163,3 @@ const validateRef = <T>(workerRef: MutableRefObject<T | null>) => {
     }
   };
 };
-
-class WebWorkerError extends Error {
-  constructor(message: string) {
-    super(message);
-    this.message = message;
-    this.name = 'WebWorkerError';
-  }
-}
